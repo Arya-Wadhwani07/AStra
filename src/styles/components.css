@@ -164,16 +164,23 @@ body {
   color: var(--ink);
 }
 .as-logo__mark {
-  display: inline-grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-pill);
-  background: var(--ink);
-  color: var(--bg);
+  position: relative;
+  display: inline-block;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #080d20;
 }
-.as-logo__mark .as-icon {
-  color: var(--accent);
+.as-logo__mark img {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  max-width: none;
+  left: -50%;
+  top: -15%;
+  object-fit: cover;
 }
 .as-logo__word {
   font-family: var(--font-display);
@@ -3185,10 +3192,6 @@ button.as-chip:focus-visible {
 /* ---------- Navy + coral layer (selection glows, washes, placeholder art) ---------- */
 .as-code {
   font-family: var(--font-mono);
-}
-.as-logo__mark .as-icon {
-  color: var(--accent);
-  filter: drop-shadow(0 0 4px var(--accent));
 }
 /* v5 taste pass: no glow on everyday controls. Depth is a navy-tinted hairline shadow; the coral glow is reserved for .as-btn--glow (one public CTA). */
 .as-btn--primary {

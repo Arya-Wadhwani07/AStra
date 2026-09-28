@@ -10,7 +10,11 @@ export const metadata: Metadata = {
     template: "%s | AStra",
   },
   description:
-    "A shared home for creators, their audiences and cross-discipline collaboration. Local working prototype.",
+    "A shared home for creators, their audiences and cross-discipline collaboration.",
+  icons: {
+    icon: "/media/mascot/astra-mascot-poster-1x1.jpg",
+    apple: "/media/mascot/astra-mascot-poster-1x1.jpg",
+  },
   robots: { index: false, follow: false },
 };
 export default function RootLayout({

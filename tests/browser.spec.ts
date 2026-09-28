@@ -216,6 +216,19 @@ test("landing has one persistent sculpture, accessible hover and reduced motion"
 }, testInfo) => {
   await page.goto("/");
   await expect(page.locator("[data-sculpture]")).toHaveCount(1);
+  await expect(page.locator("body")).not.toContainText(/working prototype|sample data/i);
+  for (const logo of await page.locator(".as-logo__mark img").all()) {
+    await expect(logo).toBeVisible();
+    await expect(logo).toHaveAttribute("src", "/media/mascot/astra-mascot-poster-1x1.jpg");
+    expect(await logo.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
+  }
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute("href", "/media/mascot/astra-mascot-poster-1x1.jpg");
+  expect(await page.locator(".footer-cta").evaluate((e) => getComputedStyle(e).backgroundColor)).toBe("rgba(4, 6, 13, 0.18)");
+  expect(await page.locator(".footer-cta").evaluate((e) => getComputedStyle(e).backdropFilter)).toBe("blur(2px)");
+  expect(await page.locator(".feature-list").evaluate((e) => getComputedStyle(e).backgroundColor)).toBe("rgba(4, 6, 13, 0.18)");
+  expect(await page.locator(".feature-list").evaluate((e) => getComputedStyle(e).backdropFilter)).toBe("blur(2px)");
+  expect(await page.locator(".landing .steps").evaluate((e) => getComputedStyle(e).backgroundColor)).toBe("rgba(4, 6, 13, 0.18)");
+  expect(await page.locator(".landing .steps").evaluate((e) => getComputedStyle(e).backdropFilter)).toBe("blur(2px)");
   await expect(page.locator(".cinema-stage video")).toHaveCount(0);
   await expect(
     page.locator(".landing-sculpture .particle-hero__poster"),
@@ -323,7 +336,7 @@ test("one sculpture flows across the entire page, responds to pointer and pauses
   ).toBeVisible();
 });
 
-test("landing replaces placeholder artwork with an attributed official album embed without autoplay", async ({
+test("landing replaces placeholder artwork with an official album embed without extra captions or autoplay", async ({
   page,
 }) => {
   await page.goto("/");
@@ -336,12 +349,12 @@ test("landing replaces placeholder artwork with an attributed official album emb
     "allow",
     /autoplay/,
   );
-  await expect(album).toContainText("not an AStra partner");
-  await expect(album).toContainText("no points are earned");
-  await expect(album.getByRole("link")).toHaveAttribute(
-    "href",
-    "https://open.spotify.com/album/5rMOCuiWWbEBcHaKM69Hmv",
+  await expect(album.locator("iframe")).toHaveAttribute(
+    "title",
+    "A Matter of Time by Laufey — official Spotify album preview",
   );
+  await expect(album.locator("figcaption")).toHaveCount(0);
+  await expect(album.locator("a")).toHaveCount(0);
   await expect(page.locator(".editorial-grid")).not.toContainText(
     "Placeholder art",
   );

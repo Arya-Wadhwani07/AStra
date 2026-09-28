@@ -115,18 +115,6 @@ export function Landing() {
                 allow="encrypted-media; fullscreen; picture-in-picture"
                 referrerPolicy="strict-origin-when-cross-origin"
               />
-              <figcaption>
-                <a
-                  href="https://open.spotify.com/album/5rMOCuiWWbEBcHaKM69Hmv"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  A Matter of Time · Laufey · Open in Spotify
-                </a>
-                <br />
-                Editorial music pick, not an AStra partner. Spotify hosts this
-                preview; no points are earned.
-              </figcaption>
             </figure>
             <h3>Follow creators, not algorithms</h3>
             <p className="muted">
@@ -134,7 +122,7 @@ export function Landing() {
               newest first. A little less noise. A little more connection.
             </p>
             <Link href="/feed">
-              See a sample feed <Icon name="arrow-right" />
+              Explore the feed <Icon name="arrow-right" />
             </Link>
           </div>
           <div className="feature-list">
@@ -168,7 +156,7 @@ export function Landing() {
         <section className="landing-section">
           <Heading
             title="A few worlds to explore"
-            text="Fictional creators, real possibilities. All profiles and activity shown are sample data."
+            text="Explore creative disciplines through these illustrative profiles."
           />
           <div className="creator-grid">
             {(state?.creators || []).slice(0, 4).map((c, i) => (
@@ -283,7 +271,6 @@ export function Landing() {
       <footer className="public-footer">
         <Logo />
         <span>Multiverse for creators</span>
-        <span>Working prototype. Sample data.</span>
         <Link href="/signin">Sign in</Link>
       </footer>
     </div>

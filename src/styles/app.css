@@ -954,8 +954,8 @@ td p {
 .landing .steps,
 .landing .footer-cta {
   border-radius: 24px;
-  background: rgb(4 6 13 / 76%);
-  backdrop-filter: blur(8px);
+  background: rgb(4 6 13 / 18%);
+  backdrop-filter: blur(2px);
   padding: 24px;
 }
 .landing .display-title {
@@ -972,10 +972,6 @@ td p {
   border: 0;
   border-radius: 12px;
   background: #121725;
-}
-.landing-album figcaption {
-  color: var(--ink-muted);
-  font-size: 12px;
 }
 .cinema-stage {
   position: relative;

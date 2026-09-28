@@ -164,7 +164,6 @@ export function Shell({
           </button>
           <h1>{title}</h1>
           <div className="topbar-tools">
-            <span className="as-sample">Sample data</span>
             <Link
               href="/notifications"
               className="icon-button"
@@ -182,7 +181,7 @@ export function Shell({
               title={
                 error ? "Connection unavailable" : "Opening your workspace"
               }
-              text={error || "Loading your saved demo data."}
+              text={error || "Loading your workspace."}
             >
               {error && (
                 <Button onClick={() => void reload()}>Try again</Button>
@@ -200,7 +199,7 @@ export function Shell({
               text={
                 privatePage
                   ? "Private opportunities, briefs and conversations are available only in an authorized creator view."
-                  : "Sign in to a local sample account to continue."
+                  : "Sign in to your AStra account to continue."
               }
             >
               {state.me?.roles.includes("creator") && privatePage ? (
@@ -214,8 +213,7 @@ export function Shell({
           )}
         </main>
         <footer className="app-footer">
-          AStra working prototype. Sample activity, simulated checkout. No real
-          payments or emails.
+          Simulated checkout. No real payments or emails.
         </footer>
       </div>
       {state?.me && !admin && (

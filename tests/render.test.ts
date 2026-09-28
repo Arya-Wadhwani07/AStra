@@ -93,6 +93,9 @@ for (const path of routes)
     const html = render(path, session);
     assert.ok(html.length > 500);
     assert.ok(!html.includes("[object Object]"));
+    assert.doesNotMatch(html, /working prototype|sample data/i);
+    assert.match(html, /as-logo__mark/);
+    assert.match(html, /\/media\/mascot\/astra-mascot-poster-1x1\.jpg/);
   });
 test("published Spotify release renders an official player and separate one-time reward button in the feed", () => {
   const previous = process.env.ASTRA_DEMO;

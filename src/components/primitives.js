@@ -667,7 +667,13 @@ function Logo(p) {
     h(
       "span",
       { className: "as-logo__mark", "aria-hidden": "true" },
-      h(Icon, { name: "planet", weight: "fill", size: p.size || 22 }),
+      h("img", {
+        src: "/media/mascot/astra-mascot-poster-1x1.jpg",
+        alt: "",
+        width: 80,
+        height: 80,
+        decoding: "async",
+      }),
     ),
     p.markOnly
       ? null
