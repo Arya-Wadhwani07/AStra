@@ -26,10 +26,24 @@ function pass(label: string) {
   console.log("PASS " + label);
 }
 const publicResponse = await fetch(base + "/api/app");
-assert.equal(publicResponse.status, 200);
+assert.equal(publicResponse.status, 401);
 const publicState = await publicResponse.json();
 assert.equal("opportunities" in publicState, false);
-pass("Public API excludes private collections");
+assert.deepEqual(Object.keys(publicState), ["error"]);
+pass("Anonymous API access returns only an authentication error");
+const privateAccount = await request("signup", {
+  name: "HTTP private user",
+  email: `http-${Date.now()}@example.test`,
+  password: "HTTP private passphrase!",
+  role: "both",
+});
+assert.equal(privateAccount.status, 200);
+assert.equal(privateAccount.body.state.me.balance, 0);
+assert.equal(privateAccount.body.state.me.authProvider, "password");
+assert.ok(!JSON.stringify(privateAccount.body).includes("passwordHash"));
+pass(
+  "AStra password signup creates an individual zero-point account without exposing credentials",
+);
 const fan = await request("login", { account: "alex" });
 assert.equal(fan.status, 200);
 assert.ok(fan.cookie.startsWith("astra-session="));
@@ -183,12 +197,15 @@ pass(
   "Concurrent HTTP demo link requests credit only the server-defined amount once",
 );
 const spotifyStatus = await fetch(base + "/api/integrations/spotify");
-assert.equal(spotifyStatus.status, 200);
-assert.equal((await spotifyStatus.json()).connected, false);
+assert.equal(spotifyStatus.status, 401);
 for (const role of ["audience", "creator", "both"]) {
   const start = await fetch(base + "/api/integrations/spotify", {
     method: "POST",
-    headers: { Origin: base, "Content-Type": "application/json" },
+    headers: {
+      Origin: base,
+      "Content-Type": "application/json",
+      Cookie: privateAccount.cookie,
+    },
     body: JSON.stringify({ action: "connect", role }),
   });
   assert.equal(start.status, 200);
@@ -203,13 +220,13 @@ for (const role of ["audience", "creator", "both"]) {
   callback.searchParams.set("state", auth.searchParams.get("state")!);
   callback.searchParams.set("error", "access_denied");
   const denied = await fetch(callback, {
-    headers: { Cookie: cookie.split(";")[0] },
+    headers: { Cookie: cookie.split(";")[0] + "; " + privateAccount.cookie },
     redirect: "manual",
   });
   assert.equal(denied.status, 303);
   const target = new URL(denied.headers.get("location")!);
   assert.equal(target.origin, base);
-  assert.equal(target.pathname, "/signin");
+  assert.equal(target.pathname, "/settings");
   assert.match(target.searchParams.get("spotifyError")!, /cancelled/);
 }
 pass(
@@ -286,11 +303,18 @@ for (const route of [
   "/studio/menu",
   "/admin",
 ]) {
-  const r = await fetch(base + route);
+  const anonymous = await fetch(base + route, { redirect: "manual" });
+  if (route !== "/" && route !== "/signin") {
+    assert.equal(anonymous.status, 307, route);
+    assert.equal(anonymous.headers.get("location"), "/signin", route);
+  }
+  const r = await fetch(base + route, { headers: { Cookie: fan.cookie } });
   assert.equal(r.status, 200, route);
   assert.ok((await r.text()).includes("AStra"), route);
 }
-pass("All 27 route groups return rendered HTML");
+pass(
+  "All 27 routes render with a session; every feature route rejects anonymous navigation",
+);
 assert.equal((await fetch(base + "/not-a-route")).status, 404);
 pass("Unknown routes return 404");
 for (const path of [
@@ -309,16 +333,15 @@ for (const path of [
   );
 pass("Local font, mascot and motion assets load");
 const ytStatus = await fetch(base + "/api/integrations/youtube");
-assert.equal(ytStatus.status, 200);
-assert.deepEqual(await ytStatus.json(), {
-  configured: true,
-  privateAccount: false,
-  connected: false,
-});
+assert.equal(ytStatus.status, 401);
 for (const role of ["audience", "creator", "both"]) {
   const start = await fetch(base + "/api/integrations/youtube", {
     method: "POST",
-    headers: { Origin: base, "Content-Type": "application/json" },
+    headers: {
+      Origin: base,
+      "Content-Type": "application/json",
+      Cookie: privateAccount.cookie,
+    },
     body: JSON.stringify({ action: "connect", role }),
   });
   assert.equal(start.status, 200);
@@ -335,7 +358,7 @@ for (const role of ["audience", "creator", "both"]) {
   callback.searchParams.set("state", auth.searchParams.get("state")!);
   callback.searchParams.set("error", "access_denied");
   const denied = await fetch(callback, {
-    headers: { Cookie: cookie.split(";")[0] },
+    headers: { Cookie: cookie.split(";")[0] + "; " + privateAccount.cookie },
     redirect: "manual",
   });
   assert.equal(denied.status, 303);
@@ -344,7 +367,7 @@ for (const role of ["audience", "creator", "both"]) {
   assert.match(target.searchParams.get("youtubeError")!, /cancelled/);
   assert.equal(denied.headers.get("referrer-policy"), "no-referrer");
   const replay = await fetch(callback, {
-    headers: { Cookie: cookie.split(";")[0] },
+    headers: { Cookie: cookie.split(";")[0] + "; " + privateAccount.cookie },
     redirect: "manual",
   });
   assert.match(

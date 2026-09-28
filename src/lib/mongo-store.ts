@@ -8,6 +8,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { seed, type State, type Session, AppError } from "./model";
+import { testAccountsEnabled } from "./test-access";
 const collections = [
   "users",
   "posts",
@@ -89,6 +90,9 @@ export async function db() {
             { googleSubjectHash: 1 },
             { unique: true, sparse: true },
           );
+        await database
+          .collection<Row>("users")
+          .createIndex({ emailLoginHash: 1 }, { unique: true, sparse: true });
         await database.collection<Row>("ledger").createIndex(
           { user: 1, demoCampaign: 1 },
           {
@@ -223,11 +227,16 @@ export async function createSession(data: Session) {
 export async function getSession(token?: string): Promise<Session | undefined> {
   if (!token) return;
   const { database } = await db();
-  return (
+  const session = (
     await database
       .collection<SessionRow>("sessions")
       .findOne({ _id: hash(token), expires: { $gt: new Date() } })
   )?.data;
+  if (!session) return;
+  const user = await database.collection("users").findOne({ id: session.user });
+  if (!user || !user.roles?.includes(session.view)) return;
+  if (!testAccountsEnabled() && user.authProvider !== "password") return;
+  return session;
 }
 export async function deleteSession(token?: string) {
   if (token) {

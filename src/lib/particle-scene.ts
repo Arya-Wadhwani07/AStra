@@ -1,5 +1,9 @@
 /** Deterministic, original geometry. No textures, network requests or per-frame uploads. */
-export function createParticleGeometry(count: number) {
+export type ParticleVariant = "hero" | "collab" | "loyalty";
+export function createParticleGeometry(
+  count: number,
+  variant: ParticleVariant = "hero",
+) {
   if (!Number.isInteger(count) || count < 1 || count > 50000)
     throw new RangeError("Particle count must be between 1 and 50000");
   // Interleaved prism xyz, knot xyz, seed, type (sculpture / floor / dust).
@@ -27,6 +31,29 @@ export function createParticleGeometry(count: number) {
         0.53 * Math.sin(3 * t) + 0.12 * Math.sin(tube),
         r * Math.sin(2 * t),
       ];
+      if (variant === "collab") {
+        const strand = i % 2 ? 1 : -1;
+        const angle = u * Math.PI * 2;
+        a = [
+          Math.cos(angle) * 0.68 + strand * 0.43,
+          Math.sin(angle) * 0.95,
+          Math.sin(tube) * 0.15 + strand * Math.cos(angle) * 0.38,
+        ];
+      } else if (variant === "loyalty") {
+        const angle = u * Math.PI * 2;
+        const band = ((i % 3) * Math.PI) / 3;
+        const radius = 1.03 + Math.cos(tube) * 0.09;
+        a = [
+          Math.cos(angle) * radius,
+          Math.sin(angle) * Math.cos(band) * radius,
+          Math.sin(angle) * Math.sin(band) * radius,
+        ];
+        b = [
+          Math.cos(angle) * (0.68 + v * 0.15),
+          (s - 0.5) * 0.22,
+          Math.sin(angle) * (0.68 + v * 0.15),
+        ];
+      }
     } else if (kind === 1) {
       const t = u * Math.PI * 2,
         r = 1.55 + (i % 4) * 0.32 + v * 0.016;
@@ -94,7 +121,10 @@ void main() {
   gl_FragColor = vec4(v_color, light * v_alpha);
 }`;
 
-export function createParticleRenderer(canvas: HTMLCanvasElement) {
+export function createParticleRenderer(
+  canvas: HTMLCanvasElement,
+  variant: ParticleVariant = "hero",
+) {
   const gl = canvas.getContext("webgl", {
     alpha: true,
     antialias: false,
@@ -134,7 +164,7 @@ export function createParticleRenderer(canvas: HTMLCanvasElement) {
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(
       gl.ARRAY_BUFFER,
-      createParticleGeometry(count),
+      createParticleGeometry(count, variant),
       gl.STATIC_DRAW,
     );
     for (const [name, size, offset] of [
@@ -161,7 +191,7 @@ export function createParticleRenderer(canvas: HTMLCanvasElement) {
       resize() {
         dpr = Math.min(
           window.devicePixelRatio || 1,
-          1.5,
+          2,
           4096 / Math.max(canvas.clientWidth, canvas.clientHeight, 1),
         );
         canvas.width = Math.max(1, Math.round(canvas.clientWidth * dpr));

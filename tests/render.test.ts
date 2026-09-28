@@ -167,13 +167,17 @@ test("YouTube feed starts with an opt-in preview, separate simulated reward and 
     else process.env.ASTRA_DEMO = old;
   }
 });
-test("both role settings and sign-in render YouTube connection controls", () => {
+test("provider connections appear in settings, never as an AStra sign-in substitute", () => {
   for (const session of [
     { user: "alex", view: "audience" as const },
     { user: "mira", view: "creator" as const },
   ])
     assert.match(render("/settings", session), /Connect YouTube/);
-  assert.match(render("/signin"), /Connect YouTube/);
+  assert.doesNotMatch(
+    render("/signin"),
+    /Connect YouTube|Connect Spotify|Continue to demo|Create sample account/,
+  );
+  assert.match(render("/signin"), /Sign in to AStra/);
 });
 test("audience sees no private opportunity or messages markup", () => {
   const html = render("/studio/collaborate", {
@@ -188,10 +192,11 @@ test("audience sees no private opportunity or messages markup", () => {
   });
   assert.ok(!messages.includes("updated the brief"));
 });
-test("public discovery renders without an account", () => {
+test("discovery does not render feature content without an account", () => {
   const html = render("/discover");
-  assert.ok(html.includes("Mira Rao"));
-  assert.ok(html.includes("Find your next favorite"));
+  assert.ok(!html.includes("Mira Rao"));
+  assert.ok(!html.includes("Find your next favorite"));
+  assert.ok(html.includes("Sign in"));
 });
 test("collaborator renders response and participant messaging views", () => {
   assert.ok(

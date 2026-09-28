@@ -58,6 +58,7 @@ export default defineConfig({
     reuseExistingServer: false,
     env: {
       ASTRA_DB_NAME: process.env.ASTRA_DB_NAME,
+      ASTRA_TEST_ACCOUNTS: "1",
       SPOTIFY_CLIENT_ID: "browser-test-client",
       SPOTIFY_REDIRECT_URI:
         "http://127.0.0.1:3002/api/integrations/spotify/callback",

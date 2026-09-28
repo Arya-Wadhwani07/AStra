@@ -11,7 +11,9 @@ import {
 } from "../src/lib/youtube-store";
 import { youtubeScope } from "../src/lib/youtube";
 import { nonce, digest } from "../src/lib/spotify";
+import { passwordAccount } from "../src/lib/password-auth";
 process.env.ASTRA_DB_NAME = "astra_youtube_test_" + Date.now();
+process.env.ASTRA_TEST_ACCOUNTS = "1";
 process.env.GOOGLE_CLIENT_ID = "mock-client";
 process.env.GOOGLE_CLIENT_SECRET = "mock-secret";
 process.env.GOOGLE_REDIRECT_URI =
@@ -65,6 +67,27 @@ const identity = (subject: string, oidcNonce: string) => async () => ({
 });
 try {
   const { database } = await db();
+  const astra = await passwordAccount("signup", {
+    name: "AStra member",
+    email: "youtube-link@example.test",
+    password: "Private AStra connection!",
+    role: "both",
+  });
+  const linkStart = await begin("creator", astra.user);
+  const passwordLinked = await finishYouTube(
+    { ...linkStart, currentUser: astra.user },
+    fakeFetch,
+    identity("astra-password-user", linkStart.oidcNonce),
+  );
+  assert.equal(passwordLinked.session.user, astra.user);
+  assert.equal(
+    (await read()).users.find((u) => u.id === astra.user)?.authProvider,
+    "password",
+  );
+  pass(
+    "Optional YouTube consent links to an existing password account without replacing AStra authentication",
+  );
+  calls = 0;
   const start = await begin();
   await assert.rejects(
     finishYouTube(

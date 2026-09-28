@@ -19,6 +19,8 @@ export async function GET(req: NextRequest) {
   try {
     const oldSession = req.cookies.get("astra-session")?.value;
     const current = await getSession(oldSession);
+    if (!current)
+      throw new AppError("Sign in to AStra before connecting Spotify.", 401);
     const result = await finishSpotify({
       state: req.nextUrl.searchParams.get("state") || "",
       browser: req.cookies.get("astra-spotify-flow")?.value || "",
@@ -40,7 +42,8 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     // Never echo provider bodies, authorization codes or tokens.
-    const url = new URL("/signin", origin);
+    const current = await getSession(req.cookies.get("astra-session")?.value);
+    const url = new URL(current ? "/settings" : "/signin", origin);
     url.searchParams.set(
       "spotifyError",
       error instanceof AppError

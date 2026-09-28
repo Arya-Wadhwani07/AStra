@@ -9,7 +9,9 @@ import {
   connectionStatus,
 } from "../src/lib/spotify-store";
 import { digest, nonce } from "../src/lib/spotify";
+import { passwordAccount } from "../src/lib/password-auth";
 process.env.ASTRA_DB_NAME = "astra_spotify_test_" + Date.now();
+process.env.ASTRA_TEST_ACCOUNTS = "1";
 process.env.SPOTIFY_CLIENT_ID = "mock-client";
 process.env.SPOTIFY_REDIRECT_URI =
   "http://127.0.0.1:3000/api/integrations/spotify/callback";
@@ -69,6 +71,25 @@ const begin = async (role = "audience", expectedUser?: string) => {
 };
 try {
   const { database } = await db();
+  const astra = await passwordAccount("signup", {
+    name: "AStra member",
+    email: "spotify-link@example.test",
+    password: "Private AStra connection!",
+    role: "both",
+  });
+  const linked = await finishSpotify(
+    { ...(await begin("creator", astra.user)), currentUser: astra.user },
+    mockFetch("astra-password-user"),
+  );
+  assert.equal(linked.session.user, astra.user);
+  assert.equal(
+    (await read()).users.find((u) => u.id === astra.user)?.authProvider,
+    "password",
+  );
+  pass(
+    "Optional Spotify consent links to an existing password account without replacing AStra authentication",
+  );
+  requests = 0;
   const start = await begin();
   await assert.rejects(
     finishSpotify({ ...start, browser: nonce() }, mockFetch("audience")),

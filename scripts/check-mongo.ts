@@ -11,6 +11,7 @@ import {
 } from "../src/lib/store";
 import { mutate, type Session } from "../src/lib/model";
 process.env.ASTRA_DB_NAME = "astra_test_" + Date.now();
+process.env.ASTRA_TEST_ACCOUNTS = "1";
 const fan: Session = { user: "alex", view: "audience" };
 let checks = 0;
 const check = (label: string) => {

@@ -1,4 +1,7 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { getSession } from "@/lib/store";
+import { testAccountsEnabled } from "@/lib/test-access";
 import { Website } from "@/components/website";
 import type { Metadata } from "next";
 const routes: Record<string, string> = {
@@ -47,5 +50,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { path, title } = resolve((await params).slug);
   if (!title) notFound();
-  return <Website path={path} title={title} />;
+  if (path !== "/" && path !== "/signin") {
+    const session = await getSession(
+      (await cookies()).get("astra-session")?.value,
+    );
+    if (!session) redirect("/signin");
+  }
+  return (
+    <Website path={path} title={title} testAccounts={testAccountsEnabled()} />
+  );
 }

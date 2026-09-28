@@ -4,7 +4,9 @@ import { youtubeContent } from "./youtube-content";
 
 export type View = "audience" | "creator" | "admin";
 export type User = {
-  authProvider?: "spotify" | "google";
+  authProvider?: "spotify" | "google" | "password";
+  passwordHash?: string;
+  emailLoginHash?: string;
   spotifySubjectHash?: string;
   googleSubjectHash?: string;
   id: string;
@@ -721,6 +723,8 @@ export function snapshot(s: State, session?: Session) {
       ? (({
           spotifySubjectHash: _privateIdentity,
           googleSubjectHash: _googleIdentity,
+          passwordHash: _password,
+          emailLoginHash: _emailLogin,
           ...safe
         }) => safe)(me)
       : null,
@@ -1396,6 +1400,8 @@ export function register(s: State, data: Record<string, unknown>) {
   delete u.authProvider;
   delete u.spotifySubjectHash;
   delete u.googleSubjectHash;
+  delete u.passwordHash;
+  delete u.emailLoginHash;
   s.users.push(u);
   return {
     user: u.id,

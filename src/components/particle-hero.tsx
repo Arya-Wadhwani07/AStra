@@ -1,18 +1,26 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { createParticleRenderer } from "../lib/particle-scene";
+import {
+  createParticleRenderer,
+  createParticleGeometry,
+  type ParticleVariant,
+} from "../lib/particle-scene";
 import { Icon } from "./icons";
 
-const pauseKey = "astra-paused:particle-hero";
-
 /** Motion is decorative; the page and its calls to action never depend on WebGL. */
-export function ParticleHero() {
+export function ParticleHero({
+  variant = "hero",
+}: {
+  variant?: ParticleVariant;
+}) {
+  const pauseKey = `astra-paused:particle-${variant}`;
   const box = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const sync = useRef<() => void>(() => {});
   const paused = useRef(false);
   const [ready, setReady] = useState(false);
   const [playing, setPlaying] = useState(false);
+  const [motionAllowed, setMotionAllowed] = useState(false);
   useEffect(() => {
     if (!canvas.current || !box.current) return;
     const surface = canvas.current;
@@ -44,7 +52,8 @@ export function ParticleHero() {
       frame = requestAnimationFrame(draw);
     };
     const update = () => {
-      const allowed = !motion.matches && !connection?.saveData && !broken;
+      const allowed = !connection?.saveData && !broken;
+      setMotionAllowed(!motion.matches && allowed);
       if (!allowed) {
         stop();
         renderer?.dispose();
@@ -54,7 +63,7 @@ export function ParticleHero() {
       }
       if (visible && !renderer) {
         try {
-          renderer = createParticleRenderer(surface);
+          renderer = createParticleRenderer(surface, variant);
           renderer.resize();
           renderer.draw(elapsed);
           setReady(true);
@@ -64,7 +73,13 @@ export function ParticleHero() {
           return;
         }
       }
-      if (renderer && visible && !document.hidden && !paused.current) {
+      if (
+        renderer &&
+        visible &&
+        !document.hidden &&
+        !paused.current &&
+        !motion.matches
+      ) {
         if (!frame) {
           frame = requestAnimationFrame(draw);
           setPlaying(true);
@@ -111,7 +126,7 @@ export function ParticleHero() {
       document.removeEventListener("visibilitychange", update);
       sync.current = () => {};
     };
-  }, []);
+  }, [variant, pauseKey]);
   function toggle() {
     paused.current = !paused.current;
     try {
@@ -123,13 +138,31 @@ export function ParticleHero() {
     <div
       ref={box}
       className={`as-motion stage-film particle-hero${ready ? " particle-hero--ready" : ""}`}
+      data-sculpture={variant}
     >
-      <img
-        className="as-motion__media particle-hero__poster"
-        src="/media/motion/astra-hero-poster-16x9.jpg"
-        alt=""
+      <svg
+        className="particle-hero__poster particle-hero__still"
+        viewBox="0 0 600 600"
         aria-hidden="true"
-      />
+      >
+        {Array.from({ length: 480 }, (_, i) => {
+          const data = stills[variant];
+          const offset = i * 8;
+          const x = data[offset],
+            y = data[offset + 1],
+            z = data[offset + 2];
+          return (
+            <circle
+              key={i}
+              cx={300 + (x * 0.86 + z * 0.5) * 110}
+              cy={280 - (y * 0.94 - z * 0.34) * 110}
+              r={1.2 + data[offset + 6]}
+              fill={i % 31 === 0 ? "#ff795d" : "#71b7ff"}
+              opacity={0.7}
+            />
+          );
+        })}
+      </svg>
       <div className="particle-hero__halo" aria-hidden="true" />
       <canvas
         ref={canvas}
@@ -140,7 +173,7 @@ export function ParticleHero() {
         Decorative blue particle sculpture rotating between a prism and
         intertwined strands above luminous floor rings.
       </span>
-      {ready && (
+      {ready && motionAllowed && (
         <button
           className="as-motion__ctl"
           type="button"
@@ -156,3 +189,10 @@ export function ParticleHero() {
     </div>
   );
 }
+
+const stills = Object.fromEntries(
+  ["hero", "collab", "loyalty"].map((variant) => [
+    variant,
+    createParticleGeometry(480, variant as ParticleVariant),
+  ]),
+) as Record<ParticleVariant, Float32Array>;

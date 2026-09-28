@@ -38,6 +38,13 @@ export function Provider({
   const reload = useCallback(async () => {
     try {
       const res = await fetch("/api/app", { cache: "no-store" });
+      if (res.status === 401) {
+        setState(null);
+        setError("");
+        if (!["/", "/signin"].includes(window.location.pathname))
+          window.location.replace("/signin");
+        return;
+      }
       if (!res.ok) throw new Error("Could not load the workspace.");
       setState(await res.json());
       setError("");
@@ -47,6 +54,13 @@ export function Provider({
   }, []);
   useEffect(() => {
     void reload();
+    const refresh = () => void reload();
+    window.addEventListener("focus", refresh);
+    window.addEventListener("pageshow", refresh);
+    return () => {
+      window.removeEventListener("focus", refresh);
+      window.removeEventListener("pageshow", refresh);
+    };
   }, [reload]);
   useEffect(() => {
     if (notice) {
@@ -67,6 +81,7 @@ export function Provider({
         body: JSON.stringify({ action, data }),
       });
       const body = await res.json();
+      if (res.status === 401) setState(null);
       if (!res.ok)
         throw new Error(body.error || "Could not save. Please try again.");
       setState(body.state);

@@ -87,6 +87,8 @@ export async function finishSpotify(
     throw new AppError(
       "Spotify sign-in expired or could not be verified. Start again.",
     );
+  if (input.currentUser && !attempt.expectedUser)
+    throw new AppError("Start connecting again from AStra Settings.", 403);
   if (attempt.expectedUser && attempt.expectedUser !== input.currentUser)
     throw new AppError(
       "Your AStra session changed. Start connecting again.",

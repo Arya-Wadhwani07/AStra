@@ -2,6 +2,33 @@ import { test, expect, type Page } from "@playwright/test";
 import { db, transaction } from "../src/lib/store";
 import { seed } from "../src/lib/model";
 const base = "http://127.0.0.1:3002";
+const featurePaths = [
+  "/onboarding",
+  "/feed",
+  "/discover",
+  "/cart",
+  "/loyalty",
+  "/orders",
+  "/notifications",
+  "/settings",
+  "/creators/mira",
+  "/events/color-after-hours",
+  "/studio",
+  "/studio/setup",
+  "/studio/profile",
+  "/studio/publish",
+  "/studio/insights",
+  "/studio/orders",
+  "/studio/loyalty",
+  "/studio/community",
+  "/studio/collaborate",
+  "/studio/collaborate/new",
+  "/studio/collaborate/launch-reel",
+  "/studio/collaborations",
+  "/studio/messages",
+  "/studio/menu",
+  "/admin",
+];
 async function action(
   page: Page,
   name: string,
@@ -60,6 +87,234 @@ test.afterAll(async () => {
   await client.close();
 });
 
+test("every feature rejects missing and forged sessions, including direct API access", async ({
+  page,
+  context,
+}) => {
+  for (const forged of [false, true]) {
+    if (forged)
+      await context.addCookies([
+        { name: "astra-session", value: "forged", url: base },
+      ]);
+    for (const path of featurePaths) {
+      const r = await page.request.get(base + path, { maxRedirects: 0 });
+      expect(r.status(), path).toBe(307);
+      expect(r.headers().location).toBe("/signin");
+    }
+    for (const path of [
+      "/api/app",
+      "/api/app?scope=creator",
+      "/api/app?scope=admin",
+      "/api/integrations/spotify",
+      "/api/integrations/youtube",
+    ]) {
+      const r = await page.request.get(base + path);
+      expect(r.status(), path).toBe(401);
+      expect(Object.keys(await r.json())).toEqual(["error"]);
+    }
+    for (const provider of ["spotify", "youtube"]) {
+      const r = await page.request.post(
+        `${base}/api/integrations/${provider}`,
+        {
+          headers: { Origin: base },
+          data: { action: "connect", role: "audience" },
+        },
+      );
+      expect(r.status()).toBe(401);
+    }
+  }
+});
+
+for (const role of ["audience", "creator"] as const) {
+  test(`AStra ${role} signs up, signs out and signs back in with password; providers stay optional`, async ({
+    page,
+  }) => {
+    const email = `${role}-${Date.now()}@example.test`;
+    await page.goto("/signin");
+    await page
+      .getByRole("button", { name: "Create account", exact: true })
+      .click();
+    await page
+      .getByLabel("Your name", { exact: false })
+      .fill("Private account tester");
+    await page.getByLabel("Email", { exact: false }).fill(email);
+    await page
+      .getByLabel("Password", { exact: false })
+      .fill("Private account passphrase!");
+    await page.getByLabel("I’m here as", { exact: true }).selectOption(role);
+    await page
+      .getByRole("button", { name: "Create AStra account", exact: true })
+      .click();
+    await expect(page).toHaveURL(/\/onboarding$/);
+    const s = await state(page);
+    expect(s.me.authProvider).toBe("password");
+    expect(s.me.balance).toBe(0);
+    expect(s.me.roles).toEqual([role]);
+    expect(JSON.stringify(s)).not.toMatch(/passwordHash|emailLoginHash/);
+    await page.goto(role === "creator" ? "/studio" : "/feed");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    const logout = await action(page, "logout");
+    expect(logout.body.state).toBeNull();
+    await page.goto("/settings");
+    await expect(page).toHaveURL(/\/signin$/);
+    await page.getByLabel("Email", { exact: false }).fill(email.toUpperCase());
+    await page
+      .getByLabel("Password", { exact: false })
+      .fill("Private account passphrase!");
+    await page
+      .getByRole("button", { name: "Sign in to AStra", exact: true })
+      .click();
+    await expect(page).toHaveURL(role === "creator" ? /\/studio$/ : /\/feed$/);
+    await page.goto("/settings");
+    await expect(
+      page.getByRole("button", { name: "Connect Spotify", exact: true }),
+    ).toBeEnabled();
+    await expect(
+      page.getByRole("button", { name: "Connect YouTube", exact: true }),
+    ).toBeEnabled();
+  });
+}
+
+test("invalid password, duplicate signup, role escalation and cross-origin signup are rejected", async ({
+  page,
+}) => {
+  const data = {
+    name: "Security tester",
+    email: `security-${Date.now()}@example.test`,
+    password: "A secure test passphrase!",
+    role: "audience",
+  };
+  expect(
+    (await action(page, "signup", { ...data, password: "short" })).status,
+  ).toBe(400);
+  expect(
+    (await action(page, "signup", { ...data, role: "admin" })).status,
+  ).toBe(400);
+  expect((await action(page, "signup", data)).status).toBe(200);
+  expect((await action(page, "signup", data)).status).toBe(409);
+  await action(page, "logout");
+  const wrong = await action(page, "signin", {
+    email: data.email,
+    password: "Incorrect long passphrase!",
+  });
+  const unknown = await action(page, "signin", {
+    email: "unknown@example.test",
+    password: "Incorrect long passphrase!",
+  });
+  expect(wrong.status).toBe(401);
+  expect(unknown.body).toEqual(wrong.body);
+  expect((await page.request.get(base + "/api/app")).status()).toBe(401);
+  const csrf = await page.request.post(base + "/api/app", {
+    headers: { Origin: "https://untrusted.test" },
+    data: { action: "signup", data },
+  });
+  expect(csrf.status()).toBe(403);
+});
+
+test("landing has three crisp sculptures, continuous surfaces, accessible hover and reduced motion", async ({
+  page,
+}, testInfo) => {
+  await page.goto("/");
+  await expect(page.locator("[data-sculpture]")).toHaveCount(3);
+  await expect(page.locator(".cinema-stage video")).toHaveCount(0);
+  await expect(
+    page.locator(".cinema-stage .particle-hero__poster"),
+  ).toHaveCount(3);
+  const surfaces = await page
+    .locator(".landing, .cinema-stage")
+    .evaluateAll((els) => els.map((e) => getComputedStyle(e).backgroundColor));
+  expect(new Set(surfaces).size).toBe(1);
+  await expect(page.locator(".cinema-stage .as-motion__ctl")).toHaveCount(0);
+  const button = page.locator(".stage-copy .as-btn").first();
+  await button.focus();
+  expect(
+    await button.evaluate((e) => getComputedStyle(e).outlineStyle),
+  ).not.toBe("none");
+  if (testInfo.project.name === "desktop") {
+    await button.hover();
+    expect(await button.evaluate((e) => getComputedStyle(e).filter)).toBe(
+      "brightness(1.16)",
+    );
+    expect(await button.evaluate((e) => getComputedStyle(e).transform)).toBe(
+      "none",
+    );
+  }
+  await page.screenshot({
+    path: testInfo.outputPath("landing.png"),
+    fullPage: true,
+  });
+});
+
+test("all particle scenes animate, pause independently, and remain sharp at device size", async ({
+  page,
+}, testInfo) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+  for (const variant of ["hero", "collab", "loyalty"]) {
+    const sculpture = page.locator(`[data-sculpture="${variant}"]`);
+    const stage = page.locator(`.cinema-stage--${variant}`);
+    await stage.scrollIntoViewIfNeeded();
+    const pause = sculpture.getByRole("button", {
+      name: "Pause background animation",
+    });
+    await expect(pause).toBeVisible();
+    const dimensions = await sculpture
+      .locator("canvas")
+      .evaluate((c: HTMLCanvasElement) => ({
+        width: c.width,
+        css: c.clientWidth,
+      }));
+    expect(dimensions.width).toBeGreaterThanOrEqual(dimensions.css);
+    await pause.click();
+    await expect(
+      sculpture.getByRole("button", { name: "Play background animation" }),
+    ).toBeVisible();
+    expect(
+      await page.evaluate(
+        (key) => sessionStorage.getItem(key),
+        `astra-paused:particle-${variant}`,
+      ),
+    ).toBe("1");
+    await page.screenshot({
+      path: testInfo.outputPath(`${variant}-sculpture.png`),
+    });
+    await sculpture
+      .getByRole("button", { name: "Play background animation" })
+      .click();
+    await expect(
+      sculpture.getByRole("button", { name: "Pause background animation" }),
+    ).toBeVisible();
+  }
+});
+
+test("WebGL unavailable falls back to vectors without blocking signup or navigation", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const original = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (
+      this: HTMLCanvasElement,
+      ...args: Parameters<typeof original>
+    ) {
+      if (String(args[0]).includes("webgl")) return null;
+      return original.apply(this, args);
+    } as typeof original;
+  });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+  await expect(
+    page.locator(".cinema-stage--hero .particle-hero__still"),
+  ).toBeVisible();
+  await expect(page.locator(".particle-hero--ready")).toHaveCount(0);
+  await page
+    .locator(".cinema-stage--hero")
+    .getByRole("link", { name: "Join AStra" })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Sign in to AStra" }),
+  ).toBeVisible();
+});
+
 test("creator ships an order; audience sees tracking and requests refund without wallet credit", async ({
   page,
 }) => {
@@ -116,7 +371,7 @@ test("creators exchange private messages and outsiders cannot read them", async 
     ),
   ).toBe(false);
 });
-test("landing page and nonexistent content remain usable without an account", async ({
+test("landing remains public but creator profiles require sign-in", async ({
   page,
 }) => {
   await page.goto("/");
@@ -126,6 +381,9 @@ test("landing page and nonexistent content remain usable without an account", as
       () => document.documentElement.scrollWidth <= innerWidth + 2,
     ),
   ).toBe(true);
+  await page.goto("/creators/nonexistent-creator");
+  await expect(page).toHaveURL(/\/signin$/);
+  await login(page, "alex");
   await page.goto("/creators/nonexistent-creator");
   await expect(
     page.getByRole("heading", { name: "Creator not found" }),
@@ -156,7 +414,9 @@ test("audience signs in, browses creators, favorites, and logs out", async ({
     .getByRole("button", { name: "Sign out", exact: true })
     .last()
     .click();
-  await expect.poll(async () => (await state(page)).me).toBeNull();
+  await expect
+    .poll(async () => (await page.request.get(base + "/api/app")).status())
+    .toBe(401);
   await page.goto("/studio/collaborate");
   await expect(page.getByLabel("Search opportunities")).toHaveCount(0);
 });
@@ -512,7 +772,13 @@ for (const provider of ["youtube", "spotify"])
         });
       },
     );
-    await page.goto("/signin");
+    await action(page, "signup", {
+      name: "Connection tester",
+      email: `connection-${provider}-${Date.now()}@example.test`,
+      password: "Private connection passphrase",
+      role: "audience",
+    });
+    await page.goto("/settings");
     await page
       .getByRole("button", {
         name: provider === "youtube" ? "Connect YouTube" : "Connect Spotify",
@@ -522,5 +788,5 @@ for (const provider of ["youtube", "spotify"])
     await expect(
       page.getByRole("alert").filter({ hasText: /permission was cancelled/ }),
     ).toBeVisible();
-    expect((await state(page)).me).toBeNull();
+    expect((await state(page)).me.authProvider).toBe("password");
   });

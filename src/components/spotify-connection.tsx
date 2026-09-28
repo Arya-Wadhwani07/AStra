@@ -100,13 +100,12 @@ export function SpotifyConnection({ signIn = false }: { signIn?: boolean }) {
       {!status?.privateAccount && (
         <>
           <p className="as-caption">
-            Spotify sign-in creates or reopens your own AStra account. Shared
-            demo profiles and their sample balances are not transferred. New
-            accounts start with zero points. Your Spotify display name becomes
-            your AStra name; creator names are public.
+            Sign in to your own AStra account before connecting Spotify.
+            Connecting never replaces your AStra sign-in or changes your
+            balance.
           </p>
           <SelectField
-            label="For a new account, I’m here as"
+            label="Connection role"
             value={role}
             onChange={(e) => setRole(e.target.value)}
           >
@@ -138,7 +137,7 @@ export function SpotifyConnection({ signIn = false }: { signIn?: boolean }) {
         <Button
           onClick={() => void action("connect")}
           busy={busy}
-          disabled={!status?.configured}
+          disabled={!status?.configured || !status?.privateAccount}
         >
           {status?.connected ? "Reconnect Spotify" : "Connect Spotify"}
         </Button>

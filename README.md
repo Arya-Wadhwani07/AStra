@@ -22,33 +22,31 @@ Open **http://127.0.0.1:3000**. The numeric address matters if another applicati
 
 The sample demo does not require Atlas, Docker, payment details or external credentials. Optional Spotify connection requires local Spotify configuration described below. Read [ENVIRONMENT.md](ENVIRONMENT.md) for isolation details. Stop each terminal with Ctrl+C; MongoDB retains its data. Do not run `npm` or development tools outside the wrapper.
 
-## Try the demo
+## Sign in to AStra
 
-At `/signin`, choose a clearly labeled sample account:
+Open `/signin` and select **Create account**. Enter your name, email, a 15–128 character password and Audience / Creator / Both. New accounts have zero points and unsubmitted creator verification. Returning users use **Sign in to AStra** with their email/password. Spotify and YouTube connections are optional and available in Settings only after AStra sign-in.
 
-- **Alex Morgan:** audience feed, favorites, cart, loyalty and orders. Starts with 600 approved points and 50 pending points.
-- **Mira Rao:** creator workspace, publishing, orders, discount settings and opportunity management. Can switch to audience view.
-- **Eli Chen:** creator responding to Mira's launch-reel opportunity; can review and confirm brief version 2.
-- **Sam Ortiz:** photographer profile, useful for checking an opportunity's required-skill mismatch.
-- **Jonah Lee:** musician and cross-discipline collaboration.
+Only landing/sign-in are public. All feature pages and data APIs require a valid server session. Passwords are salted and hashed; credentials never appear in client snapshots. Email verification and password-reset delivery are not configured. Do not treat this local hackathon build as deployment-ready authentication.
 
-Use `Join` to create a new fictional audience, creator or dual-role account. These start with zero points and unsubmitted verification. No real email, password or identity document is collected.
+Shared sample sign-in and no-password registration are disabled on the normal website, even with `ASTRA_DEMO=1`. Old sample and provider-only sessions no longer grant access. Their records are preserved, not merged. Use a new AStra account. Existing connections tied to another identity cannot be silently transferred.
 
-Administrator access is separate. Run `node scripts/env.mjs npm run admin:key` in your terminal, then choose Review team at sign-in and enter the local key. The key lives only in `.environment/config/admin-key`. Do not commit or share it. Verification decisions are simulated and send an in-app notice, not email.
+Automated tests retain fictional Alex/Mira/Eli/Sam/Jonah fixtures only when `ASTRA_TEST_ACCOUNTS=1` and an allowlisted isolated test database are both selected. The sample administrator workflow is test-only too; no public administrator signup is available.
 
 ### Suggested walkthrough
 
-1. Sign in as Alex. Open the feed, then Color After Hours. Add a $25 ticket to the cart.
-2. Choose 500 points for a $5 discount under Mira's 20% cap. Confirm a **sample** purchase. Check the order and the remaining 100-point balance.
-3. Sign out and sign in as Mira. Visit collaboration responses, shortlist a creator and edit a brief. Edits reset all confirmations.
-4. Sign in as Eli and confirm the latest brief. The project becomes active only after every participant confirms that version.
-5. Try an audience view of `/studio/collaborate`. Private opportunities and messages are excluded by the server, not merely hidden in navigation.
+1. Create a creator account, finish the profile and publish a post or explicitly labelled simulated link campaign.
+2. In a separate signed-in audience account, follow that creator and view the post. New accounts do not receive a seeded points balance.
+3. Optionally connect Spotify/YouTube from Settings; connections do not award points or replace AStra authentication.
+4. Create a second creator account to try the private opportunity/response/brief workflow. Required profile criteria still apply.
+5. Sign out and visit `/discover`, `/loyalty` or `/studio/collaborate` directly: each must return you to sign-in.
+
+Automated fixture tests additionally exercise 500 points → $5 off a $25 sample ticket under a 20% cap, order fulfilment and private brief confirmation. Payments, reward discounts and verification remain simulations.
 
 ## Implemented areas
 
 ### Spotify connection and hackathon click simulation
 
-Spotify is now a real OAuth sign-in/connection option for private audience, creator or dual-role accounts. At `/signin`, use the private Spotify section; **Both** enables testing both views with one Spotify identity. Shared sample accounts are never upgraded or merged, and new private accounts start with zero points. Returning accounts retain their original roles. In Settings, use **Show recent tracks** or **Disconnect**. OAuth does not establish artist ownership or creator verification.
+Spotify is an optional connection for an already signed-in AStra email/password account. Open Settings → **Connect Spotify**. It links to the current account, retaining roles and points. Use **Show recent tracks** or **Disconnect** there. It is not an AStra sign-in method and does not establish artist ownership or creator verification.
 
 The ignored `.env.local` contains `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET` and `SPOTIFY_REDIRECT_URI`. Register exactly `http://127.0.0.1:3000/api/integrations/spotify/callback` in Spotify. Run `node scripts/env.mjs npm run spotify:check` to validate application credentials and provision the local token encryption key. Do not share the environment file or `.environment/config/spotify-token-key`. OAuth itself uses PKCE; no client secret reaches the browser. Tokens are encrypted in MongoDB. Recent history is fetched on demand, not persisted or used for points. Full live user-consent testing requires the user's Spotify approval and allowed-test-user setup.
 
@@ -82,15 +80,15 @@ node scripts/env.mjs npm run test:spotify
 node scripts/env.mjs npm run build
 ```
 
-For HTTP checks, run `node scripts/env.mjs env ASTRA_DB_NAME=astra_http_test SPOTIFY_REDIRECT_URI=http://127.0.0.1:3001/api/integrations/spotify/callback GOOGLE_REDIRECT_URI=http://127.0.0.1:3001/api/integrations/youtube/callback npm run start -- --port 3001`, then `node scripts/env.mjs npm run test:http` in another terminal. These tests use separate data and do not alter the main demo accounts. Test-only callbacks test cancellation locally; do not register them or grant actual provider consent through the test server.
+For HTTP checks, run `node scripts/env.mjs env ASTRA_DB_NAME=astra_http_test ASTRA_TEST_ACCOUNTS=1 SPOTIFY_REDIRECT_URI=http://127.0.0.1:3001/api/integrations/spotify/callback GOOGLE_REDIRECT_URI=http://127.0.0.1:3001/api/integrations/youtube/callback npm run start -- --port 3001`, then `node scripts/env.mjs npm run test:http` in another terminal. These tests use separate data and do not alter main accounts. Test-only callbacks test cancellation locally; do not register them or grant actual provider consent through the test server. Run `node scripts/env.mjs npm run test:auth` for normal-mode password/session checks with no shared-account bypass.
 
 ### YouTube account connection and feed
 
 The server reads `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI` and `YOUTUBE_API_KEY` from ignored `.env.local`. Register the exact local callback `http://127.0.0.1:3000/api/integrations/youtube/callback` on a Google OAuth **Web application** client. Enable YouTube Data API v3 and add your Google account as a test user. Consent requests `openid profile` plus `https://www.googleapis.com/auth/youtube.readonly`. Restrict the server API key to YouTube Data API v3; browser referrer restrictions do not suit server-side requests.
 
-Open `/signin` → **Connect YouTube**, select Audience / Creator / Both for a new account, and approve Google consent. Success returns to `/settings` with **Connected**. **Check my YouTube channels** performs an on-demand read; a channel is not required to create a private Google-backed AStra account. No watch history or YouTube Music history is read. Google secrets/tokens never enter browser responses. The Google library verifies ID-token signatures and claims; nonce/PKCE/browser state bind the flow. The existing local token-encryption key is reused with a YouTube-specific encryption context.
+Sign in to AStra first, then open Settings → **Connect YouTube** and approve Google consent. Success returns to Settings with **Connected**. **Check my YouTube channels** performs an on-demand read; a channel is not required. No watch history or YouTube Music history is read. Google secrets/tokens never enter browser responses. The Google library verifies ID-token signatures and claims; nonce/PKCE/browser state bind the flow. The local token-encryption key uses a YouTube-specific encryption context.
 
-To use Spotify and Google on **one** AStra account, sign in with one, then connect the other in Settings. Already separately registered identities are not automatically merged. Shared demo accounts are never linked to private tokens. Disconnect deletes YouTube tokens locally and attempts Google revocation; the AStra account and hashed login identity remain. If revocation fails, use the Google permissions link. Production account deletion/retention remains separate work.
+To use Spotify and YouTube on **one** AStra account, sign in with your AStra email/password, then connect each separately in Settings. Already separately registered identities are not automatically merged. Shared test accounts are never linked to private tokens. Disconnect deletes YouTube tokens locally and attempts Google revocation; the AStra account remains. If revocation fails, use the Google permissions link. Production account deletion/retention remains separate work.
 
 Creators open `/studio/publish` → **YouTube**, enter a public video/Shorts link and demo point amount. Followers see it in All / Posts / Videos and the creator profile. **Load YouTube preview** first checks public metadata, embedding and made-for-kids status; unavailable/restricted/unknown-status videos keep an external-link fallback. No preview autoplay. Viewing never awards points; only the separately labeled hackathon link-open request can credit the one-time simulated award. Account connection cannot choose which Google account the external YouTube website is currently using.
 
@@ -102,7 +100,7 @@ The automated suite covers populated rendering of all routes, audience/private-d
 
 ## Explicit prototype limits
 
-- Spotify-backed private sign-in is implemented; shared sample login remains a separate demo. No email verification, real payments, email delivery, ticket fulfilment, identity checks, shipping integration, uploads or media storage service. Sample checkout never collects card information or charges money.
+- Mandatory AStra email/password authentication is implemented; shared sample login is restricted to isolated tests. No email verification/reset delivery, real payments, ticket fulfilment, identity checks, shipping integration, uploads or media storage service. Sample checkout never collects card information or charges money.
 - Spotify account connection and on-demand recent tracks do not verify listening completion or award points. No YouTube Music or Amazon Music account integration. Draft earning proposals remain non-earning unless explicitly published as demo click campaigns. Sample points are not evidence of actual listening or engagement.
 - Whole-point redemption and caps from 0 to 99% are labeled demo assumptions. Fees, taxes, shipping, expiry, discount funding, multi-seller settlement and refunds remain unresolved. Refund requests create reviews and never automatically restore points or money.
 - Direct outreach starts a conversation immediately in this local demo. Acceptance, blocking, rate limiting and full moderation workflows need production decisions and implementation.

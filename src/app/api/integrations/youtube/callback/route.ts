@@ -19,6 +19,8 @@ export async function GET(req: NextRequest) {
   try {
     const oldSession = req.cookies.get("astra-session")?.value;
     const current = await getSession(oldSession);
+    if (!current)
+      throw new AppError("Sign in to AStra before connecting YouTube.", 401);
     const result = await finishYouTube({
       state: req.nextUrl.searchParams.get("state") || "",
       browser: req.cookies.get("astra-youtube-flow")?.value || "",
@@ -39,7 +41,8 @@ export async function GET(req: NextRequest) {
       maxAge: 86400,
     });
   } catch (e) {
-    const url = new URL("/signin", origin);
+    const current = await getSession(req.cookies.get("astra-session")?.value);
+    const url = new URL(current ? "/settings" : "/signin", origin);
     url.searchParams.set(
       "youtubeError",
       e instanceof AppError

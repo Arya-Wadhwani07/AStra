@@ -24,6 +24,9 @@
 
 ## Current development gate
 
+- Latest authentication decision: AStra requires its own email/password signup and sign-in. Spotify and YouTube are optional connections in Settings after AStra authentication, not sign-in providers. Shared sample login and passwordless registration are disabled on the normal website. Test-only sample access requires `ASTRA_TEST_ACCOUNTS=1` AND an explicitly isolated test database. Existing sample/provider-only sessions do not grant normal website access. Password hashes and email lookup hashes must never appear in snapshots.
+- Only the marketing landing and sign-in page are public. Every feature page and app-data API requires a server-validated session. Email verification/reset delivery is not configured; do not promise it. Preserve clear simulated-checkout/reward disclosures independently of real AStra authentication.
+
 - The user has explicitly authorized development from the completed `handoff/` package and asked to continue. The earlier design-only gate is superseded.
 - Use the approved handoff for the visual system and screen references. Keep unresolved product decisions visible.
 - The implementation direction is Next.js, React, and TypeScript. Preserve the Phosphor icon choice and staged God UI references.

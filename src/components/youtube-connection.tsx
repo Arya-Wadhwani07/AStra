@@ -99,13 +99,11 @@ export function YouTubeConnection() {
       {!status?.privateAccount ? (
         <>
           <p className="as-caption">
-            Creates or reopens a private AStra account. Sample profiles and
-            balances are not transferred. New accounts start at zero points.
-            Your Google display name becomes your AStra name; creator names are
-            public.
+            Sign in to your own AStra account before connecting YouTube. This
+            optional connection never replaces your AStra sign-in.
           </p>
           <SelectField
-            label="For a new YouTube-connected account, I’m here as"
+            label="YouTube connection role"
             value={role}
             onChange={(e) => setRole(e.target.value)}
           >
@@ -114,9 +112,8 @@ export function YouTubeConnection() {
             <option value="both">Both</option>
           </SelectField>
           <p className="as-caption">
-            Returning accounts keep their existing roles. To link Spotify and
-            YouTube to one account, sign in with one first, then connect the
-            other from Settings.
+            Connect Spotify and YouTube separately from Settings. Your AStra
+            roles and points stay the same.
           </p>
         </>
       ) : (
@@ -136,7 +133,7 @@ export function YouTubeConnection() {
       <div className="actions">
         <Button
           busy={busy}
-          disabled={!status?.configured}
+          disabled={!status?.configured || !status?.privateAccount}
           onClick={() => void action("connect")}
         >
           {status?.connected ? "Reconnect YouTube" : "Connect YouTube"}

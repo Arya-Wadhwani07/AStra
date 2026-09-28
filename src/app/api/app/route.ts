@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { readFileSync } from "node:fs";
 import { timingSafeEqual } from "node:crypto";
 import { join } from "node:path";
+import { testAccountsEnabled } from "@/lib/test-access";
+import { passwordAccount } from "@/lib/password-auth";
 import {
   snapshot,
   mutate,
@@ -36,6 +38,7 @@ function errorResponse(error: unknown) {
 export async function GET(req: NextRequest) {
   try {
     const session = await getSession(req.cookies.get("astra-session")?.value);
+    if (!session) throw new AppError("Sign in to continue.", 401);
     if (
       req.nextUrl.searchParams.get("scope") === "creator" &&
       session?.view !== "creator"
@@ -78,10 +81,24 @@ export async function POST(req: NextRequest) {
     const action = body.action;
     const data = body.data as Record<string, unknown>;
     const oldToken = req.cookies.get("astra-session")?.value;
+    if (action === "signup" || action === "signin") {
+      const session = await passwordAccount(action, data);
+      const token = await createSession(session);
+      await deleteSession(oldToken);
+      const response = reply({ state: snapshot(await read(), session) });
+      response.cookies.set("astra-session", token, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: req.nextUrl.protocol === "https:",
+        path: "/",
+        maxAge: 86400,
+      });
+      return response;
+    }
     if (action === "login" || action === "register") {
-      if (process.env.ASTRA_DEMO !== "1")
+      if (!testAccountsEnabled())
         throw new AppError(
-          "Demo access is disabled. Production authentication is not configured.",
+          "Sign in with Google or Spotify to access your own account.",
           403,
         );
       let session: Session;
@@ -140,7 +157,7 @@ export async function POST(req: NextRequest) {
     if (!session) throw new AppError("Sign in to continue.", 401);
     if (action === "logout") {
       await deleteSession(oldToken);
-      const response = reply({ state: snapshot(await read()) });
+      const response = reply({ state: null });
       response.cookies.delete("astra-session");
       return response;
     }

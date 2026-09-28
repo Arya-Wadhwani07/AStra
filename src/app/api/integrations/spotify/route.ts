@@ -34,6 +34,7 @@ export async function GET(req: NextRequest) {
     spotifyConfig();
     tokenKey();
     const { user } = await account(req);
+    if (!user) throw new AppError("Sign in to AStra first.", 401);
     return reply({
       configured: true,
       privateAccount: Boolean(user?.authProvider),
@@ -67,6 +68,8 @@ export async function POST(req: NextRequest) {
     if (!body || typeof body !== "object")
       throw new AppError("Invalid request.");
     const { user } = await account(req);
+    if (!user?.authProvider)
+      throw new AppError("Sign in to your own AStra account first.", 401);
     if (body.action === "connect") {
       const started = await startSpotify(
         body.role,

@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
     "test:http": "tsx scripts/check-http.ts",
+    "test:auth": "tsx scripts/check-auth.ts",
     "test:mongo": "tsx scripts/check-mongo.ts",
     "test:spotify": "tsx scripts/check-spotify.ts",
     "test:youtube": "tsx scripts/check-youtube.ts",

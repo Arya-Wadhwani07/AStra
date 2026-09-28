@@ -43,9 +43,20 @@ test("unsupported WebGL reports a recoverable initialization failure", () => {
     /WebGL unavailable/,
   );
 });
-test("hero server rendering always includes a decorative poster without autoplay", () => {
+test("hero server rendering includes a crisp vector fallback without autoplay", () => {
   const html = renderToString(React.createElement(ParticleHero));
-  assert.match(html, /astra-hero-poster-16x9.jpg/);
+  assert.match(html, /<svg[^>]+aria-hidden="true"/);
   assert.match(html, /<canvas[^>]+aria-hidden="true"/);
   assert.doesNotMatch(html, /<video|<button/);
+});
+test("collaboration and loyalty use distinct deterministic finite geometries", () => {
+  for (const variant of ["collab", "loyalty"] as const) {
+    const data = createParticleGeometry(10500, variant);
+    assert.ok(data.every(Number.isFinite));
+    assert.deepEqual(data, createParticleGeometry(10500, variant));
+    assert.notDeepEqual(data, createParticleGeometry(10500));
+    const html = renderToString(React.createElement(ParticleHero, { variant }));
+    assert.match(html, new RegExp(`data-sculpture="${variant}"`));
+    assert.doesNotMatch(html, /<video|\.mp4|\.jpg/);
+  }
 });

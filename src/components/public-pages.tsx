@@ -23,10 +23,9 @@ import {
   Tabs,
 } from "./ui";
 import { Icon } from "./icons";
-import { MotionLoop, Mascot } from "./motion";
+import { Mascot } from "./motion";
 import { ParticleHero } from "./particle-hero";
-import { SpotifyConnection } from "./spotify-connection";
-import { YouTubeConnection } from "./youtube-connection";
+import { AccountForm } from "./account-form";
 
 function Stage({
   kind,
@@ -42,17 +41,7 @@ function Stage({
       className={`cinema-stage cinema-stage--${kind}`}
       data-theme="cinema"
     >
-      {kind === "hero" ? (
-        <ParticleHero />
-      ) : (
-        <MotionLoop
-          src={`/media/motion/astra-${kind}-loop-16x9.mp4`}
-          webm={`/media/motion/astra-${kind}-loop-16x9.webm`}
-          poster={`/media/motion/astra-${kind}-poster-16x9.jpg`}
-          label={`Decorative ${kind} sculpture animation. Procedurally rendered placeholder.`}
-          className="stage-film"
-        />
-      )}
+      <ParticleHero variant={kind} />
       <div className="stage-scrim" />
       <div className="stage-copy">
         <p className="as-eyebrow">
@@ -69,7 +58,9 @@ function Stage({
       <p className="stage-credit">
         {kind === "hero"
           ? "Original AStra particle sculpture"
-          : "Procedurally rendered placeholder animation"}
+          : kind === "collab"
+            ? "Creative strands, one shared form"
+            : "Different orbits, one shared balance"}
       </p>
     </section>
   );
@@ -78,7 +69,6 @@ export function Landing() {
   const { state } = useApp();
   return (
     <div className="landing as-app--glass" data-theme="glass">
-      <Ambient drift />
       <header className="public-nav" data-theme="cinema">
         <Link href="/" aria-label="AStra home">
           <Logo />
@@ -154,33 +144,35 @@ export function Landing() {
           </div>
         </div>
       </section>
-      <section className="landing-section">
-        <Heading
-          title="A few worlds to explore"
-          text="Fictional creators, real possibilities. All profiles and activity shown are sample data."
-        />
-        <div className="creator-grid">
-          {(state?.creators || []).slice(0, 4).map((c, i) => (
-            <Link
-              key={c.id}
-              href={`/creators/${c.id}`}
-              className="creator-tile"
-            >
-              <MediaFrame
-                art={["painting", "chrome", "reel", "prism"][i]}
-                ratio="4:5"
-                credit="Placeholder art"
-              />
-              <CreatorSummary
-                name={c.name}
-                discipline={c.discipline}
-                location={c.location}
-                compact
-              />
-            </Link>
-          ))}
-        </div>
-      </section>
+      {Boolean(state?.me) && (
+        <section className="landing-section">
+          <Heading
+            title="A few worlds to explore"
+            text="Fictional creators, real possibilities. All profiles and activity shown are sample data."
+          />
+          <div className="creator-grid">
+            {(state?.creators || []).slice(0, 4).map((c, i) => (
+              <Link
+                key={c.id}
+                href={`/creators/${c.id}`}
+                className="creator-tile"
+              >
+                <MediaFrame
+                  art={["painting", "chrome", "reel", "prism"][i]}
+                  ratio="4:5"
+                  credit="Placeholder art"
+                />
+                <CreatorSummary
+                  name={c.name}
+                  discipline={c.discipline}
+                  location={c.location}
+                  compact
+                />
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
       <div id="collaborate">
         <Stage
           kind="collab"
@@ -278,7 +270,7 @@ export function Landing() {
   );
 }
 
-export function SignIn() {
+export function SignIn({ testAccounts = false }: { testAccounts?: boolean }) {
   const [tab, setTab] = useState("Sign in");
   const [account, setAccount] = useState("alex");
   const [key, setKey] = useState("");
@@ -303,87 +295,93 @@ export function SignIn() {
           <Logo />
         </Link>
         <div className="auth-form">
-          <Card>
-            <SpotifyConnection signIn />
-          </Card>
-          <Card>
-            <YouTubeConnection />
-          </Card>
-          <Tabs values={["Sign in", "Join"]} active={tab} change={setTab} />
-          <Card>
-            <h1>
-              {tab === "Join" ? "Find your place in AStra" : "Welcome back"}
-            </h1>
-            <p className="muted">
-              Local working demo. Use fictional details only. No password,
-              identity document or email is collected.
-            </p>
-            <Feedback />
-            {tab === "Sign in" ? (
-              <form
-                className="stack"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  void login();
-                }}
-              >
-                <SelectField
-                  label="Sample account"
-                  value={account}
-                  onChange={(e) => setAccount(e.target.value)}
-                >
-                  <option value="alex">Alex Morgan · Audience</option>
-                  <option value="mira">Mira Rao · Creator and audience</option>
-                  <option value="eli">Eli Chen · Collaborator</option>
-                  <option value="sam">Sam Ortiz · Photographer</option>
-                  <option value="jonah">Jonah Lee · Musician</option>
-                  <option value="admin">
-                    Review team · Administrator key required
-                  </option>
-                </SelectField>
-                {account === "admin" && (
-                  <Field
-                    label="Local administrator key"
-                    type="password"
-                    value={key}
-                    onChange={(e) => setKey(e.target.value)}
-                    required
-                    helper="Provisioned separately with npm run admin:key inside the sandbox."
-                  />
+          <h1>Your creative world starts here.</h1>
+          <p className="muted">
+            Create your own AStra account. A home for your work, the people you
+            follow and what you make together.
+          </p>
+          <Feedback />
+          <AccountForm />
+          {testAccounts && (
+            <>
+              <Tabs values={["Sign in", "Join"]} active={tab} change={setTab} />
+              <Card>
+                <h1>
+                  {tab === "Join" ? "Find your place in AStra" : "Welcome back"}
+                </h1>
+                <p className="muted">
+                  Local working demo. Use fictional details only. No password,
+                  identity document or email is collected.
+                </p>
+                {tab === "Sign in" ? (
+                  <form
+                    className="stack"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      void login();
+                    }}
+                  >
+                    <SelectField
+                      label="Sample account"
+                      value={account}
+                      onChange={(e) => setAccount(e.target.value)}
+                    >
+                      <option value="alex">Alex Morgan · Audience</option>
+                      <option value="mira">
+                        Mira Rao · Creator and audience
+                      </option>
+                      <option value="eli">Eli Chen · Collaborator</option>
+                      <option value="sam">Sam Ortiz · Photographer</option>
+                      <option value="jonah">Jonah Lee · Musician</option>
+                      <option value="admin">
+                        Review team · Administrator key required
+                      </option>
+                    </SelectField>
+                    {account === "admin" && (
+                      <Field
+                        label="Local administrator key"
+                        type="password"
+                        value={key}
+                        onChange={(e) => setKey(e.target.value)}
+                        required
+                        helper="Provisioned separately with npm run admin:key inside the sandbox."
+                      />
+                    )}
+                    <Button type="submit" busy={busy} icon="arrow-right">
+                      Continue to demo
+                    </Button>
+                  </form>
+                ) : (
+                  <Form
+                    action="register"
+                    success="Sample account created. Email verification is not connected."
+                    onDone={() => {
+                      router.push("/onboarding");
+                    }}
+                  >
+                    <Field
+                      label="Sample display name"
+                      name="name"
+                      required
+                      maxLength={80}
+                      placeholder="Your creative name"
+                    />
+                    <SelectField label="I’m here as" name="role">
+                      <option value="audience">Audience</option>
+                      <option value="creator">Creator</option>
+                      <option value="both">Both</option>
+                    </SelectField>
+                    <Button type="submit" busy={busy}>
+                      Create sample account
+                    </Button>
+                  </Form>
                 )}
-                <Button type="submit" busy={busy} icon="arrow-right">
-                  Continue to demo
-                </Button>
-              </form>
-            ) : (
-              <Form
-                action="register"
-                success="Sample account created. Email verification is not connected."
-                onDone={() => {
-                  router.push("/onboarding");
-                }}
-              >
-                <Field
-                  label="Sample display name"
-                  name="name"
-                  required
-                  maxLength={80}
-                  placeholder="Your creative name"
-                />
-                <SelectField label="I’m here as" name="role">
-                  <option value="audience">Audience</option>
-                  <option value="creator">Creator</option>
-                  <option value="both">Both</option>
-                </SelectField>
-                <Button type="submit" busy={busy}>
-                  Create sample account
-                </Button>
-              </Form>
-            )}
-          </Card>
+              </Card>
+            </>
+          )}
           <p className="as-caption">
-            Spotify and Google sign-in use private accounts. The sample accounts
-            above remain shared demos. Email verification is not provided.
+            Your account is yours. Music and video connections are always your
+            choice.
           </p>
         </div>
       </div>
@@ -420,7 +418,7 @@ export function Onboarding() {
   if (!state?.me)
     return (
       <Card>
-        <Heading title="Start with a sample account" />
+        <Heading title="Sign in to get started" />
         <Go href="/signin">Join AStra</Go>
       </Card>
     );

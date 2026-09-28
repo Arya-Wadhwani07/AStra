@@ -35,6 +35,38 @@ a {
 a:hover {
   color: var(--ink);
 }
+/* Shared interaction feedback without changing control dimensions or hit targets. */
+button,
+a {
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    filter 180ms ease,
+    transform 180ms ease;
+}
+:is(button, a):focus-visible {
+  outline: 2px solid #a8c5ff;
+  outline-offset: 4px;
+}
+@media (hover: hover) and (pointer: fine) {
+  button:not(:disabled):not([aria-disabled="true"]):hover,
+  a.as-btn:hover {
+    filter: brightness(1.16);
+    transform: translateY(-2px);
+    box-shadow: 0 7px 22px rgb(80 115 215 / 18%);
+  }
+  :is(.public-nav nav, .nav-stack, .bottom-nav) a:hover {
+    color: var(--ink);
+    background-color: rgb(125 160 235 / 10%);
+    box-shadow: inset 0 -2px #9cbcff;
+  }
+}
+button:not(:disabled):active,
+a.as-btn:active {
+  transform: translateY(1px);
+}
 h1,
 h2,
 h3,
@@ -872,6 +904,48 @@ td p {
   font-size: 14px;
   text-decoration: none;
   color: var(--ink-muted);
+  border-radius: 8px;
+  padding: 8px 4px;
+}
+.public-nav nav > a.as-btn {
+  color: var(--ink);
+  padding: 14px 24px;
+}
+.landing {
+  background: #04060d;
+  --ink-muted: #b3bacb;
+  --ink-subtle: #929bad;
+}
+.landing .landing-section {
+  position: relative;
+  background: radial-gradient(
+    ellipse at 70% 50%,
+    rgb(41 66 120 / 13%),
+    transparent 68%
+  );
+}
+.landing .cinema-stage {
+  background: #04060d;
+}
+.landing .cinema-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    #04060d,
+    transparent 18%,
+    transparent 76%,
+    #04060d
+  );
+}
+.landing .stage-copy,
+.landing .stage-credit {
+  z-index: 3;
+}
+.landing .public-footer {
+  background: #04060d;
 }
 .cinema-stage {
   position: relative;
@@ -901,6 +975,14 @@ td p {
 .particle-hero--ready .particle-hero__poster {
   opacity: 0;
 }
+.particle-hero__still {
+  position: absolute;
+  width: min(48%, 640px);
+  height: 100%;
+  right: 2%;
+  top: 0;
+  pointer-events: none;
+}
 .particle-hero__halo {
   position: absolute;
   inset: 0;
@@ -923,6 +1005,7 @@ td p {
 .stage-film {
   position: absolute !important;
   inset: 0;
+  isolation: auto;
 }
 .stage-scrim {
   pointer-events: none;
@@ -1458,6 +1541,22 @@ td p {
   .cinema-stage--hero .stage-copy {
     padding: 450px 24px 100px;
   }
+  .landing .cinema-stage:not(.cinema-stage--hero) .stage-copy {
+    padding: 430px 24px 100px;
+  }
+  .landing .cinema-stage:not(.cinema-stage--hero) .stage-scrim {
+    background: linear-gradient(transparent 280px, #04060d 430px);
+  }
+  .particle-hero .particle-hero__still {
+    width: 100%;
+    height: 440px;
+    right: 0;
+  }
+  .stage-film .as-motion__ctl {
+    top: 370px;
+    bottom: auto;
+    right: 24px;
+  }
   .cinema-stage--hero .stage-scrim {
     background: linear-gradient(
       180deg,
@@ -1630,6 +1729,10 @@ td p {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  button,
+  a {
+    transform: none !important;
+  }
   html {
     scroll-behavior: auto;
   }

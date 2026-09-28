@@ -29,9 +29,17 @@ import {
   Messages,
   Community,
 } from "./collaboration-pages";
-export function Website({ path, title }: { path: string; title: string }) {
+export function Website({
+  path,
+  title,
+  testAccounts = false,
+}: {
+  path: string;
+  title: string;
+  testAccounts?: boolean;
+}) {
   if (path === "/") return <Landing />;
-  if (path === "/signin") return <SignIn />;
+  if (path === "/signin") return <SignIn testAccounts={testAccounts} />;
   if (path === "/onboarding") return <Onboarding />;
   const routes: Record<string, React.ReactNode> = {
     "/feed": <Feed />,
@@ -70,11 +78,6 @@ export function Website({ path, title }: { path: string; title: string }) {
       title={title}
       privatePage={path.startsWith("/studio")}
       admin={path === "/admin"}
-      publicPage={
-        path === "/discover" ||
-        path.startsWith("/creators/") ||
-        path.startsWith("/events/")
-      }
     >
       {page}
     </Shell>

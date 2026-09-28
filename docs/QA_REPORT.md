@@ -6,12 +6,13 @@ Run date: September 27, 2026. Scope: current local hackathon website; Instagram 
 
 | Suite | Coverage | Result |
 | --- | --- | --- |
-| Unit / server render | Rules, permissions, parsers, token handling, route rendering, commerce and collaboration journeys | 126 passed |
-| Chromium browser | 19 scenarios at desktop 1440×900 and mobile 390×844 | 38 passed |
+| Unit / server render | Rules, permissions, password hashing, parsers, particle geometry, route rendering, commerce and collaboration | 131 passed |
+| Chromium browser | 26 scenarios at desktop 1440×900 and mobile 390×844, including live motion controls | 52 passed |
+| AStra authentication | Real password accounts, duplicate races, throttling, session invalidation and old-account rejection | 7 groups passed |
 | MongoDB | Transactions, simultaneous requests, persistence and session expiry | 10 groups passed |
-| Spotify | Mocked OAuth, private identity, encryption, refresh, disconnect and reward concurrency | 10 groups passed |
-| YouTube | Mocked OAuth, identity checks, linking, encryption, refresh, disconnect and reward concurrency | 9 groups passed |
-| HTTP | Real API handlers, CSRF, cookies, permissions, 27 route groups, assets and rewards | 19 groups passed |
+| Spotify | Mocked OAuth, linking to AStra password accounts, encryption, refresh, disconnect and reward concurrency | 11 groups passed |
+| YouTube | Mocked OAuth, linking to AStra password accounts, identity checks, encryption, refresh, disconnect and reward concurrency | 10 groups passed |
+| HTTP | Real API handlers, CSRF, cookies, permissions, 27 route groups, assets and rewards | 20 groups passed |
 | Production build | Next.js compilation and TypeScript | Passed |
 
 These are scenario/check-group counts, not a measure of exhaustive coverage. Final browser run: no retries, no skipped cases, no uncaught JavaScript or hydration errors. Early runs found four application defects below; test-fixture and selector mistakes were also corrected before the final run.
@@ -59,7 +60,17 @@ Real MongoDB tests include concurrent checkout retries, multiple creators compet
 | Shipping could overwrite a pending refund request. | Only Preparing orders can transition to Shipped; refund requests remain on hold. Model and browser/API checks cover this. |
 | Repeating shipping created duplicate notifications. | Same-order/same-tracking retry is a no-op; other changes to non-Preparing orders are rejected. |
 
-Application changes are limited to server validation and safe order transitions. No redesign, Instagram implementation, real payment or deployment was performed.
+The subsequent approved design/authentication pass adds consistent hover/press/focus states, a continuous dark landing surface and three device-resolution particle sculptures. Mobile animation controls initially sat beneath the text layer; live-motion browser testing caught this, and stacking/positioning were corrected. The top mascot was deliberately omitted; the existing footer mascot remains.
+
+## Mandatory AStra authentication
+
+- Normal users create an AStra email/password account. Spotify/YouTube are optional Settings connections, not replacements for AStra authentication. New accounts start with zero points. There is no email verification or password-reset delivery yet.
+- Passwords use per-account random salts and scrypt (N=131072, r=8, p=1), with bounded hashing concurrency. The parameters follow [OWASP password-storage guidance](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html). Password/lookup hashes are excluded from every client snapshot.
+- Email lookup is case-normalized and unique. Transactional signup tests cover simultaneous duplicate attempts. Persistent per-email throttling permits at most ten authentication attempts per 15-minute window; this is not a substitute for production-wide/IP abuse protection.
+- All 25 feature-route patterns require a server-validated session. Anonymous/forged cookies receive redirects to sign-in; app-data and provider APIs return 401 without feature data. Landing/sign-in remain public. Logout returns no app snapshot.
+- Shared login/passwordless registration are disabled in normal operation, independently of the simulated-rewards flag. Test fixtures require both an explicit test flag and an allowlisted isolated database. Genuine old sample/provider-only session cookies are rejected in normal mode. Old records are preserved; they are not silently merged into new email/password accounts.
+- Browser cases add creator/audience password signup, logout/sign-in, wrong password, duplicate signup, invalid role, CSRF, 25-route anonymous/forged-cookie checks, provider authentication gates, keyboard focus, hover, reduced motion, real WebGL pause/resume and vector fallbacks.
+- Read-only checks against the normal port-3000 server confirmed anonymous `/api/app` is 401, legacy `login` and `register` are 403, and the sign-in HTML has no shared-account selector.
 
 ## Artifacts and rerunning
 
@@ -74,6 +85,7 @@ Run from AStra with MongoDB running:
 node scripts/env.mjs npm run build
 node scripts/env.mjs npm test
 node scripts/env.mjs npm run test:mongo
+node scripts/env.mjs npm run test:auth
 node scripts/env.mjs npm run test:spotify
 node scripts/env.mjs npm run test:youtube
 node scripts/env.mjs npm run test:browser
@@ -86,7 +98,7 @@ For HTTP tests, use the isolated port-3001 server command in README, then `node 
 ## Limits and final manual checks
 
 - Passing tests do not guarantee an error-free, production-ready or security-certified website.
-- Browser coverage is Chromium desktop/mobile emulation, not physical phones, Safari or Firefox. Two representative screenshots were visually inspected; this is not a pixel-by-pixel audit of every page/theme.
+- Browser coverage is Chromium desktop/mobile emulation, not physical phones, Safari or Firefox. Landing and sculpture screenshots were inspected alongside representative app pages; this is not a pixel-by-pixel audit of every page/theme.
 - Live Spotify/Google consent was not completed in this run. The last reported Google blocker required adding an approved test user. Provider happy paths use mocks; actual client registration, test-account access and consent still require manual confirmation.
 - Actual external playback is not exercised. Rewards remain simulated one-time link-open points, not verified listens/views.
 - Payments, shipping, tickets, verification and refunds remain hackathon simulations. No real charges, messages or shipments were made. Refund settlement and point-restoration policies are unresolved.
