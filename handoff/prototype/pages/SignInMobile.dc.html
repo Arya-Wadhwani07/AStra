@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Sign in or join (mobile)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+.as-tabs--display .as-tab{font-size:28px}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-app--glass" style="width: 390px; height: 1300px; display: flex; flex-direction: column; gap: 24px; padding: 16px 16px 40px; box-sizing: border-box; background: var(--bg); color: var(--ink); font-family: var(--font-sans); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<a href="LandingMobile.dc.html" aria-label="Back to AStra home" style="text-decoration: none; color: var(--ink); align-self: flex-start; min-height: 44px; display: flex; align-items: center"><x-import component-from-global-scope="AStra.Logo"></x-import></a>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-family: var(--font-display); font-size: 26px; line-height: 1.1; font-weight: 600">Creators, collaborators and fans in one place.</h1>
+<p style="margin: 0; color: var(--ink-muted); font-size: 15px; line-height: 22px">One account, one loyalty balance.</p>
+</div>
+<x-import component-from-global-scope="AStra.Tabs" variant="display" aria-label="Sign in or join" items="{{ tabs }}" value="{{ tab }}" on-change="{{ setTab }}"></x-import>
+
+<sc-if value="{{ isSignIn }}" hint-placeholder-val="{{ true }}">
+<form class="as-card" onSubmit="{{ noSubmit }}" style="display: flex; flex-direction: column; gap: 20px; padding: 20px">
+<x-import component-from-global-scope="AStra.TextField" label="Email" type="email" default-value="alex.morgan@example.com" size="lg"></x-import>
+<x-import component-from-global-scope="AStra.PasswordField" label="Password" value="demo-password-123" size="lg"></x-import>
+<a href="#reset" style="font-size: 14px; font-weight: 600; min-height: 44px; display: flex; align-items: center">Forgot password?</a>
+<sc-if value="{{ resetSent }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="success" title="Reset link sent">If this email has an account, a link is on its way. (Demo: nothing is sent.)</x-import>
+</sc-if>
+<x-import component-from-global-scope="AStra.Button" size="lg" full-width="{{ yes }}">Continue</x-import>
+<a href="DashboardMobile.dc.html" class="as-btn as-btn--quiet as-btn--sm" style="align-self: center">Demo: sign in as Mira (creator)</a>
+</form>
+</sc-if>
+
+<sc-if value="{{ isJoin }}" hint-placeholder-val="{{ false }}">
+<form class="as-card" onSubmit="{{ noSubmit }}" style="display: flex; flex-direction: column; gap: 20px; padding: 20px">
+<x-import component-from-global-scope="AStra.TextField" label="Name" default-value="Alex Morgan" size="lg"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Email" type="email" default-value="alex.morgan@example.com" size="lg"></x-import>
+<x-import component-from-global-scope="AStra.PasswordField" label="Password" value="a-long-demo-password" helper="At least 12 characters." size="lg"></x-import>
+<x-import component-from-global-scope="AStra.SegmentedControl" label="I’m joining as" options="{{ roles }}" value="{{ role }}" on-change="{{ setRole }}" full-width="{{ yes }}" helper="Admin access is provisioned separately."></x-import>
+<x-import component-from-global-scope="AStra.Checkbox" label="I agree to the prototype terms and privacy notice" default-checked="{{ yes }}"></x-import>
+<x-import component-from-global-scope="AStra.Button" size="lg" full-width="{{ yes }}">Create account</x-import>
+</form>
+</sc-if>
+
+<sc-if value="{{ isVerify }}" hint-placeholder-val="{{ false }}">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 16px; padding: 20px">
+<x-import component-from-global-scope="AStra.Banner" tone="info" title="Check your email">We sent a link to alex.morgan@example.com. Private features stay locked until you verify.</x-import>
+<x-import component-from-global-scope="AStra.Button" size="lg" full-width="{{ yes }}" icon-right="arrow-right">{{ nextLabel }}</x-import>
+<x-import component-from-global-scope="AStra.Button" size="lg" variant="secondary" full-width="{{ yes }}" icon="arrow-counter-clockwise">Resend email</x-import>
+<p class="as-caption">Demo: email delivery and verification are simulated.</p>
+</section>
+</sc-if>
+<p class="as-caption" style="margin-top: auto">Demo accounts: Alex Morgan (audience) · Mira Rao and Eli Chen (creators). Sample data.</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ tab: 'signin', verify: false, role: 'audience' }, this.state || {});
+    const M = true;
+    const F = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Feed:['Feed','FeedMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Dashboard:['Dashboard','DashboardMobile'],Admin:['Admin','AdminMobile']};
+    const L = {'AStra':'Main','Feed':'Feed','Discover':'Profile','Favorites':'Profile','Loyalty':'Loyalty','Cart':'Checkout','Orders':'Checkout','Overview':'Dashboard','Home':'Dashboard','Publish':'Dashboard','Community':'CollabFind','Collaborate':'CollabFind','Collab':'CollabFind','Audience insights':'Dashboard','Creator':'Dashboard','Audience':'Feed','Review queue':'Admin','Verification':'Admin','Loyalty rules':'Admin','Commerce disputes':'Admin','Accounts':'Admin','Audit history':'Admin','View event':'Event','Read post':'Profile','View item':'Profile','View opportunity':'CollabRespond','Loyalty history':'Loyalty','Add to cart':'Checkout','Sign in':'SignIn','Join AStra':'SignIn','Explore creators':'Feed','Discover more':'Profile','Create opportunity':'CollabCreate','Find opportunities':'CollabFind','Publish opportunity':'CollabFind','Review responses':'CollabRespond'};
+    const X = {
+      'Sign in': () => this.setState({ tab: 'signin', verify: false }),
+      'Join': () => this.setState({ tab: 'join', verify: false }),
+      'Creator': () => {}, 'Audience': () => {}, 'Both': () => {},
+      'Continue': () => go('Feed'),
+      'Create account': () => this.setState({ verify: true }),
+      'Resend email': () => {},
+      'Continue to my feed': () => openNext(),
+      'Set up my creator profile': () => openNext()
+    };
+    const openNext = () => { const a = document.createElement('a'); a.setAttribute('href', (s.role === 'audience' ? 'Onboarding' : 'CreatorSetup') + 'Mobile.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+    const go = (k) => { const a = this._root && this._root.querySelector('a[data-route="' + k + '"]'); if (a) a.click(); };
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h === '#' || h === '#reset') e.preventDefault();
+      this._root = e.currentTarget;
+      if (h === '#reset') { this.setState({ reset: true }); return; }
+      const c = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]);
+      for (let i = 0; i < c.length; i++) { const k = (c[i] || '').trim(); if (X[k]) { e.preventDefault(); X[k](); return; } if (L[k]) { e.preventDefault(); go(L[k]); return; } }
+    };
+    const routes = Object.keys(F).map((k) => ({ key: k, file: F[k][M ? 1 : 0] + '.dc.html' }));
+    return {
+      route, routes, yes: true,
+      role: s.role, setRole: (v) => this.setState({ role: v }), nextLabel: s.role === 'audience' ? 'Continue to my feed' : 'Set up my creator profile',
+      tab: s.tab,
+      tabs: [{ id: 'signin', label: 'Sign in' }, { id: 'join', label: 'Join' }],
+      setTab: (id) => this.setState({ tab: id, verify: false }),
+      isSignIn: s.tab === 'signin' && !s.verify, resetSent: !!s.reset,
+      isJoin: s.tab === 'join' && !s.verify,
+      isVerify: s.verify,
+      roles: [{ value: 'creator', label: 'Creator' }, { value: 'audience', label: 'Audience' }, { value: 'both', label: 'Both' }],
+      noSubmit: (e) => e.preventDefault()
+    };
+  }
+}
+</script>
+</body>
+</html>

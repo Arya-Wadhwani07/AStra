@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Cart and checkout</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--rail" style="width: 1440px; height: 1200px; font-family: var(--font-sans); color: var(--ink); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.SideNav" role="audience" active="cart" user="Alex Morgan" unread="{{ n2 }}" dual="{{ no }}"></x-import>
+<div class="as-shell__body">
+<x-import component-from-global-scope="AStra.TopBar" title="{{ pageTitle }}" unread="{{ n2 }}"></x-import>
+
+<sc-if value="{{ isCart }}" hint-placeholder-val="{{ true }}">
+<div class="as-shell__cols">
+<main class="as-shell__main">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<h2 class="as-section-title">Mira Rao</h2>
+<x-import component-from-global-scope="AStra.CartItem" title="Color After Hours" type="event" creator="Mira Rao" detail="Sat, Oct 10 · 6-8 PM PT · Los Angeles" art="event" price="{{ n25 }}" qty="{{ n1 }}" max="{{ n4 }}" points-eligible="{{ yes }}"></x-import>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<h2 class="as-section-title">Use loyalty points</h2>
+<x-import component-from-global-scope="AStra.StatusBadge" tone="points">600 available · 50 pending</x-import>
+</div>
+<x-import component-from-global-scope="AStra.SegmentedControl" aria-label="Points to apply" options="{{ ptsOptions }}" value="{{ pts }}" on-change="{{ setPts }}"></x-import>
+<dl style="margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+<div class="as-neu-tile" style="padding: 12px 14px"><dt class="as-caption">Conversion</dt><dd style="margin: 4px 0 0; font-weight: 600">100 pts = $1 off</dd></div>
+<div class="as-neu-tile" style="padding: 12px 14px"><dt class="as-caption">Mira’s limit</dt><dd style="margin: 4px 0 0; font-weight: 600">20% · up to $5.00</dd></div>
+<div class="as-neu-tile" style="padding: 12px 14px"><dt class="as-caption">Most you can use</dt><dd style="margin: 4px 0 0; font-weight: 600">500 pts</dd></div>
+<div style="padding: 12px; border-radius: 12px; background: var(--points-bg)"><dt class="as-caption">Applying</dt><dd style="margin: 4px 0 0; font-weight: 700; color: var(--points)">{{ ptsLabel }}</dd></div>
+<div style="padding: 12px; border-radius: 12px; background: var(--points-bg)"><dt class="as-caption">Discount</dt><dd style="margin: 4px 0 0; font-weight: 700; color: var(--points)">{{ discLabel }}</dd></div>
+<div class="as-neu-tile" style="padding: 12px 14px"><dt class="as-caption">Points after order</dt><dd style="margin: 4px 0 0; font-weight: 600">{{ remLabel }}</dd></div>
+</dl>
+<p class="as-helper">This creator allows up to 20% off with points, so 600 points can’t all be used here. Pending points can’t be used yet. Points have no cash value.</p>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 16px">
+<h2 class="as-section-title">Contact and payment</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<x-import component-from-global-scope="AStra.TextField" label="Email for your ticket" default-value="alex.morgan@example.com" helper="We send the receipt here. It’s also always in Orders."></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Name on ticket" default-value="Alex Morgan"></x-import>
+</div>
+<div style="display: flex; gap: 12px; align-items: center; padding: 16px; border: 1px dashed var(--border-strong); border-radius: 12px">
+<span style="color: var(--ink-muted)"><x-import component-from-global-scope="AStra.Icon" name="credit-card" size="{{ n24 }}"></x-import></span>
+<div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14px">Payment provider (demo)</strong><span class="as-caption">Provider not selected yet. This prototype simulates payment; no card details are collected.</span></div>
+</div>
+</section>
+</main>
+<aside class="as-shell__rail">
+<x-import component-from-global-scope="AStra.OrderSummary" items="{{ n1 }}" subtotal="{{ n25 }}" points-used="{{ pts }}" discount="{{ disc }}" fees="{{ n0 }}" fees-note="Demo: $0" total="{{ total }}" remaining="{{ rem }}" pending="{{ n50 }}" rule="Points are debited once, only after payment succeeds." cta="Place demo order"></x-import>
+<span class="as-sample">Sample data · demo checkout, no real payment</span>
+</aside>
+</div>
+</sc-if>
+
+<sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+<div class="as-shell__cols">
+<main class="as-shell__main">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 16px; align-items: flex-start">
+<x-import component-from-global-scope="AStra.EmptyState" tone="empty" icon="shopping-cart-simple" title="Your cart is empty" body="Tickets and prints you add from creators show up here. Your 600 points are still available."></x-import>
+<div style="display: flex; gap: 12px">
+<a href="Feed.dc.html" class="as-btn as-btn--primary">Back to feed</a>
+<x-import component-from-global-scope="AStra.Button" variant="secondary">Put the ticket back</x-import>
+</div>
+</section>
+</main>
+</div>
+</sc-if>
+
+<sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+<div class="as-shell__cols">
+<main class="as-shell__main">
+<x-import component-from-global-scope="AStra.Receipt" id="AST-24817" date="Sep 27, 2026 · 4:32 PM PT" email="sent">
+<dl style="margin: 0; display: flex; flex-direction: column; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border)">
+<div style="display: flex; justify-content: space-between"><dt>Color After Hours · 1 ticket (Mira Rao)</dt><dd style="margin: 0; font-weight: 600">$25.00</dd></div>
+<div style="display: flex; justify-content: space-between; color: var(--points)"><dt>Points discount · {{ ptsLabel }}</dt><dd style="margin: 0; font-weight: 600">{{ discLabelNeg }}</dd></div>
+<div style="display: flex; justify-content: space-between"><dt>Fees and tax (demo)</dt><dd style="margin: 0">$0.00</dd></div>
+<div style="display: flex; justify-content: space-between; font-size: 20px; font-weight: 700"><dt>Paid</dt><dd style="margin: 0">{{ totalLabel }}</dd></div>
+</dl>
+</x-import>
+<x-import component-from-global-scope="AStra.Banner" tone="points" title="{{ redeemTitle }}">Your balance is now {{ remLabel }}. Pending points stay pending until approved.</x-import>
+<div style="display: flex; gap: 12px">
+<a href="Loyalty.dc.html" class="as-btn as-btn--primary">Loyalty history</a>
+<a href="Feed.dc.html" class="as-btn as-btn--secondary">Back to feed</a>
+<x-import component-from-global-scope="AStra.Button" variant="quiet" icon="arrow-counter-clockwise">Start demo checkout again</x-import>
+</div>
+</main>
+<aside class="as-shell__rail">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 8px">
+<h2 class="as-section-title" style="font-size: 16px">What happens next</h2>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted)">Your ticket is confirmed. Paid and confirmed are separate from email delivery: if the email is delayed, your receipt stays here and in Orders.</p>
+</section>
+<span class="as-sample">Sample data · simulated payment</span>
+</aside>
+</div>
+</sc-if>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ pts: 0, step: 'cart' }, this.state || {});
+    const M = false;
+    const F = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Feed:['Feed','FeedMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Dashboard:['Dashboard','DashboardMobile'],Admin:['Admin','AdminMobile']};
+    const L = {'AStra':'Main','Feed':'Feed','Discover':'Profile','Favorites':'Profile','Loyalty':'Loyalty','Cart':'Checkout','Orders':'Checkout','Overview':'Dashboard','Home':'Dashboard','Publish':'Dashboard','Community':'CollabFind','Collaborate':'CollabFind','Collab':'CollabFind','Audience insights':'Dashboard','Creator':'Dashboard','Audience':'Feed','Review queue':'Admin','Verification':'Admin','Loyalty rules':'Admin','Commerce disputes':'Admin','Accounts':'Admin','Audit history':'Admin','View event':'Event','Read post':'Profile','View item':'Profile','View opportunity':'CollabRespond','Loyalty history':'Loyalty','Add to cart':'Checkout','Sign in':'SignIn','Join AStra':'SignIn','Explore creators':'Feed','Discover more':'Profile','Create opportunity':'CollabCreate','Find opportunities':'CollabFind','Publish opportunity':'CollabFind','Review responses':'CollabRespond'};
+    const X = {
+      'Place demo order': () => this.setState({ step: 'done' }),
+      'Start demo checkout again': () => this.setState({ step: 'cart', pts: 0 }),
+      'Cart': () => this.setState({ step: 'cart' }),
+      'Remove': () => this.setState({ step: 'empty' }),
+      'Put the ticket back': () => this.setState({ step: 'cart' })
+    };
+    const go = (k) => { const a = this._root && this._root.querySelector('a[data-route="' + k + '"]'); if (a) a.click(); };
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h === '#') e.preventDefault();
+      this._root = e.currentTarget;
+      const NF = {Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Orders:['Orders','OrdersMobile'],Discover:['Discover','DiscoverMobile'],Onboarding:['Onboarding','OnboardingMobile']};
+      const DX = {'Discover':'Discover','Discover more':'Discover','Favorites':'Discover','Favorite creators':'Discover','Find creators':'Discover'};
+      const dk = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => DX[v])[0];
+      if (dk) { e.preventDefault(); const df = NF[DX[dk]]; const da = document.createElement('a'); da.setAttribute('href', df[M ? 1 : 0] + '.dc.html'); da.style.display = 'none'; this._root.appendChild(da); da.click(); da.remove(); return; }
+      const EX = {'Notifications':'Notifications','Settings':'Settings','More':'Settings','Orders':'Orders','Your orders':'Orders','Sign out':'Main','Mira Rao':'Profile','Color After Hours':'Event'};
+      const nav = (k) => { const f = F[k] || NF[k]; if (!f) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav(document.title.indexOf('Admin') > -1 ? 'Main' : 'Settings'); return; }
+      const cx = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent));
+      for (let i = 0; i < cx.length; i++) { const k = (cx[i] || '').trim().split(',')[0]; if (EX[k]) { e.preventDefault(); nav(EX[k]); return; } }
+      const c = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]);
+      for (let i = 0; i < c.length; i++) { const k = (c[i] || '').trim(); if (X[k]) { e.preventDefault(); X[k](); return; } if (L[k]) { e.preventDefault(); go(L[k]); return; } }
+    };
+    const routes = Object.keys(F).map((k) => ({ key: k, file: F[k][M ? 1 : 0] + '.dc.html' }));
+    // Loyalty rules: 100 pts = $1; creator cap 20% of $25 = $5 = 500 pts; balance 600 approved (50 pending excluded).
+    const price = 25, capPct = 20, balance = 600;
+    const maxPts = Math.min(Math.floor(price * capPct / 100 * 100), balance);
+    const pts = Math.min(s.pts, maxPts);
+    const disc = pts / 100, total = price - disc, rem = balance - pts;
+    const money = (v) => '$' + v.toFixed(2);
+    return {
+      route, routes, yes: true, no: false, n0: 0, n1: 1, n2: 2, n4: 4, n24: 24, n25: 25, n50: 50,
+      isCart: s.step === 'cart', isDone: s.step === 'done', isEmpty: s.step === 'empty',
+      pageTitle: s.step === 'done' ? 'Order confirmed' : 'Cart',
+      ptsOptions: [{ value: 0, label: 'None' }, { value: 100, label: '100' }, { value: 200, label: '200' }, { value: 300, label: '300' }, { value: 400, label: '400' }, { value: 500, label: '500', note: 'max' }, { value: 600, label: '600', note: 'over limit', disabled: true }],
+      pts, setPts: (v) => this.setState({ pts: v }),
+      disc, total, rem,
+      ptsLabel: pts.toLocaleString('en-US') + ' pts',
+      discLabel: pts ? '−' + money(disc) : '$0.00',
+      discLabelNeg: '−' + money(disc),
+      totalLabel: money(total),
+      remLabel: rem.toLocaleString('en-US') + ' pts available',
+      redeemTitle: pts ? '−' + pts + ' points redeemed' : 'No points used on this order'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Discover creators</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+.dv-card{display:flex;flex-direction:column;gap:14px;padding:14px}
+.dv-link{text-decoration:none;color:inherit;border-radius:16px}
+.dv-link:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.dv-fav{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:12px;font:600 14px/20px var(--font-sans);cursor:pointer;border:1px solid var(--border-strong);background:var(--glass-fill);color:var(--ink)}
+.dv-fav[aria-pressed="true"]{background:var(--action);color:var(--on-action);border-color:var(--action-edge)}
+.dv-fav:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--rail" style="width: 1440px; height: 2000px; font-family: var(--font-sans); color: var(--ink); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient as-ambient--drift" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.SideNav" role="audience" active="discover" user="Alex Morgan" unread="{{ n2 }}" dual="{{ no }}"></x-import>
+<div class="as-shell__body">
+<x-import component-from-global-scope="AStra.TopBar" title="Discover creators" unread="{{ n2 }}"></x-import>
+<div class="as-shell__cols">
+<main class="as-shell__main">
+<x-import component-from-global-scope="AStra.SearchField" label="Search creators" placeholder="Name, discipline, skill or city" size="lg"></x-import>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{ chips }}" as="c" hint-placeholder-count="8">
+<x-import component-from-global-scope="AStra.Chip" interactive="{{ yes }}" icon="{{ c.icon }}" selected="{{ c.sel }}" on-click="{{ c.pick }}">{{ c.label }}</x-import>
+</sc-for>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<h2 class="as-section-title">Your favorites</h2>
+<span class="as-caption">{{ favCount }} creators · their posts and events fill your feed</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
+<sc-for list="{{ favs }}" as="f" hint-placeholder-count="4">
+<div class="as-neu-tile" style="flex-direction: row; align-items: center; gap: 10px; padding: 12px 14px">
+<x-import component-from-global-scope="AStra.Avatar" name="{{ f.name }}" size="{{ n32 }}"></x-import>
+<span style="display: flex; flex-direction: column; min-width: 0"><strong style="font-size: 14px; line-height: 20px">{{ f.name }}</strong><span>{{ f.discLabel }}</span></span>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{ noFavs }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.EmptyState" tone="empty" icon="heart" title="No favorites yet" body="Favorite a creator below and their posts, events and merchandise show up in your feed." compact="{{ yes }}"></x-import>
+</sc-if>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 12px">
+<h2 class="as-section-title">{{ gridTitle }}</h2>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+<sc-for list="{{ shown }}" as="p" hint-placeholder-count="6">
+<article class="as-card dv-card">
+<sc-if value="{{ p.hasProfile }}" hint-placeholder-val="{{ false }}">
+<a href="Profile.dc.html" class="dv-link" aria-label="Open {{ p.name }}’s profile"><x-import component-from-global-scope="AStra.MediaFrame" ratio="4:5" art="{{ p.art }}" credit="Placeholder art" discipline="{{ p.disc }}"></x-import></a>
+</sc-if>
+<sc-if value="{{ p.noProfile }}" hint-placeholder-val="{{ true }}">
+<x-import component-from-global-scope="AStra.MediaFrame" ratio="4:5" art="{{ p.art }}" credit="Placeholder art" discipline="{{ p.disc }}"></x-import>
+</sc-if>
+<x-import component-from-global-scope="AStra.CreatorSummary" compact="{{ yes }}" name="{{ p.name }}" discipline="{{ p.disc }}" location="{{ p.loc }}" verified="{{ p.verified }}"></x-import>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted)">{{ p.bio }}</p>
+<div style="display: flex; gap: 8px; align-items: center">
+<button type="button" class="dv-fav" aria-pressed="{{ p.favAttr }}" onClick="{{ p.toggle }}">{{ p.favLabel }}</button>
+<sc-if value="{{ p.hasProfile }}" hint-placeholder-val="{{ false }}"><a href="Profile.dc.html" class="as-btn as-btn--quiet as-btn--sm">View profile</a></sc-if>
+<sc-if value="{{ p.pts }}" hint-placeholder-val="{{ false }}"><span style="margin-left: auto"><x-import component-from-global-scope="AStra.StatusBadge" tone="points" icon="star-four">Takes points</x-import></span></sc-if>
+</div>
+</article>
+</sc-for>
+</div>
+<sc-if value="{{ none }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.EmptyState" tone="noresults" title="No creators in this discipline yet" body="Try another discipline, or search by name."></x-import>
+</sc-if>
+</section>
+<span class="as-sample">Sample data · fictional creators. Only Mira’s profile page is built in this prototype</span>
+</main>
+<aside class="as-shell__rail">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 10px">
+<h2 class="as-section-title" style="font-size: 16px">How favorites work</h2>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted)">Favorite a creator to see their posts, events and merchandise in your feed, newest first. There’s no algorithm and no follower counts.</p>
+<a href="Feed.dc.html" class="as-btn as-btn--primary as-btn--sm" style="align-self: flex-start">Go to my feed</a>
+</section>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 8px">
+<x-import component-from-global-scope="AStra.StatusBadge" tone="points" icon="star-four">Points</x-import>
+<p style="margin: 0; font-size: 14px; line-height: 20px">Creators marked “Takes points” let you use your shared balance on their tickets and merchandise, up to their own limit.</p>
+</section>
+</aside>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ f: 'all', fav: { mira: true, jonah: true, priya: true, nia: true } }, this.state || {});
+    const M = false;
+    const F = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Feed:['Feed','FeedMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Dashboard:['Dashboard','DashboardMobile'],Admin:['Admin','AdminMobile']};
+    const NF = {Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Orders:['Orders','OrdersMobile'],Discover:['Discover','DiscoverMobile']};
+    const L = {'AStra':'Main','Feed':'Feed','Loyalty':'Loyalty','Cart':'Checkout','Orders':'Orders','Notifications':'Notifications','Settings':'Settings','Sign out':'Main'};
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      if (t.classList && (t.classList.contains('dv-fav') || t.classList.contains('as-chip'))) return;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h === '#') e.preventDefault();
+      this._root = e.currentTarget;
+      const nav = (k) => { const f = F[k] || NF[k]; if (!f) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav('Settings'); return; }
+      const cx = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]);
+      for (let i = 0; i < cx.length; i++) { const k = (cx[i] || '').trim().split(',')[0]; if (L[k]) { e.preventDefault(); nav(L[k]); return; } }
+    };
+    const routes = Object.keys(F).map((k) => ({ key: k, file: F[k][M ? 1 : 0] + '.dc.html' }));
+    const DL = { painter: 'Painter', musician: 'Musician', writer: 'Writer', dancer: 'Dancer', photographer: 'Photographer', video: 'Video creator', educator: 'Educator', streamer: 'Streamer' };
+    const people = [
+      { id: 'mira', name: 'Mira Rao', disc: 'painter', loc: 'Los Angeles', art: 'painting', bio: 'Color-field canvases about LA light. Show on Oct 10.', verified: true, pts: true, profile: true },
+      { id: 'eli', name: 'Eli Chen', disc: 'video', loc: 'Remote', art: 'reel', bio: 'Launch reels and short films for artists and galleries.', verified: false, pts: false },
+      { id: 'sam', name: 'Sam Ortiz', disc: 'photographer', loc: 'San Diego', art: 'prism', bio: 'Portrait series shot on medium format film.', verified: true, pts: true },
+      { id: 'jonah', name: 'Jonah Lee', disc: 'musician', loc: 'Oakland', art: 'chrome', bio: 'Warm synth records. New EP this winter.', verified: false, pts: true },
+      { id: 'nia', name: 'Nia Brooks', disc: 'dancer', loc: 'Oakland', art: 'dance', bio: 'Contemporary choreography, premiering in November.', verified: false, pts: true },
+      { id: 'priya', name: 'Priya Nair', disc: 'writer', loc: 'Pasadena', art: 'print', bio: 'Essays and a novel-in-progress about dancers.', verified: false, pts: true },
+      { id: 'dana', name: 'Dana Kim', disc: 'educator', loc: 'Online', art: 'event', bio: 'Color theory workshops for beginners.', verified: true, pts: false },
+      { id: 'ravi', name: 'Ravi Menon', disc: 'streamer', loc: 'Online', art: 'reel', bio: 'Live painting streams every Thursday night.', verified: false, pts: false }
+    ];
+    const toggle = (id) => () => { const fav = Object.assign({}, s.fav); fav[id] = !fav[id]; this.setState({ fav }); };
+    const chipDefs = [['all', 'All', 'sparkle'], ['painter', 'Painters', 'palette'], ['musician', 'Musicians', 'music-notes'], ['dancer', 'Dancers', 'person-simple-tai-chi'], ['writer', 'Writers', 'pen-nib'], ['photographer', 'Photographers', 'camera'], ['video', 'Video', 'video-camera'], ['educator', 'Educators', 'book-open-text']];
+    const shown = people.filter((p) => s.f === 'all' || p.disc === s.f).map((p) => Object.assign({}, p, {
+      favAttr: s.fav[p.id] ? 'true' : 'false', favLabel: s.fav[p.id] ? 'Favorited' : 'Favorite', toggle: toggle(p.id),
+      hasProfile: !!p.profile, noProfile: !p.profile
+    }));
+    const favs = people.filter((p) => s.fav[p.id]).map((p) => ({ name: p.name, discLabel: DL[p.disc] }));
+    return {
+      route, routes, yes: true, no: false, n2: 2, n32: 32,
+      chips: chipDefs.map((c) => ({ label: c[1], icon: c[2], sel: s.f === c[0], pick: () => this.setState({ f: c[0] }) })),
+      shown, none: shown.length === 0,
+      favs, favCount: favs.length, noFavs: favs.length === 0,
+      gridTitle: s.f === 'all' ? 'More creators to discover' : 'Creators in this discipline'
+    };
+  }
+}
+</script>
+</body>
+</html>

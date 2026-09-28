@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Creator orders (mobile)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+.co-num{font-size:24px;line-height:28px;font-variant-numeric:tabular-nums}
+.co-grid{display:grid;grid-template-columns:96px minmax(0,1fr) 40px 78px 84px 72px 150px 64px;gap:10px;align-items:center}
+.co-head{padding:0 14px 10px;border-bottom:1px solid var(--border);font-size:12px;line-height:16px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--ink-muted)}
+.co-row{padding:12px 14px;border-radius:14px;font-size:14px;line-height:20px}
+.co-row[data-sel="true"]{background:var(--surface);box-shadow:inset 0 0 0 2px var(--action)}
+.co-num-cell{font-variant-numeric:tabular-nums}
+.co-dl{margin:0;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:20px}
+.co-dl div{display:flex;justify-content:space-between;gap:12px}
+.co-dl dt{color:var(--ink-muted)}
+.co-dl dd{margin:0;font-weight:600;text-align:right}
+.co-card{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:20px}
+.co-card[data-open="true"]{box-shadow:inset 0 0 0 2px var(--action)}
+.co-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;font-size:14px;line-height:20px}
+.co-meta span{display:flex;flex-direction:column;gap:2px}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--mobile" style="width: 390px; height: 2400px; font-family: var(--font-sans); color: var(--ink); background: var(--bg); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.TopBar" mobile="{{ yes }}" role="creator"></x-import>
+<div class="as-shell__mtitle"><h1 class="as-page-title">Orders</h1></div>
+<main class="as-shell__main">
+<span style="display: flex; gap: 8px; align-items: center"><span class="as-sample">Sample data</span><span class="as-caption">This month, Sep 1-27</span></span>
+<section style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">
+<div class="as-neu-tile"><span class="as-caption">Orders this month</span><strong class="co-num">6</strong></div>
+<div class="as-neu-tile"><span class="as-caption">Tickets sold</span><strong class="co-num">6 <span style="font-size: 15px; font-weight: 500; color: var(--ink-muted)">of 40</span></strong></div>
+<div class="as-neu-tile"><span class="as-caption">Prints sold</span><strong class="co-num">4</strong></div>
+<div class="as-neu-tile"><span class="as-caption">Points discounts</span><strong class="co-num" style="color: var(--points)">1,400 pts</strong></div>
+</section>
+
+<div data-local class="as-chiprow" role="group" aria-label="Filter orders" style="flex-wrap: wrap">
+<x-import component-from-global-scope="AStra.Chip" interactive="{{ yes }}" selected="{{ fAll }}" on-click="{{ pickAll }}" count="{{ cAll }}">All</x-import>
+<x-import component-from-global-scope="AStra.Chip" interactive="{{ yes }}" icon="ticket" selected="{{ fTickets }}" on-click="{{ pickTickets }}" count="{{ cTickets }}">Tickets</x-import>
+<x-import component-from-global-scope="AStra.Chip" interactive="{{ yes }}" icon="storefront" selected="{{ fMerch }}" on-click="{{ pickMerch }}" count="{{ cMerch }}">Merchandise</x-import>
+<x-import component-from-global-scope="AStra.Chip" interactive="{{ yes }}" icon="flag" selected="{{ fAction }}" on-click="{{ pickAction }}" count="{{ cAction }}">Needs action</x-import>
+</div>
+
+<sc-if value="{{ hasRows }}" hint-placeholder-val="{{ true }}">
+<sc-for list="{{ rows }}" as="o" hint-placeholder-count="4">
+<article class="as-card co-card" data-open="{{ o.open }}">
+<div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px">
+<span style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><strong style="font-size: 16px">{{ o.item }}</strong><code class="as-code" style="align-self: flex-start">{{ o.id }}</code></span>
+<x-import component-from-global-scope="AStra.StatusBadge" tone="{{ o.tone }}" icon="{{ o.icon }}">{{ o.status }}</x-import>
+</div>
+<div class="co-meta">
+<span><span class="as-caption">Buyer</span><strong>{{ o.buyer }}</strong></span>
+<span><span class="as-caption">Quantity</span><strong>{{ o.qtyLong }}</strong></span>
+<span><span class="as-caption">Sale after points</span><strong>{{ o.sale }}</strong></span>
+<span><span class="as-caption">Points used</span><strong style="color: var(--points)">{{ o.pts }}</strong></span>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<span class="as-caption">{{ o.dateLong }}</span>
+<button type="button" class="as-btn as-btn--secondary as-btn--sm" aria-expanded="{{ o.open }}" aria-label="{{ o.viewLabel }}" onClick="{{ o.toggle }}">{{ o.viewText }}</button>
+</div>
+
+<sc-if value="{{ o.open }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 12px; padding-top: 12px; border-top: 1px solid var(--border)">
+<p class="as-helper" style="margin: 0">Fulfillment: {{ o.fulfill }}</p>
+<x-import component-from-global-scope="AStra.DeliveryStatus" payment="paid" order="{{ o.order }}" email="{{ o.email }}"></x-import>
+<sc-if value="{{ o.isTicket }}" hint-placeholder-val="{{ false }}">
+<p class="as-helper" style="margin: 0">Tickets don't need shipping. The buyer's ticket is in their AStra orders and email.</p>
+</sc-if>
+<sc-if value="{{ o.canShip }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.TextField" label="Tracking number" optional="{{ yes }}" placeholder="For example, 9400 1118 2233" helper="We add it to the buyer's shipping email."></x-import>
+<x-import component-from-global-scope="AStra.Button" variant="primary" icon="package" size="lg" full-width="{{ yes }}">Mark as shipped</x-import>
+</sc-if>
+<sc-if value="{{ o.justShipped }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="success" title="Marked as shipped">Jordan P. gets a shipping email. This order no longer needs action.</x-import>
+</sc-if>
+<sc-if value="{{ o.hasTracking }}" hint-placeholder-val="{{ false }}">
+<p class="as-helper" style="margin: 0">Tracking number: <code class="as-code">{{ o.tracking }}</code></p>
+<p class="as-caption" style="margin: 0">The shipping email is delayed. We'll retry automatically.</p>
+</sc-if>
+<sc-if value="{{ o.isRefund }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="info" title="Refund in review">An admin is reviewing this refund request. You'll be notified of the decision.</x-import>
+</sc-if>
+</div>
+</sc-if>
+</article>
+</sc-for>
+</sc-if>
+
+<sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}">
+<section class="as-card" style="display: flex; flex-direction: column; align-items: center; gap: 12px">
+<x-import component-from-global-scope="AStra.EmptyState" tone="noresults" icon="check-circle" title="{{ emptyTitle }}" body="{{ emptyBody }}" compact="{{ yes }}"></x-import>
+<x-import component-from-global-scope="AStra.Button" variant="secondary" full-width="{{ yes }}">Show all orders</x-import>
+</section>
+</sc-if>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 8px">
+<h2 class="as-section-title" style="font-size: 16px; display: flex; align-items: center; gap: 8px"><x-import component-from-global-scope="AStra.Icon" name="lock-simple" size="{{ n20 }}"></x-import>About these numbers</h2>
+<p class="as-helper" style="margin: 0">Payment details are handled by the payment provider and never shown to creators.</p>
+<p class="as-helper" style="margin: 0">Sale price after points, before charges. Who funds points discounts is still being decided.</p>
+</section>
+</main>
+<x-import component-from-global-scope="AStra.BottomNav" role="creator" active="none"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ filter: 'all', sel: 'AST-24809', shipped: false, open: 'AST-24809' }, this.state || {});
+    const M = true;
+    /*ROUTES:creator*/
+    const P = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Onboarding:['Onboarding','OnboardingMobile'],Feed:['Feed','FeedMobile'],Discover:['Discover','DiscoverMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Orders:['Orders','OrdersMobile'],Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Dashboard:['Dashboard','DashboardMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Admin:['Admin','AdminMobile'],CreatorSetup:['CreatorSetup','CreatorSetupMobile'],ProfileEdit:['ProfileEdit','ProfileEditMobile'],Publish:['Publish','PublishMobile'],Insights:['Insights','InsightsMobile'],CreatorOrders:['CreatorOrders','CreatorOrdersMobile'],CreatorLoyalty:['CreatorLoyalty','CreatorLoyaltyMobile'],Community:['Community','CommunityMobile'],MyCollabs:['MyCollabs','MyCollabsMobile'],Messages:['Messages','MessagesMobile'],CreatorMenu:['Dashboard','CreatorMenuMobile']};
+    const L = {AStra:'Main','Sign out':'Main',Notifications:'Notifications',Settings:'Settings','Sign in':'SignIn','Join AStra':'SignIn',Overview:'Dashboard',Home:'Dashboard',Publish:'Publish',Community:'Community',Collaborate:'CollabFind',Collab:'CollabFind','Audience insights':'Insights',Insights:'Insights',Loyalty:'CreatorLoyalty',Orders:'CreatorOrders',More:'CreatorMenu',Audience:'Feed',Creator:'Dashboard',Messages:'Messages','My collaborations':'MyCollabs','Find opportunities':'CollabFind','Create opportunity':'CollabCreate','View opportunity':'CollabRespond','Review responses':'MyCollabs','Edit profile':'ProfileEdit','View public profile':'Profile',Verification:'CreatorSetup'};
+    const ACCOUNT = 'ProfileEdit';
+    /*END ROUTES*/
+    const X = {
+      'Mark as shipped': () => this.setState({ shipped: true }),
+      'Show all orders': () => this.setState({ filter: 'all' })
+    };
+    /*ROUTER*/
+    const nav = (k) => { const f = P[k]; if (!f || !this._root) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+    const go = nav;
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      this._root = e.currentTarget;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h && h.charAt(0) === '#') e.preventDefault();
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav(ACCOUNT); return; }
+      const local = !!(t.closest && t.closest('[data-local]'));
+      const c = [(t.getAttribute('aria-label') || '').split(',')[0]].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => v);
+      for (let i = 0; i < c.length; i++) { if (X[c[i]]) { e.preventDefault(); X[c[i]](); return; } }
+      if (local) return;
+      for (let i = 0; i < c.length; i++) { if (L[c[i]]) { e.preventDefault(); nav(L[c[i]]); return; } }
+    };
+    const routes = Object.keys(P).map((k) => ({ key: k, file: P[k][M ? 1 : 0] + '.dc.html' }));
+    /*END ROUTER*/
+    const base = [
+      { id: 'AST-24817', kind: 'ticket', item: 'Color After Hours', qty: 1, unit: 'ticket', buyer: 'Alex M.', sale: '$20.00', ptsN: 500, date: 'Sep 27', status: 'confirmed' },
+      { id: 'AST-24809', kind: 'merch', item: 'Dusk Study print', qty: 1, unit: 'print', buyer: 'Jordan P.', sale: '$40.00', ptsN: 0, date: 'Sep 26', status: s.shipped ? 'shipped' : 'ship' },
+      { id: 'AST-24790', kind: 'ticket', item: 'Color After Hours', qty: 2, unit: 'ticket', buyer: 'Sam K.', sale: '$45.00', ptsN: 500, date: 'Sep 24', status: 'refund' },
+      { id: 'AST-24781', kind: 'merch', item: 'Dusk Study print', qty: 1, unit: 'print', buyer: 'Taylor R.', sale: '$36.00', ptsN: 400, date: 'Sep 22', status: 'shipped' }
+    ];
+    const ST = {
+      confirmed: { label: 'Confirmed', tone: 'success', icon: 'check-circle', order: 'confirmed', fulfill: 'Ticket, no shipping' },
+      ship: { label: 'Needs shipping', tone: 'warning', icon: 'package', order: 'confirmed', fulfill: 'Ship to buyer' },
+      refund: { label: 'Refund requested', tone: 'info', icon: 'hourglass-medium', order: 'confirmed', fulfill: 'Ticket, no shipping' },
+      shipped: { label: 'Shipped', tone: 'success', icon: 'paper-plane-tilt', order: 'shipped', fulfill: 'Shipped' }
+    };
+    const all = base.map((o) => {
+      const t = ST[o.status];
+      return Object.assign({}, o, {
+        status: t.label, tone: t.tone, icon: t.icon, order: t.order, fulfill: t.fulfill,
+        qty: String(o.qty), qtyLong: o.qty + ' ' + o.unit + (o.qty > 1 ? 's' : ''),
+        pts: o.ptsN ? o.ptsN + ' pts' : 'None', ptsLong: o.ptsN ? o.ptsN + ' pts ($' + (o.ptsN / 100).toFixed(2) + ' off)' : 'No points used',
+        dateLong: o.date + ', 2026',
+        isTicket: o.kind === 'ticket' && o.status !== 'refund', isRefund: o.status === 'refund',
+        canShip: o.status === 'ship', justShipped: o.id === 'AST-24809' && s.shipped,
+        hasTracking: o.id === 'AST-24781', tracking: '9400 1118 2233 4455',
+        email: o.id === 'AST-24781' ? 'delayed' : 'sent', isDelayed: o.id === 'AST-24781',
+        needs: o.status === 'ship', sel: o.id === s.sel, open: o.id === s.open,
+        viewLabel: 'View ' + o.id, viewText: o.id === s.open ? 'Hide' : 'View',
+        pick: () => this.setState({ sel: o.id }),
+        toggle: () => this.setState({ open: s.open === o.id ? '' : o.id, sel: o.id })
+      });
+    });
+    const F = { all: () => true, tickets: (o) => o.kind === 'ticket', merch: (o) => o.kind === 'merch', action: (o) => o.needs };
+    const rows = all.filter(F[s.filter]);
+    const cur = all.filter((o) => o.id === s.sel)[0] || all[0];
+    const count = (k) => all.filter(F[k]).length;
+    const EMPTY = {
+      action: ['No orders need action', 'Everything is confirmed, shipped or with an admin. New orders that need shipping show up here.'],
+      tickets: ['No ticket orders', 'Ticket orders show up here.'],
+      merch: ['No merchandise orders', 'Print and merchandise orders show up here.'],
+      all: ['No orders yet', 'Orders for your events and merchandise show up here.']
+    };
+    const pick = (f) => () => this.setState({ filter: f });
+    return {
+      route, routes, yes: true, no: false, n3: 3, n20: 20,
+      rows, cur, hasRows: rows.length > 0, noRows: rows.length === 0,
+      emptyTitle: EMPTY[s.filter][0], emptyBody: EMPTY[s.filter][1],
+      fAll: s.filter === 'all', fTickets: s.filter === 'tickets', fMerch: s.filter === 'merch', fAction: s.filter === 'action',
+      cAll: count('all'), cTickets: count('tickets'), cMerch: count('merch'), cAction: count('action'),
+      pickAll: pick('all'), pickTickets: pick('tickets'), pickMerch: pick('merch'), pickAction: pick('action')
+    };
+  }
+}
+</script>
+</body>
+</html>

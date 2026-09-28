@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Your orders (mobile)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+.od-row{all:unset;box-sizing:border-box;display:flex;flex-direction:column;gap:4px;width:100%;min-height:56px;padding:12px 14px;border-radius:14px;cursor:pointer;color:var(--ink)}
+.od-row:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.od-row[aria-pressed="true"]{background:var(--surface);box-shadow:inset 0 0 0 2px var(--action)}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--mobile" style="width: 390px; height: 1700px; font-family: var(--font-sans); color: var(--ink); background: var(--bg); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient as-ambient--drift" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.TopBar" mobile="{{ yes }}" role="audience"></x-import>
+<div class="as-shell__mtitle"><h1 class="as-page-title">Your orders</h1></div>
+<main class="as-shell__main">
+<section class="as-card" style="padding: 6px; display: flex; flex-direction: column; gap: 4px">
+<sc-for list="{{ orders }}" as="o" hint-placeholder-count="2">
+<button type="button" class="od-row" aria-pressed="{{ o.sel }}" onClick="{{ o.pick }}">
+<span style="display: flex; justify-content: space-between; gap: 8px"><strong style="font-size: 15px">{{ o.title }}</strong><strong>{{ o.total }}</strong></span>
+<span class="as-caption">{{ o.meta }}</span>
+</button>
+</sc-for>
+</section>
+<sc-if value="{{ isA }}" hint-placeholder-val="{{ true }}">
+<x-import component-from-global-scope="AStra.Receipt" id="AST-24817" date="Sep 27, 2026 · 4:32 PM PT" email="sent">
+<dl style="margin: 0; display: flex; flex-direction: column; gap: 6px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 14px">
+<div style="display: flex; justify-content: space-between"><dt>1 ticket, Color After Hours</dt><dd style="margin: 0">$25.00</dd></div>
+<div style="display: flex; justify-content: space-between; color: var(--points)"><dt>Points, 500 pts</dt><dd style="margin: 0">−$5.00</dd></div>
+<div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 700"><dt>Paid</dt><dd style="margin: 0">$20.00</dd></div>
+</dl>
+</x-import>
+<a href="EventMobile.dc.html" class="as-btn as-btn--primary as-btn--lg as-btn--full">View event</a>
+</sc-if>
+<sc-if value="{{ isB }}" hint-placeholder-val="{{ false }}">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<x-import component-from-global-scope="AStra.StatusBadge" tone="warning" icon="flag">Refund requested</x-import>
+<h2 class="as-section-title" style="font-size: 18px">Chromatic Study, art print</h2>
+<x-import component-from-global-scope="AStra.DeliveryStatus" payment="paid" order="confirmed" email="sent"></x-import>
+<x-import component-from-global-scope="AStra.Banner" tone="info" title="We’re reviewing your request">We’ll reply within 3 business days.</x-import>
+</section>
+</sc-if>
+<x-import component-from-global-scope="AStra.Button" variant="secondary" size="lg" full-width="{{ yes }}" icon="info">Get help with this order</x-import>
+<sc-if value="{{ helped }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="success" title="Support request sent">We’ll reply by email. (Demo)</x-import>
+</sc-if>
+<span class="as-sample">Sample data · simulated payments</span>
+</main>
+<x-import component-from-global-scope="AStra.BottomNav" role="audience" active="none"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1700}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ sel: 'A', helped: false }, this.state || {});
+    const M = true;
+    const F = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Feed:['Feed','FeedMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Dashboard:['Dashboard','DashboardMobile'],Admin:['Admin','AdminMobile']};
+    const L = {'AStra':'Main','Feed':'Feed','Discover':'Profile','Loyalty':'Loyalty','Cart':'Checkout'};
+    const X = { 'Get help with this order': () => this.setState({ helped: true }) };
+    const go = (k) => { const a = this._root && this._root.querySelector('a[data-route="' + k + '"]'); if (a) a.click(); };
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      if (t.classList && t.classList.contains('od-row')) return;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h === '#') e.preventDefault();
+      this._root = e.currentTarget;
+      const NF = {Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Orders:['Orders','OrdersMobile'],Discover:['Discover','DiscoverMobile'],Onboarding:['Onboarding','OnboardingMobile']};
+      const DX = {'Discover':'Discover','Discover more':'Discover','Favorites':'Discover','Favorite creators':'Discover','Find creators':'Discover'};
+      const dk = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => DX[v])[0];
+      if (dk) { e.preventDefault(); const df = NF[DX[dk]]; const da = document.createElement('a'); da.setAttribute('href', df[M ? 1 : 0] + '.dc.html'); da.style.display = 'none'; this._root.appendChild(da); da.click(); da.remove(); return; }
+      const EX = {'Notifications':'Notifications','Settings':'Settings','More':'Settings','Sign out':'Main'};
+      const nav = (k) => { const f = F[k] || NF[k]; if (!f) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+      const cx = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]);
+      for (let i = 0; i < cx.length; i++) { const k = (cx[i] || '').trim().split(',')[0]; if (X[k]) { e.preventDefault(); X[k](); return; } if (EX[k]) { e.preventDefault(); nav(EX[k]); return; } if (L[k]) { e.preventDefault(); nav(L[k]); return; } }
+    };
+    const routes = Object.keys(F).map((k) => ({ key: k, file: F[k][M ? 1 : 0] + '.dc.html' }));
+    const mk = (key, title, meta, total) => ({ title, meta, total, sel: s.sel === key ? 'true' : 'false', pick: () => this.setState({ sel: key, helped: false }) });
+    return {
+      route, routes, yes: true,
+      orders: [
+        mk('A', 'Color After Hours', 'AST-24817 · Sep 27, paid, 500 pts used', '$20.00'),
+        mk('B', 'Chromatic Study print', 'AST-24790 · Sep 12, refund requested', '$30.00')
+      ],
+      isA: s.sel === 'A', isB: s.sel === 'B', helped: s.helped
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!-- @dsCard group="Feedback & trust" height=460 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Dialog — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h(A.Dialog,{inline:true,tone:'destructive',title:'Suspend Nia Brooks?',footer:[h(A.Button,{key:1,variant:'quiet'},'Cancel'),h(A.Button,{key:2,variant:'destructive'},'Suspend account')]},
+  h('p',{style:{margin:0}},'Suspension hides their content and blocks sign-in until restored. They’ll receive a notice with your reason and the appeal path.'),
+  h(A.TextField,{label:'Reason',multiline:true,rows:2,required:true,helper:'Saved to the audit history.'})
+), {pad:0});
+</script>
+</body>
+</html>

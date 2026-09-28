@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Settings</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+.st-link{display:flex;align-items:center;gap:12px;min-height:48px;padding:0 14px;border-radius:12px;text-decoration:none;color:var(--ink);font-weight:600;font-size:15px}
+.st-link:hover{background:var(--glass-highlight)}
+.st-link:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.st-link .st-go{margin-left:auto;color:var(--ink-muted)}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--rail" style="width: 1440px; height: 1610px; font-family: var(--font-sans); color: var(--ink); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.SideNav" role="audience" active="none" user="Alex Morgan" unread="{{ n2 }}" dual="{{ no }}"></x-import>
+<div class="as-shell__body">
+<x-import component-from-global-scope="AStra.TopBar" title="Settings" unread="{{ n2 }}"></x-import>
+<div class="as-shell__cols">
+<form class="as-shell__main" onSubmit="{{ noSubmit }}">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; align-items: center; gap: 16px">
+<x-import component-from-global-scope="AStra.Avatar" name="Alex Morgan" size="{{ n56 }}"></x-import>
+<div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 18px">Alex Morgan</strong><span class="as-caption">Audience account · email verified</span></div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<x-import component-from-global-scope="AStra.TextField" label="Display name" default-value="Alex Morgan"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Email" type="email" default-value="alex.morgan@example.com" helper="Receipts and security notices go here."></x-import>
+</div>
+<div style="display: flex; gap: 12px; align-items: center">
+<x-import component-from-global-scope="AStra.Button">Save changes</x-import>
+<sc-if value="{{ saved }}" hint-placeholder-val="{{ false }}"><span class="as-helper as-helper--success">Saved.</span></sc-if>
+</div>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="as-section-title">Views</h2>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted)">One account can be a fan and a creator. Creator tools, including collaboration, only appear in the creator view.</p>
+<div style="display: flex; gap: 12px; flex-wrap: wrap">
+<a href="Dashboard.dc.html" class="as-btn as-btn--secondary">Try the creator view (demo as Mira)</a>
+<a href="CollabFind.dc.html" class="as-btn as-btn--quiet">Collaboration demo (as Eli)</a>
+</div>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="as-section-title">Notifications</h2>
+<x-import component-from-global-scope="AStra.Switch" label="New posts and events from favorites" description="In the app and by email." default-checked="{{ yes }}"></x-import>
+<x-import component-from-global-scope="AStra.Switch" label="Points activity" description="When points are approved, pending or redeemed." default-checked="{{ yes }}"></x-import>
+<x-import component-from-global-scope="AStra.Switch" label="Order and security notices" description="Always on. We need to reach you about payments and sign-ins." checked="{{ yes }}" disabled="{{ yes }}"></x-import>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="as-section-title">Connected apps</h2>
+<x-import component-from-global-scope="AStra.ConsentCard" provider="Demo music service" icon="music-notes" purpose="Optional. Could show which creators you listen to. Not used for points." permissions="{{ perms }}" never="{{ never }}" retention="Disconnecting deletes imported data within 30 days. Orders and points stay." status="unconnected"></x-import>
+<p class="as-caption">Listening rewards aren’t available. Provider rules don’t allow them yet.</p>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<h2 class="as-section-title">Privacy and data</h2>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted)">You can ask us to delete your account. Some order, safety and audit records are kept as the law requires.</p>
+<sc-if value="{{ notRequested }}" hint-placeholder-val="{{ true }}">
+<div><x-import component-from-global-scope="AStra.Button" variant="destructive">Request account deletion</x-import></div>
+</sc-if>
+<sc-if value="{{ requested }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="warning" title="Deletion requested">We emailed alex.morgan@example.com to confirm. Nothing is deleted until you confirm. (Demo)</x-import>
+</sc-if>
+</section>
+</form>
+
+<aside class="as-shell__rail">
+<nav class="as-card" aria-label="Account" style="padding: 8px; display: flex; flex-direction: column; gap: 2px">
+<a href="Orders.dc.html" class="st-link">Your orders<span class="st-go"><x-import component-from-global-scope="AStra.Icon" name="caret-right" size="{{ n16 }}"></x-import></span></a>
+<a href="Loyalty.dc.html" class="st-link">Loyalty history<span class="st-go"><x-import component-from-global-scope="AStra.Icon" name="caret-right" size="{{ n16 }}"></x-import></span></a>
+<a href="Notifications.dc.html" class="st-link">Notifications<span class="st-go"><x-import component-from-global-scope="AStra.Icon" name="caret-right" size="{{ n16 }}"></x-import></span></a>
+<a href="Discover.dc.html" class="st-link">Favorite creators<span class="st-go"><x-import component-from-global-scope="AStra.Icon" name="caret-right" size="{{ n16 }}"></x-import></span></a>
+</nav>
+<div class="as-neu-tile"><span>Loyalty balance</span><strong style="color: var(--points)">100 pts</strong><span>50 pending · sample</span></div>
+<a href="Admin.dc.html" class="as-btn as-btn--quiet as-btn--sm" style="align-self: flex-start">Admin demo (provisioned access)</a>
+<a href="Main.dc.html" class="as-btn as-btn--secondary">Sign out</a>
+</aside>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1610}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ saved: false, requested: false }, this.state || {});
+    const M = false;
+    const F = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Feed:['Feed','FeedMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Dashboard:['Dashboard','DashboardMobile'],Admin:['Admin','AdminMobile']};
+    const L = {'AStra':'Main','Feed':'Feed','Discover':'Profile','Favorites':'Profile','Loyalty':'Loyalty','Cart':'Checkout'};
+    const X = { 'Save changes': () => this.setState({ saved: true }), 'Request account deletion': () => this.setState({ requested: true }) };
+    const go = (k) => { const a = this._root && this._root.querySelector('a[data-route="' + k + '"]'); if (a) a.click(); };
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h === '#') e.preventDefault();
+      this._root = e.currentTarget;
+      const NF = {Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Orders:['Orders','OrdersMobile'],Discover:['Discover','DiscoverMobile'],Onboarding:['Onboarding','OnboardingMobile']};
+      const DX = {'Discover':'Discover','Discover more':'Discover','Favorites':'Discover','Favorite creators':'Discover','Find creators':'Discover'};
+      const dk = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => DX[v])[0];
+      if (dk) { e.preventDefault(); const df = NF[DX[dk]]; const da = document.createElement('a'); da.setAttribute('href', df[M ? 1 : 0] + '.dc.html'); da.style.display = 'none'; this._root.appendChild(da); da.click(); da.remove(); return; }
+      const EX = {'Notifications':'Notifications','Orders':'Orders','Sign out':'Main'};
+      const nav = (k) => { const f = F[k] || NF[k]; if (!f) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+      const cx = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]);
+      for (let i = 0; i < cx.length; i++) { const k = (cx[i] || '').trim().split(',')[0]; if (X[k]) { e.preventDefault(); X[k](); return; } if (EX[k]) { e.preventDefault(); nav(EX[k]); return; } if (L[k]) { e.preventDefault(); nav(L[k]); return; } }
+    };
+    const routes = Object.keys(F).map((k) => ({ key: k, file: F[k][M ? 1 : 0] + '.dc.html' }));
+    return {
+      route, routes, yes: true, no: false, n2: 2, n16: 16, n56: 56, noSubmit: (e) => e.preventDefault(),
+      saved: s.saved, requested: s.requested, notRequested: !s.requested,
+      perms: ['See artists you follow on that service'], never: ['Post for you', 'Count listens for points']
+    };
+  }
+}
+</script>
+</body>
+</html>

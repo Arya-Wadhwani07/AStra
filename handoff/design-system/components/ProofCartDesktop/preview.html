@@ -1,0 +1,23 @@
+<!-- @dsCard group="Proof set" height=980 width=1280 page -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>ProofCartDesktop — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+var rail=[h(A.OrderSummary,{key:1,items:1,subtotal:25,pointsUsed:500,discount:5,fees:0,feesNote:'Demo: $0',total:20,remaining:100,pending:50,rule:'Demo rule: 100 pts = $1 off this event, min 100, steps of 100, max $5 per order.',cta:'Try payment again'})];
+render(h(A.AppShell,{role:'audience',active:'cart',title:'Cart',user:'Alex Morgan',rail:rail,dual:false},
+  h(A.Banner,{tone:'error',title:'Payment declined',action:h(A.Button,{size:'sm',variant:'secondary'},'Change method')},'The demo provider declined the payment. You haven’t been charged, no order was created, and your cart and points are unchanged.'),
+  h('section',{className:'as-card'}, h('h2',{className:'as-section-title'},'Mira Rao'), h(A.CartItem,{title:'Color After Hours',type:'event',creator:'Mira Rao',detail:'Sat, Oct 10 · 6:00–8:00 PM PT · Los Angeles',art:'event',price:25,qty:1,max:4,pointsEligible:true})),
+  h('section',{className:'as-card as-stack'},
+    h('div',{className:'as-row',style:{justifyContent:'space-between'}}, h('h2',{className:'as-section-title'},'Use loyalty points'), h(A.StatusBadge,{tone:'points'},'600 available · 50 pending')),
+    h(A.SegmentedControl,{ariaLabel:'Points to apply',defaultValue:500,options:[{value:0,label:'None'},{value:100,label:'100'},{value:300,label:'300'},{value:500,label:'500 · max'}]}),
+    h('p',{className:'as-helper'},'500 points = $5.00 off with the active demo rule. Pending points can’t be used yet.')),
+  h('span',{className:'as-sample'},'Demo checkout · no real payment')
+), {pad:0});
+</script>
+</body>
+</html>

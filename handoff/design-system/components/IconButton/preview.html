@@ -1,0 +1,17 @@
+<!-- @dsCard group="Actions" height=224 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>IconButton — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-stack'},
+  S('Quiet / secondary / primary', h(A.IconButton,{icon:'bell',label:'Notifications'}), h(A.IconButton,{icon:'dots-three',label:'More actions',variant:'secondary'}), h(A.IconButton,{icon:'plus',label:'Create',variant:'primary'})),
+  S('Sizes · toggle selected (fill) · disabled', h(A.IconButton,{icon:'x',label:'Close',size:'sm'}), h(A.IconButton,{icon:'heart',label:'Favorite',size:'lg'}), h(A.IconButton,{icon:'heart',label:'Favorite',toggle:true,selected:true}), h(A.IconButton,{icon:'trash',label:'Delete',disabled:true}))
+));
+</script>
+</body>
+</html>

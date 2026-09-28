@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Admin review queue</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--admin" style="width: 1440px; height: 1200px; font-family: var(--font-sans); color: var(--ink); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient as-ambient--quiet" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.SideNav" role="admin" active="queue" user="Admin demo"></x-import>
+<div class="as-shell__body">
+<x-import component-from-global-scope="AStra.TopBar" title="Review queue"></x-import>
+<div class="as-shell__cols">
+<main class="as-shell__main">
+<div style="display: flex; gap: 12px; align-items: center">
+<span class="as-sample">Authenticated admin demo scenario · sample data</span>
+<a href="Main.dc.html" class="as-btn as-btn--secondary as-btn--sm" style="margin-left: auto">Exit admin demo</a>
+</div>
+<div style="display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 24px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 24px">
+<x-import component-from-global-scope="AStra.AdminTable" title="Open cases">
+<x-import component-from-global-scope="AStra.AdminCaseRow" id="CASE-311" type="Verification" icon="shield-check" subject="Mira Rao" detail="Submitted Sep 25" status="{{ c311 }}" age="1d" selected="{{ yes }}"></x-import>
+<x-import component-from-global-scope="AStra.AdminCaseRow" id="CASE-309" type="Loyalty" icon="star-four" subject="Held reward · 400 pts" detail="12 activities in 3 min" status="held" age="2d"></x-import>
+<x-import component-from-global-scope="AStra.AdminCaseRow" id="CASE-305" type="Order dispute" icon="receipt" subject="Order AST-24790" detail="Refund requested" status="appealed" age="4d"></x-import>
+<x-import component-from-global-scope="AStra.AdminCaseRow" id="CASE-302" type="Content report" icon="flag" subject="Post by a creator" detail="Reported as spam" status="pending" age="5d"></x-import>
+</x-import>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<h2 class="as-section-title">Loyalty rules</h2>
+<x-import component-from-global-scope="AStra.StatusBadge" tone="success">Confirmed</x-import>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+<div style="padding: 12px; border-radius: 12px; background: var(--points-bg)"><span class="as-caption">Platform rate</span><p style="margin: 4px 0 0; font-weight: 700; color: var(--points)">100 pts = $1 off</p></div>
+<div style="padding: 12px; border-radius: 12px; background: var(--surface-sunken)"><span class="as-caption">Creator limits</span><p style="margin: 4px 0 0; font-weight: 600">Set by each creator</p></div>
+<div style="padding: 12px; border-radius: 12px; background: var(--surface-sunken)"><span class="as-caption">Cash value</span><p style="margin: 4px 0 0; font-weight: 600">None · not withdrawable</p></div>
+</div>
+<p class="as-caption">Pending policy decisions: minimums and steps, allowed limit range, expiry, earning rules, who funds discounts, refunds, multi-creator carts. Shown as open, not settled.</p>
+</section>
+</div>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<h2 class="as-section-title">CASE-311 · Verification</h2>
+<x-import component-from-global-scope="AStra.StatusBadge" tone="{{ badgeTone }}" icon="{{ badgeIcon }}">{{ badgeText }}</x-import>
+</div>
+<x-import component-from-global-scope="AStra.CreatorSummary" compact="{{ yes }}" name="Mira Rao" discipline="painter" location="Los Angeles"></x-import>
+<p class="as-caption">Identity evidence is viewed in the provider’s secure panel and isn’t stored here. Provider not selected yet.</p>
+<sc-if value="{{ open }}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<x-import component-from-global-scope="AStra.SegmentedControl" label="Decision" options="{{ decisions }}" default-value="approve"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Reason" multiline="{{ yes }}" rows="{{ n2 }}" required="{{ yes }}" default-value="Name and portfolio match the submitted details." helper="Sent to the creator and saved to the audit history."></x-import>
+<div style="display: flex; justify-content: flex-end; gap: 8px">
+<x-import component-from-global-scope="AStra.Button" variant="quiet">Cancel</x-import>
+<x-import component-from-global-scope="AStra.Button">Record decision</x-import>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="success" title="Decision recorded">Mira Rao was notified. Ticketing and loyalty settings are now unlocked for her account.</x-import>
+</sc-if>
+<h3 class="as-label" style="margin-top: 8px">History</h3>
+<ul style="margin: 0; padding: 0">
+<sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.AuditRow" action="Verified" record="CASE-311" actor="Admin demo" time="Sep 27, 2026 · 4:40 PM PT" reason="Name and portfolio match the submitted details." notice="Creator notified in app and by email"></x-import>
+</sc-if>
+<x-import component-from-global-scope="AStra.AuditRow" action="Case opened" record="CASE-311" actor="System" time="Sep 25, 2026 · 4:12 PM PT"></x-import>
+</ul>
+</section>
+</div>
+</main>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ done: false }, this.state || {});
+    const M = false;
+    const F = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Feed:['Feed','FeedMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Dashboard:['Dashboard','DashboardMobile'],Admin:['Admin','AdminMobile']};
+    const L = {'AStra':'Main','Review queue':'Admin','Verification':'Admin','Loyalty rules':'Admin','Commerce disputes':'Admin','Accounts':'Admin','Audit history':'Admin'};
+    const X = { 'Record decision': () => this.setState({ done: true }), 'Cancel': () => {}, 'Approve': () => {}, 'Request details': () => {}, 'Reject': () => {} };
+    const go = (k) => { const a = this._root && this._root.querySelector('a[data-route="' + k + '"]'); if (a) a.click(); };
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h === '#') e.preventDefault();
+      this._root = e.currentTarget;
+      const NF = {Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Orders:['Orders','OrdersMobile'],Discover:['Discover','DiscoverMobile'],Onboarding:['Onboarding','OnboardingMobile']};
+      const DX = {'Discover':'Discover','Discover more':'Discover','Favorites':'Discover','Favorite creators':'Discover','Find creators':'Discover'};
+      const dk = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => DX[v])[0];
+      if (dk) { e.preventDefault(); const df = NF[DX[dk]]; const da = document.createElement('a'); da.setAttribute('href', df[M ? 1 : 0] + '.dc.html'); da.style.display = 'none'; this._root.appendChild(da); da.click(); da.remove(); return; }
+      const EX = {'Notifications':'Admin','Sign out':'Main','Exit admin demo':'Main'};
+      const nav = (k) => { const f = F[k] || NF[k]; if (!f) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav('Main'); return; }
+      const cx = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent));
+      for (let i = 0; i < cx.length; i++) { const k = (cx[i] || '').trim().split(',')[0]; if (EX[k]) { e.preventDefault(); nav(EX[k]); return; } }
+      const c = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]);
+      for (let i = 0; i < c.length; i++) { const k = (c[i] || '').trim(); if (X[k]) { e.preventDefault(); X[k](); return; } if (L[k]) { e.preventDefault(); go(L[k]); return; } }
+    };
+    const routes = Object.keys(F).map((k) => ({ key: k, file: F[k][M ? 1 : 0] + '.dc.html' }));
+    return {
+      route, routes, yes: true, n2: 2,
+      open: !s.done, done: s.done,
+      c311: s.done ? 'decided' : 'pending',
+      badgeTone: s.done ? 'success' : 'info', badgeIcon: s.done ? 'seal-check' : 'hourglass-medium', badgeText: s.done ? 'Verified' : 'Pending review',
+      decisions: [{ value: 'approve', label: 'Approve' }, { value: 'need', label: 'Request details' }, { value: 'reject', label: 'Reject' }]
+    };
+  }
+}
+</script>
+</body>
+</html>

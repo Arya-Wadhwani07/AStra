@@ -1,0 +1,413 @@
+{
+ "v": 3,
+ "layout": "files",
+ "createdOnFiles": {
+  "at": "2026-09-27T04:43:46.810Z",
+  "v": 1
+ },
+ "title": "AStra",
+ "namespace": "AStra",
+ "libraries": [
+  {
+   "name": "react",
+   "version": "18"
+  },
+  {
+   "name": "react-dom",
+   "version": "18"
+  }
+ ],
+ "sections": {},
+ "groups": [
+  "Icons",
+  "Motion",
+  "Storyboards"
+ ],
+ "assetGroups": {
+  "Icons": {
+   "name": "Icons",
+   "tile": "s",
+   "order": [
+    "palette.svg",
+    "music-notes.svg",
+    "pen-nib.svg",
+    "person-simple-tai-chi.svg",
+    "camera.svg",
+    "video-camera.svg",
+    "microphone-stage.svg",
+    "book-open-text.svg",
+    "star-four.svg",
+    "lock-simple.svg",
+    "seal-check.svg",
+    "shield-check.svg",
+    "ticket.svg",
+    "t-shirt.svg",
+    "article.svg",
+    "house.svg",
+    "compass.svg",
+    "heart.svg",
+    "shopping-cart-simple.svg",
+    "receipt.svg",
+    "handshake.svg",
+    "users-three.svg",
+    "chart-line-up.svg",
+    "planet.svg"
+   ],
+   "files": {
+    "article.svg": {
+     "name": "article.svg",
+     "blob": "442e47cb206cf1e3e64988fb3c23dbef",
+     "size": 394,
+     "type": "image/svg+xml"
+    },
+    "book-open-text.svg": {
+     "name": "book-open-text.svg",
+     "blob": "f97ff506ab1203e3d0d8e0e08534c755",
+     "size": 562,
+     "type": "image/svg+xml"
+    },
+    "camera.svg": {
+     "name": "camera.svg",
+     "blob": "cba224be60b6fe971d84acbeb51d15d7",
+     "size": 499,
+     "type": "image/svg+xml"
+    },
+    "chart-line-up.svg": {
+     "name": "chart-line-up.svg",
+     "blob": "18cc68dfac578e432ad7590baa8849e6",
+     "size": 350,
+     "type": "image/svg+xml"
+    },
+    "compass.svg": {
+     "name": "compass.svg",
+     "blob": "b1021c4236a341094b933f72d0de6c99",
+     "size": 402,
+     "type": "image/svg+xml"
+    },
+    "handshake.svg": {
+     "name": "handshake.svg",
+     "blob": "e2638aa965ee418af15e2bb82433a78a",
+     "size": 898,
+     "type": "image/svg+xml"
+    },
+    "heart.svg": {
+     "name": "heart.svg",
+     "blob": "d18cb0d709cced9f39184b08c52fd0eb",
+     "size": 489,
+     "type": "image/svg+xml"
+    },
+    "house.svg": {
+     "name": "house.svg",
+     "blob": "093d6b66a6bdcd29ef8ec70d068b57c0",
+     "size": 356,
+     "type": "image/svg+xml"
+    },
+    "lock-simple.svg": {
+     "name": "lock-simple.svg",
+     "blob": "4ee1b1897399863ce881f21aaf026234",
+     "size": 275,
+     "type": "image/svg+xml"
+    },
+    "microphone-stage.svg": {
+     "name": "microphone-stage.svg",
+     "blob": "d08021a4e7c4537355a5ea8803c328f0",
+     "size": 580,
+     "type": "image/svg+xml"
+    },
+    "music-notes.svg": {
+     "name": "music-notes.svg",
+     "blob": "48acb7869c9a860573db482491195e6e",
+     "size": 370,
+     "type": "image/svg+xml"
+    },
+    "palette.svg": {
+     "name": "palette.svg",
+     "blob": "2f14208cfd70c0adb28c25962a4b0038",
+     "size": 702,
+     "type": "image/svg+xml"
+    },
+    "pen-nib.svg": {
+     "name": "pen-nib.svg",
+     "blob": "ceba56ae2cf6295efdc2d367cf7a7419",
+     "size": 548,
+     "type": "image/svg+xml"
+    },
+    "person-simple-tai-chi.svg": {
+     "name": "person-simple-tai-chi.svg",
+     "blob": "e96bfd3f816c277b51061a945b80e953",
+     "size": 372,
+     "type": "image/svg+xml"
+    },
+    "planet.svg": {
+     "name": "planet.svg",
+     "blob": "095a14de009a44193aeffe6b585dc9ac",
+     "size": 940,
+     "type": "image/svg+xml"
+    },
+    "receipt.svg": {
+     "name": "receipt.svg",
+     "blob": "fac0988388c42910d97cc99dee170e8f",
+     "size": 537,
+     "type": "image/svg+xml"
+    },
+    "seal-check.svg": {
+     "name": "seal-check.svg",
+     "blob": "b8334dcc93b989ecb8420cd4ecd98d5c",
+     "size": 1966,
+     "type": "image/svg+xml"
+    },
+    "shield-check.svg": {
+     "name": "shield-check.svg",
+     "blob": "69828d2b1b68172b928f637999cc6886",
+     "size": 536,
+     "type": "image/svg+xml"
+    },
+    "shopping-cart-simple.svg": {
+     "name": "shopping-cart-simple.svg",
+     "blob": "bcc0f421c6bf6473b47cf7bf89f1452c",
+     "size": 436,
+     "type": "image/svg+xml"
+    },
+    "star-four.svg": {
+     "name": "star-four.svg",
+     "blob": "be5ac530f91bdf34ec6bf7de05cb0af3",
+     "size": 432,
+     "type": "image/svg+xml"
+    },
+    "t-shirt.svg": {
+     "name": "t-shirt.svg",
+     "blob": "5aafba034d07a689d71de57e8a69164b",
+     "size": 574,
+     "type": "image/svg+xml"
+    },
+    "ticket.svg": {
+     "name": "ticket.svg",
+     "blob": "1118ee3ebe5eab90d4b9087f3dc70956",
+     "size": 379,
+     "type": "image/svg+xml"
+    },
+    "users-three.svg": {
+     "name": "users-three.svg",
+     "blob": "c92bdefd478fa0588ed94a99cd1d8da8",
+     "size": 689,
+     "type": "image/svg+xml"
+    },
+    "video-camera.svg": {
+     "name": "video-camera.svg",
+     "blob": "c3450c01ee1cbb9af9d7526886cee8e3",
+     "size": 352,
+     "type": "image/svg+xml"
+    }
+   }
+  },
+  "Motion": {
+   "name": "Motion",
+   "tile": "l",
+   "order": [
+    "astra-hero-poster-16x9.jpg",
+    "astra-hero-loop-16x9.mp4",
+    "astra-hero-loop-16x9.webm",
+    "astra-hero-intro-16x9.mp4",
+    "astra-hero-intro-16x9.webm",
+    "astra-hero-poster-9x16.jpg",
+    "astra-hero-loop-9x16.mp4",
+    "astra-hero-loop-9x16.webm",
+    "astra-collab-poster-16x9.jpg",
+    "astra-collab-loop-16x9.mp4",
+    "astra-collab-loop-16x9.webm",
+    "astra-loyalty-poster-16x9.jpg",
+    "astra-loyalty-loop-16x9.mp4",
+    "astra-loyalty-loop-16x9.webm"
+   ],
+   "files": {
+    "astra-hero-poster-16x9.jpg": {
+     "name": "astra-hero-poster-16x9.jpg",
+     "blob": "f066f217d04f9a4832bf7bac34177543",
+     "size": 53657,
+     "type": "image/jpeg"
+    },
+    "astra-hero-loop-16x9.mp4": {
+     "name": "astra-hero-loop-16x9.mp4",
+     "blob": "4320ee894668ee029ec9bfb9f2490e55",
+     "size": 3907810,
+     "type": "video/mp4"
+    },
+    "astra-hero-loop-16x9.webm": {
+     "name": "astra-hero-loop-16x9.webm",
+     "blob": "699cd985d5040ce672206b517344f658",
+     "size": 2490621,
+     "type": "video/webm"
+    },
+    "astra-hero-intro-16x9.mp4": {
+     "name": "astra-hero-intro-16x9.mp4",
+     "blob": "7d0b661bc72c7481c65b618f874364b3",
+     "size": 1462080,
+     "type": "video/mp4"
+    },
+    "astra-hero-intro-16x9.webm": {
+     "name": "astra-hero-intro-16x9.webm",
+     "blob": "8a23686b87f00358051e246d094fd6f9",
+     "size": 837661,
+     "type": "video/webm"
+    },
+    "astra-hero-poster-9x16.jpg": {
+     "name": "astra-hero-poster-9x16.jpg",
+     "blob": "782597d64d46b1be5435d1a604a441ab",
+     "size": 26977,
+     "type": "image/jpeg"
+    },
+    "astra-hero-loop-9x16.mp4": {
+     "name": "astra-hero-loop-9x16.mp4",
+     "blob": "59c3ba56a9d5f3fdc9d0ff4755fb1584",
+     "size": 1225614,
+     "type": "video/mp4"
+    },
+    "astra-hero-loop-9x16.webm": {
+     "name": "astra-hero-loop-9x16.webm",
+     "blob": "89b900ddc7437a2b2a93cef3860a7980",
+     "size": 710672,
+     "type": "video/webm"
+    },
+    "astra-collab-poster-16x9.jpg": {
+     "name": "astra-collab-poster-16x9.jpg",
+     "blob": "b1fe16f1c7e9afc57bc20d8967d52203",
+     "size": 33025,
+     "type": "image/jpeg"
+    },
+    "astra-collab-loop-16x9.mp4": {
+     "name": "astra-collab-loop-16x9.mp4",
+     "blob": "b28590f9dfb22ba320f538a31d2a5a53",
+     "size": 1605215,
+     "type": "video/mp4"
+    },
+    "astra-collab-loop-16x9.webm": {
+     "name": "astra-collab-loop-16x9.webm",
+     "blob": "149f9dd4335f779ce30143cb3470e2dc",
+     "size": 878538,
+     "type": "video/webm"
+    },
+    "astra-loyalty-poster-16x9.jpg": {
+     "name": "astra-loyalty-poster-16x9.jpg",
+     "blob": "8a2239a971cd4cf54a9f0ee7e575b055",
+     "size": 40825,
+     "type": "image/jpeg"
+    },
+    "astra-loyalty-loop-16x9.mp4": {
+     "name": "astra-loyalty-loop-16x9.mp4",
+     "blob": "b40b0dc678fef2f5e827d4b1a3f58b79",
+     "size": 1551922,
+     "type": "video/mp4"
+    },
+    "astra-loyalty-loop-16x9.webm": {
+     "name": "astra-loyalty-loop-16x9.webm",
+     "blob": "f99d03af9b25ce49c94ea609dd171506",
+     "size": 584065,
+     "type": "video/webm"
+    }
+   }
+  },
+  "Storyboards": {
+   "name": "Storyboards",
+   "tile": "m",
+   "order": [
+    "sb-hero-1-begin.jpg",
+    "sb-hero-2-middle.jpg",
+    "sb-hero-3-end.jpg",
+    "sb-hero-4-loop.jpg",
+    "sb-collab-1-begin.jpg",
+    "sb-collab-2-middle.jpg",
+    "sb-collab-3-end.jpg",
+    "sb-collab-4-loop.jpg",
+    "sb-loyalty-1-begin.jpg",
+    "sb-loyalty-2-middle.jpg",
+    "sb-loyalty-3-end.jpg",
+    "sb-loyalty-4-loop.jpg"
+   ],
+   "files": {
+    "sb-hero-1-begin.jpg": {
+     "name": "sb-hero-1-begin.jpg",
+     "blob": "e1275e348d2e17e8dba802d6a50d730f",
+     "size": 9415,
+     "type": "image/jpeg"
+    },
+    "sb-hero-2-middle.jpg": {
+     "name": "sb-hero-2-middle.jpg",
+     "blob": "3416ecf5b143073528971c14ffae8e8f",
+     "size": 13576,
+     "type": "image/jpeg"
+    },
+    "sb-hero-3-end.jpg": {
+     "name": "sb-hero-3-end.jpg",
+     "blob": "f7f2799a967cbb10c052b7a119ec6003",
+     "size": 15287,
+     "type": "image/jpeg"
+    },
+    "sb-hero-4-loop.jpg": {
+     "name": "sb-hero-4-loop.jpg",
+     "blob": "1e824b626b581192b01eecf46d0d7c51",
+     "size": 15183,
+     "type": "image/jpeg"
+    },
+    "sb-collab-1-begin.jpg": {
+     "name": "sb-collab-1-begin.jpg",
+     "blob": "f7814edc9187119a272872eedb26037a",
+     "size": 9099,
+     "type": "image/jpeg"
+    },
+    "sb-collab-2-middle.jpg": {
+     "name": "sb-collab-2-middle.jpg",
+     "blob": "574e47610ba24fa83c96473ce54de3bf",
+     "size": 9139,
+     "type": "image/jpeg"
+    },
+    "sb-collab-3-end.jpg": {
+     "name": "sb-collab-3-end.jpg",
+     "blob": "3b7bf3a623ed48832ce2b727daf3b3c3",
+     "size": 8813,
+     "type": "image/jpeg"
+    },
+    "sb-collab-4-loop.jpg": {
+     "name": "sb-collab-4-loop.jpg",
+     "blob": "7e25840bfbaffcf9671544044ad396de",
+     "size": 9999,
+     "type": "image/jpeg"
+    },
+    "sb-loyalty-1-begin.jpg": {
+     "name": "sb-loyalty-1-begin.jpg",
+     "blob": "5f5433350c25c84bdfdd4b4242235639",
+     "size": 10769,
+     "type": "image/jpeg"
+    },
+    "sb-loyalty-2-middle.jpg": {
+     "name": "sb-loyalty-2-middle.jpg",
+     "blob": "329820686a0dc527cc7214e25d0d8bfb",
+     "size": 10769,
+     "type": "image/jpeg"
+    },
+    "sb-loyalty-3-end.jpg": {
+     "name": "sb-loyalty-3-end.jpg",
+     "blob": "ca29fcd8b7c842563700339f42bf2330",
+     "size": 10631,
+     "type": "image/jpeg"
+    },
+    "sb-loyalty-4-loop.jpg": {
+     "name": "sb-loyalty-4-loop.jpg",
+     "blob": "2503e84c00a0ce97433bd037dde05459",
+     "size": 10610,
+     "type": "image/jpeg"
+    }
+   }
+  }
+ },
+ "blobs": {},
+ "docs": {
+  "readme": "project/README.md",
+  "sections": []
+ },
+ "lastChange": {
+  "by": "Arya Jay Wadhwani",
+  "at": "2026-09-27T21:00:00Z",
+  "via": "Claude (Cowork)",
+  "note": "v7 Glass theme (data-theme=\"glass\"): scenic liquid glass for the signed-in app and onboarding. Deep blurred colour scene (ambient-sky to ambient-ground plus coral, amber, blue and pink light), nearly clear panels (45% navy tint, 32px blur, bright rim and sheen), white ink, clear glass controls, warm-white primary. Builds on v6 ambient glass and the v5 taste pass; palette, type, components, motion and loyalty rules unchanged."
+ }
+}

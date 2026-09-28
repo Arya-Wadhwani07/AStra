@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Mira Rao (mobile)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--mobile" style="width: 390px; height: 2200px; font-family: var(--font-sans); color: var(--ink); background: var(--bg); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient as-ambient--drift" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.TopBar" mobile="{{ yes }}" role="audience"></x-import>
+<main class="as-shell__main" style="padding-top: 16px">
+<x-import component-from-global-scope="AStra.MediaFrame" ratio="3:2" art="painting" credit="Placeholder art · Mira Rao"></x-import>
+<x-import component-from-global-scope="AStra.CreatorSummary" card="{{ yes }}" name="Mira Rao" discipline="painter" location="Los Angeles" verified="{{ yes }}" favorite="{{ yes }}" bio="Large color-field canvases about LA light at dusk. Exhibition opening October 10." skills="{{ skills }}"></x-import>
+<div class="as-card" style="padding: 16px; display: flex; flex-direction: column; gap: 8px; background: var(--points-bg); border-color: transparent">
+<x-import component-from-global-scope="AStra.StatusBadge" tone="points" icon="star-four">Accepts AStra points</x-import>
+<p style="margin: 0; font-size: 14px; line-height: 20px">Up to <strong>20% off</strong> tickets and merchandise. 100 points = $1 off.</p>
+</div>
+<x-import component-from-global-scope="AStra.Tabs" items="{{ tabs }}" value="{{ tab }}" on-change="{{ setTab }}" aria-label="Mira’s work"></x-import>
+<sc-if value="{{ isWork }}" hint-placeholder-val="{{ true }}">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<x-import component-from-global-scope="AStra.MediaFrame" ratio="4:5" art="painting" credit="Artwork: Mira Rao" alt="Color-field painting in coral and navy bands"></x-import>
+<x-import component-from-global-scope="AStra.MediaFrame" ratio="4:5" art="print" credit="Artwork: Mira Rao" alt="Study of overlapping orange rectangles"></x-import>
+<x-import component-from-global-scope="AStra.MediaFrame" ratio="4:5" art="prism" credit="Artwork: Mira Rao" alt="Blue and pink gradient study"></x-import>
+<x-import component-from-global-scope="AStra.MediaFrame" ratio="4:5" art="chrome" credit="Artwork: Mira Rao" alt="Dark canvas with a single orange stripe"></x-import>
+</div>
+</sc-if>
+<sc-if value="{{ isEvents }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.FeedCard" type="event" creator="Mira Rao" discipline="painter" verified="{{ yes }}" time="2h ago" art="event" credit="Placeholder art" title="Color After Hours" date="Oct 10 · 6-8 PM PT" location="Los Angeles" price="{{ n25 }}" availability="available" favorite="{{ yes }}"></x-import>
+</sc-if>
+<sc-if value="{{ isMerch }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.FeedCard" type="merch" creator="Mira Rao" discipline="painter" verified="{{ yes }}" time="Yesterday" art="print" credit="Placeholder art" title="Chromatic Study · art print" price="{{ n30 }}" availability="low" count="{{ n12 }}" favorite="{{ yes }}"></x-import>
+</sc-if>
+<a href="EventMobile.dc.html" class="as-btn as-btn--primary as-btn--lg as-btn--full">View Color After Hours</a>
+<span class="as-sample">Sample data · fictional creator</span>
+</main>
+<x-import component-from-global-scope="AStra.BottomNav" role="audience" active="discover" cart-count="{{ n1 }}"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ tab: 'work' }, this.state || {});
+    const M = true;
+    const F = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Feed:['Feed','FeedMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Dashboard:['Dashboard','DashboardMobile'],Admin:['Admin','AdminMobile']};
+    const L = {'AStra':'Main','Feed':'Feed','Discover':'Profile','Favorites':'Profile','Loyalty':'Loyalty','Cart':'Checkout','Orders':'Checkout','Overview':'Dashboard','Home':'Dashboard','Publish':'Dashboard','Community':'CollabFind','Collaborate':'CollabFind','Collab':'CollabFind','Audience insights':'Dashboard','Creator':'Dashboard','Audience':'Feed','Review queue':'Admin','Verification':'Admin','Loyalty rules':'Admin','Commerce disputes':'Admin','Accounts':'Admin','Audit history':'Admin','View event':'Event','Read post':'Profile','View item':'Profile','View opportunity':'CollabRespond','Loyalty history':'Loyalty','Add to cart':'Checkout','Sign in':'SignIn','Join AStra':'SignIn','Explore creators':'Feed','Discover more':'Profile','Create opportunity':'CollabCreate','Find opportunities':'CollabFind','Publish opportunity':'CollabFind','Review responses':'CollabRespond'};
+    const X = { 'Work': () => {}, 'Events': () => {}, 'Merch': () => {} };
+    const go = (k) => { const a = this._root && this._root.querySelector('a[data-route="' + k + '"]'); if (a) a.click(); };
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h === '#') e.preventDefault();
+      this._root = e.currentTarget;
+      const NF = {Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Orders:['Orders','OrdersMobile'],Discover:['Discover','DiscoverMobile'],Onboarding:['Onboarding','OnboardingMobile']};
+      const DX = {'Discover':'Discover','Discover more':'Discover','Favorites':'Discover','Favorite creators':'Discover','Find creators':'Discover'};
+      const dk = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => DX[v])[0];
+      if (dk) { e.preventDefault(); const df = NF[DX[dk]]; const da = document.createElement('a'); da.setAttribute('href', df[M ? 1 : 0] + '.dc.html'); da.style.display = 'none'; this._root.appendChild(da); da.click(); da.remove(); return; }
+      const EX = {'Notifications':'Notifications','Settings':'Settings','More':'Settings','Orders':'Orders','Your orders':'Orders','Sign out':'Main','Mira Rao':'Profile','Color After Hours':'Event'};
+      const nav = (k) => { const f = F[k] || NF[k]; if (!f) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav(document.title.indexOf('Admin') > -1 ? 'Main' : 'Settings'); return; }
+      const cx = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent));
+      for (let i = 0; i < cx.length; i++) { const k = (cx[i] || '').trim().split(',')[0]; if (EX[k]) { e.preventDefault(); nav(EX[k]); return; } }
+      const c = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]);
+      for (let i = 0; i < c.length; i++) { const k = (c[i] || '').trim(); if (X[k]) { X[k](); return; } if (L[k]) { e.preventDefault(); go(L[k]); return; } }
+    };
+    const routes = Object.keys(F).map((k) => ({ key: k, file: F[k][M ? 1 : 0] + '.dc.html' }));
+    return {
+      route, routes, yes: true, n1: 1, n12: 12, n25: 25, n30: 30,
+      skills: ['Color field', 'Printmaking', 'Exhibitions'],
+      tabs: [{ id: 'work', label: 'Work' }, { id: 'events', label: 'Events' }, { id: 'merch', label: 'Merch' }],
+      tab: s.tab, setTab: (id) => this.setState({ tab: id }),
+      isWork: s.tab === 'work', isEvents: s.tab === 'events', isMerch: s.tab === 'merch'
+    };
+  }
+}
+</script>
+</body>
+</html>

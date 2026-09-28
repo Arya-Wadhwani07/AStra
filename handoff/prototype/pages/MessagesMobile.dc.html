@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Messages (mobile)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+.mg-cols{display:grid;grid-template-columns:320px minmax(0,1fr);gap:24px;align-items:start}
+.mg-list{display:flex;flex-direction:column;gap:6px}
+.mg-conv{all:unset;box-sizing:border-box;display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px;border-radius:12px;cursor:pointer;width:100%}
+.mg-conv:hover{background:var(--surface-sunken)}
+.mg-conv:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.mg-conv.is-open{background:var(--surface-sunken);box-shadow:inset 3px 0 0 var(--accent)}
+.mg-conv__text{display:flex;flex-direction:column;gap:3px;min-width:0}
+.mg-conv__top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.mg-conv__top strong{font-size:15px}
+.mg-conv__time{font-size:12px;color:var(--ink-subtle)}
+.mg-conv__prev{font-size:14px;line-height:20px;color:var(--ink-muted);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.mg-conv.is-unread .mg-conv__prev{color:var(--ink);font-weight:600}
+.mg-conv__opp{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--private);font-weight:600}
+.mg-badge{align-self:center;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--accent);color:var(--on-action, #fff)}
+.mg-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.mg-tools{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.mg-linkrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:12px;background:var(--surface-sunken);font-size:14px}
+.mg-link{display:inline-flex;align-items:center;gap:6px;font-weight:600}
+.mc-lock{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--private);font-weight:600}
+.mg-thread{display:flex;flex-direction:column;gap:14px;padding:4px 0}
+.mg-compose{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start}
+.mg-compose > :last-child{margin-top:30px}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--mobile" style="width: 390px; height: 1500px; font-family: var(--font-sans); color: var(--ink); background: var(--bg); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.TopBar" mobile="{{ yes }}" role="creator"></x-import>
+<div class="as-shell__mtitle"><h1 class="as-page-title">Messages</h1></div>
+<main class="as-shell__main">
+<sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 8px; padding: 12px">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 8px 0"><h2 class="as-section-title" style="font-size: 16px">Conversations</h2><span class="as-sample">Sample data</span></div>
+<div class="mg-list" role="list">
+<sc-for list="{{ convs }}" as="c" hint-placeholder-count="3">
+<button type="button" class="{{ c.cls }}" role="listitem">
+<x-import component-from-global-scope="AStra.Avatar" name="{{ c.name }}" size="{{ n40 }}"></x-import>
+<span class="mg-conv__text">
+<span class="mg-conv__top"><strong>{{ c.name }}</strong><span class="mg-conv__time">{{ c.time }}</span></span>
+<span class="mg-conv__prev">{{ c.preview }}</span>
+<sc-if value="{{ c.hasOpp }}" hint-placeholder-val="{{ true }}"><span class="mg-conv__opp"><x-import component-from-global-scope="AStra.Icon" name="lock-simple" size="{{ n16 }}"></x-import>{{ c.oppShort }}</span></sc-if>
+<sc-if value="{{ c.direct }}" hint-placeholder-val="{{ false }}"><span class="mg-conv__time">Direct message</span></sc-if>
+</span>
+<sc-if value="{{ c.unread }}" hint-placeholder-val="{{ false }}"><span class="mg-badge">{{ c.unreadLabel }}</span></sc-if>
+</button>
+</sc-for>
+</div>
+</section>
+<x-import component-from-global-scope="AStra.Banner" tone="private" title="Private">Conversations are visible only to the people in them. Audience members can’t see collaboration messages.</x-import>
+</sc-if>
+<sc-if value="{{ isThread }}" hint-placeholder-val="{{ false }}">
+<div><x-import component-from-global-scope="AStra.Button" variant="quiet" size="sm" icon="arrow-left">Back to messages</x-import></div>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 14px">
+<div class="mg-head">
+<x-import component-from-global-scope="AStra.CreatorSummary" name="{{ cName }}" discipline="{{ cDisc }}" location="{{ cLoc }}" verified="{{ yes }}" compact="{{ yes }}"></x-import>
+<div class="mg-tools">
+<sc-if value="{{ hasBrief }}" hint-placeholder-val="{{ true }}"><a href="MyCollabsMobile.dc.html" class="as-btn as-btn--secondary as-btn--sm">View brief</a></sc-if>
+<x-import component-from-global-scope="AStra.Button" variant="quiet" size="sm" icon="flag">Report</x-import>
+<x-import component-from-global-scope="AStra.Button" variant="quiet" size="sm" icon="prohibit">Block</x-import>
+</div>
+</div>
+<sc-if value="{{ hasOpp }}" hint-placeholder-val="{{ true }}">
+<div class="mg-linkrow"><span class="mg-link"><x-import component-from-global-scope="AStra.Icon" name="link-simple" size="{{ n16 }}"></x-import>{{ oppLine }}</span><span class="mc-lock"><x-import component-from-global-scope="AStra.Icon" name="lock-simple" size="{{ n16 }}"></x-import>Creators only</span></div>
+</sc-if>
+<sc-if value="{{ noOpp }}" hint-placeholder-val="{{ false }}">
+<div class="mg-linkrow"><span class="mg-link"><x-import component-from-global-scope="AStra.Icon" name="envelope-simple" size="{{ n16 }}"></x-import>Direct message</span><span class="as-caption">Not linked to an opportunity</span></div>
+</sc-if>
+<sc-if value="{{ reported }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="info">Reported. An admin will review this conversation.</x-import>
+</sc-if>
+<div class="mg-thread">
+<sc-for list="{{ msgs }}" as="m" hint-placeholder-count="5">
+<x-import component-from-global-scope="AStra.MessageBubble" system="{{ m.system }}" own="{{ m.own }}" author="{{ m.author }}" time="{{ m.time }}" status="{{ m.status }}" icon="{{ m.icon }}">{{ m.text }}</x-import>
+</sc-for>
+</div>
+<sc-if value="{{ blocked }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="warning" title="{{ blockTitle }}">They can’t message you or respond to your opportunities. You can unblock at any time.</x-import>
+<x-import component-from-global-scope="AStra.Button" variant="secondary" size="sm">Unblock</x-import>
+</sc-if>
+<sc-if value="{{ notBlocked }}" hint-placeholder-val="{{ true }}">
+<div class="mg-compose">
+<x-import component-from-global-scope="AStra.TextField" label="{{ composerLabel }}" placeholder="Write a message" value="{{ draft }}" on-change="{{ setDraft }}" error="{{ draftErr }}"></x-import>
+<x-import component-from-global-scope="AStra.Button" variant="primary" icon="paper-plane-tilt">Send</x-import>
+</div>
+</sc-if>
+<span class="mc-lock"><x-import component-from-global-scope="AStra.Icon" name="lock-simple" size="{{ n16 }}"></x-import>{{ privacyNote }}</span>
+</section>
+</sc-if>
+</main>
+<x-import component-from-global-scope="AStra.BottomNav" role="creator" active="none"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ open: 'eli', view: 'list', draft: '', err: false, extra: { eli: [], jonah: [], priya: [] }, seen: {}, reported: '', blocked: '' }, this.state || {});
+    const M = true;
+    const C = {
+      eli: { name: 'Eli Chen', first: 'Eli', discipline: 'video', location: 'Remote', opp: '30-second launch reel', brief: true, time: 'Sep 27', preview: 'Oct 5 works. I’ll send a 9:16 and a 16:9 version.',
+        msgs: [
+          { system: true, icon: 'lock-simple', text: 'Eli responded to your opportunity. This conversation is private to you and Eli.' },
+          { author: 'Eli Chen', time: 'Sep 26, 4:10 PM', text: 'Hi Mira, I’d love to work from the exhibition photos. Could you share 10-12 high-res shots?' },
+          { own: true, author: 'Mira Rao', time: 'Sep 26, 6:02 PM', status: 'sent', text: 'Yes, uploading them tonight. Can you do a rough cut by Oct 5?' },
+          { author: 'Eli Chen', time: 'Sep 27, 9:15 AM', text: 'Oct 5 works. I’ll send a 9:16 and a 16:9 version.' },
+          { system: true, icon: 'check-circle', text: 'Brief v2 confirmed by both' }
+        ] },
+      jonah: { name: 'Jonah Lee', first: 'Jonah', discipline: 'musician', location: 'Oakland', opp: '', brief: false, time: 'Sep 25', preview: 'Loved your color field series. Would you paint my EP cover?',
+        msgs: [
+          { system: true, icon: 'lock-simple', text: 'Jonah messaged you directly. This conversation is private to you and Jonah.' },
+          { author: 'Jonah Lee', time: 'Sep 25, 11:40 AM', text: 'Loved your color field series. Would you paint my EP cover?' }
+        ] },
+      priya: { name: 'Priya Nair', first: 'Priya', discipline: 'writer', location: 'Pasadena', opp: 'Illustrations for an essay series', brief: false, time: 'Sep 24', preview: 'I’m reviewing responses this week and will reply by Oct 2.',
+        msgs: [
+          { system: true, icon: 'paper-plane-tilt', text: 'You responded to Priya’s opportunity. This conversation is private to you and Priya.' },
+          { own: true, author: 'Mira Rao', time: 'Sep 24, 2:20 PM', status: 'sent', text: 'I’d love to paint a small set of color studies for the essays. My portfolio is on my profile.' },
+          { author: 'Priya Nair', time: 'Sep 24, 5:05 PM', text: 'Thanks Mira. I’m reviewing responses this week and will reply by Oct 2.' }
+        ] }
+    };
+    const openConv = (id) => { const seen = Object.assign({}, s.seen); seen[id] = true; this.setState({ open: id, view: 'thread', seen, draft: '', err: false, reported: '' }); };
+    const cur = C[s.open];
+    /*ROUTES:creator*/
+    const P = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Onboarding:['Onboarding','OnboardingMobile'],Feed:['Feed','FeedMobile'],Discover:['Discover','DiscoverMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Orders:['Orders','OrdersMobile'],Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Dashboard:['Dashboard','DashboardMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Admin:['Admin','AdminMobile'],CreatorSetup:['CreatorSetup','CreatorSetupMobile'],ProfileEdit:['ProfileEdit','ProfileEditMobile'],Publish:['Publish','PublishMobile'],Insights:['Insights','InsightsMobile'],CreatorOrders:['CreatorOrders','CreatorOrdersMobile'],CreatorLoyalty:['CreatorLoyalty','CreatorLoyaltyMobile'],Community:['Community','CommunityMobile'],MyCollabs:['MyCollabs','MyCollabsMobile'],Messages:['Messages','MessagesMobile'],CreatorMenu:['Dashboard','CreatorMenuMobile']};
+    const L = {AStra:'Main','Sign out':'Main',Notifications:'Notifications',Settings:'Settings','Sign in':'SignIn','Join AStra':'SignIn',Overview:'Dashboard',Home:'Dashboard',Publish:'Publish',Community:'Community',Collaborate:'CollabFind',Collab:'CollabFind','Audience insights':'Insights',Insights:'Insights',Loyalty:'CreatorLoyalty',Orders:'CreatorOrders',More:'CreatorMenu',Audience:'Feed',Creator:'Dashboard',Messages:'Messages','My collaborations':'MyCollabs','Find opportunities':'CollabFind','Create opportunity':'CollabCreate','View opportunity':'CollabRespond','Review responses':'MyCollabs','Edit profile':'ProfileEdit','View public profile':'Profile',Verification:'CreatorSetup'};
+    const ACCOUNT = 'ProfileEdit';
+    /*END ROUTES*/
+    const X = {
+      'Eli Chen': () => openConv('eli'),
+      'Jonah Lee': () => openConv('jonah'),
+      'Priya Nair': () => openConv('priya'),
+      'Back to messages': () => this.setState({ view: 'list' }),
+      'Send': () => {
+        const t = (s.draft || '').trim();
+        if (!t) { this.setState({ err: true }); return; }
+        const extra = Object.assign({}, s.extra); extra[s.open] = (extra[s.open] || []).concat([{ own: true, author: 'Mira Rao', time: 'Just now', status: 'sent', text: t }]);
+        this.setState({ extra, draft: '', err: false });
+      },
+      'Report': () => this.setState({ reported: s.open }),
+      'Block': () => this.setState({ blocked: s.open }),
+      'Unblock': () => this.setState({ blocked: '' })
+    };
+    /*ROUTER*/
+    const nav = (k) => { const f = P[k]; if (!f || !this._root) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+    const go = nav;
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      this._root = e.currentTarget;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h && h.charAt(0) === '#') e.preventDefault();
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav(ACCOUNT); return; }
+      const local = !!(t.closest && t.closest('[data-local]'));
+      const c = [(t.getAttribute('aria-label') || '').split(',')[0]].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => v);
+      for (let i = 0; i < c.length; i++) { if (X[c[i]]) { e.preventDefault(); X[c[i]](); return; } }
+      if (local) return;
+      for (let i = 0; i < c.length; i++) { if (L[c[i]]) { e.preventDefault(); nav(L[c[i]]); return; } }
+    };
+    const routes = Object.keys(P).map((k) => ({ key: k, file: P[k][M ? 1 : 0] + '.dc.html' }));
+    /*END ROUTER*/
+    const convs = Object.keys(C).map((id) => {
+      const c = C[id]; const unread = id === 'eli' && !s.seen.eli;
+      return { id, name: c.name, preview: (s.extra[id] || []).length ? 'You: ' + s.extra[id][s.extra[id].length - 1].text : c.preview, time: (s.extra[id] || []).length ? 'Now' : c.time,
+        unread, unreadLabel: '2 new', hasOpp: !!c.opp, oppShort: c.opp ? 'Opportunity: ' + c.opp : '', direct: !c.opp,
+        cls: 'mg-conv' + (id === s.open && !M ? ' is-open' : '') + (unread ? ' is-unread' : '') };
+    });
+    const msgs = cur.msgs.concat(s.extra[s.open] || []).map((m) => Object.assign({ system: false, own: false, icon: 'info', author: '', time: '', status: undefined }, m));
+    const isBlocked = s.blocked === s.open;
+    return {
+      route, routes, yes: true, no: false, n3: 3, n16: 16, n40: 40,
+      convs, msgs,
+      cName: cur.name, cDisc: cur.discipline, cLoc: cur.location,
+      hasOpp: !!cur.opp, oppLine: 'Linked opportunity: ' + cur.opp, hasBrief: cur.brief, noOpp: !cur.opp,
+      reported: s.reported === s.open, blocked: isBlocked, notBlocked: !isBlocked,
+      blockTitle: 'Blocked ' + cur.name,
+      draft: s.draft, setDraft: (e) => this.setState({ draft: e && e.target ? e.target.value : e, err: false }),
+      draftErr: s.err ? 'Write a message first.' : undefined,
+      composerLabel: 'Message ' + cur.first,
+      privacyNote: 'Only you and ' + cur.first + ' can see this conversation.',
+      isList: s.view === 'list', isThread: s.view === 'thread'
+    };
+  }
+}
+</script>
+</body>
+</html>

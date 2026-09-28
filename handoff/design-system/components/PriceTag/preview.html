@@ -1,0 +1,17 @@
+<!-- @dsCard group="Content & identity" height=194 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>PriceTag — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-stack'},
+  S('Price', h(A.PriceTag,{amount:25,unit:'ticket'}), h(A.PriceTag,{amount:30}), h(A.PriceTag,{amount:0}), h(A.PriceTag,{amount:30,compare:36}), h(A.PriceTag,{amount:20,size:'lg'})),
+  S('Availability', h(A.AvailabilityLabel,{status:'available'}), h(A.AvailabilityLabel,{status:'low',count:3}), h(A.AvailabilityLabel,{status:'soldout'}), h(A.AvailabilityLabel,{status:'external'}), h(A.AvailabilityLabel,{status:'ended'}))
+));
+</script>
+</body>
+</html>

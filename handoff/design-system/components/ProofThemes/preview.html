@@ -1,0 +1,26 @@
+<!-- @dsCard group="Proof set" height=1112 width=1280 page -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>ProofThemes — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+function hero(theme, name){
+  return h('section',{'data-theme':theme,className:'as-backdrop',style:{position:'relative',overflow:'hidden',color:'var(--ink)',borderRadius:28,border:'1px solid var(--border)',height:520,padding:'28px 36px',boxSizing:'border-box'}},
+    h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center'}}, h(A.Logo,null), h('span',{className:'as-sample'},name)),
+    h('div',{style:{position:'absolute',left:36,top:92,zIndex:2,maxWidth:300}},
+      h(A.Eyebrow,null,'Creators · Audiences'),
+      h('h2',{style:{fontFamily:'var(--font-display)',fontSize:40,lineHeight:1.02,letterSpacing:'-0.02em',margin:'14px 0 12px'}},'Make. Share. ', h(A.AuroraText,{speed:0.6},'Connect.')),
+      h('p',{style:{margin:'0 0 18px',color:'var(--ink-muted)',fontSize:15,lineHeight:'22px'}},'Follow the creators you love, support their events and work, and find collaborators across disciplines.'),
+      h('div',{className:'as-row'}, h(A.Button,{className:'as-btn--glow',iconRight:'arrow-right'},'Join AStra'), h(A.Button,{variant:'quiet'},'Sign in'))),
+    h('div',{style:{position:'absolute',right:52,top:70,width:170,zIndex:3}}, h(A.MediaFrame,{ratio:'9:16',phone:true,art:theme==='chrome'?'chrome':theme==='prism'?'prism':theme==='crimson'?'event':'painting',credit:'Placeholder art'})),
+    h('div',{'aria-hidden':'true',style:{position:'absolute',left:-8,bottom:-34,zIndex:1,fontFamily:'var(--font-display)',fontWeight:700,fontSize:190,lineHeight:0.9,letterSpacing:'-0.05em',color:'var(--accent)',whiteSpace:'nowrap'}},'AStra'),
+    h('div',{style:{position:'absolute',right:132,top:0,bottom:0,borderLeft:'1px solid var(--border)',zIndex:0}})
+  );
+}
+render(h('div',{className:'as-grid-2',style:{gap:24}}, hero('light','Studio'), hero('crimson','Crimson'), hero('chrome','Chrome'), hero('prism','Prism')), {pad:24});
+</script>
+</body>
+</html>

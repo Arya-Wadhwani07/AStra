@@ -1,0 +1,45 @@
+<!-- @dsCard height=300 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>AStra — cover</title></head>
+<body>
+<style>
+  html, body { margin: 0; height: 100%; background: var(--bg); }
+  .cv { position: relative; width: 960px; height: 300px; overflow: hidden; background: var(--bg); font-family: var(--font-sans); }
+  .cv svg { position: absolute; inset: 0; }
+  .action { fill: var(--action); }
+  .raised { fill: var(--surface-raised); }
+  .ink { fill: var(--ink); }
+  .spark { fill: var(--accent); filter: drop-shadow(0 0 6px var(--glow-1)); }
+  .ring { fill: none; stroke: var(--accent); stroke-width: 1.2; }
+  .ring2 { fill: none; stroke: var(--points); stroke-width: 1.2; opacity: 0.6; }
+  .blk { rx: var(--radius-lg); }
+  .cv__text { position: absolute; left: 40px; bottom: 40px; max-width: 420px; }
+  .cv__name { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 104px; line-height: 0.9; letter-spacing: -0.05em; color: var(--ink); }
+  .cv__name span { color: var(--accent); }
+  .cv__tag { margin: 14px 0 0; font-size: 14px; line-height: 20px; color: var(--ink-muted); }
+</style>
+<div class="cv">
+  <svg width="960" height="300" viewBox="0 0 960 300" aria-hidden="true">
+    <!--
+      blocks: action (off-navy) 200x220 slab, surface-raised 160x160 glass tile, ink 96x96 disc, spark 24 disc — sides from space multiples, corners radius-lg; navy takes the biggest block because every action is navy; coral is the spark
+      arrangement: one tall blue slab bleeding off the top with a raised tile and an ink disc as satellites, all right of x=480
+      pattern: literal motif — the hero's orbit rings, four flattened ellipses crossing the blocks at the particle base; chosen because AStra's hero stands on rippling rings
+      scales: rings rx 80/140/196/236 at 0.26 aspect (OrbitRings), gaps space-4, corners radius-lg (20), discs half their side
+    -->
+    <rect class="action blk" x="600" y="-40" width="200" height="220"/>
+    <rect class="raised blk" x="816" y="120" width="160" height="160"/>
+    <circle class="ink" cx="552" cy="236" r="48"/>
+    <ellipse class="ring" cx="720" cy="230" rx="80" ry="21"/>
+    <ellipse class="ring2" cx="720" cy="230" rx="140" ry="36"/>
+    <ellipse class="ring" cx="720" cy="230" rx="196" ry="51" opacity="0.5"/>
+    <ellipse class="ring2" cx="720" cy="230" rx="236" ry="61" opacity="0.35"/>
+    <circle class="spark" cx="720" cy="230" r="12"/>
+  </svg>
+  <div class="cv__text">
+    <h1 class="cv__name">AStra<span>.</span></h1>
+    <p class="cv__tag">Where creative worlds meet.</p>
+  </div>
+</div>
+</body>
+</html>

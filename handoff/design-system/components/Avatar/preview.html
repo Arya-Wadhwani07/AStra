@@ -1,0 +1,17 @@
+<!-- @dsCard group="Content & identity" height=272 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Avatar — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-stack'},
+  S('Initials fallback · sizes 28 / 40 / 56 / 80', h(A.Avatar,{name:'Mira Rao',size:28}), h(A.Avatar,{name:'Eli Chen',size:40}), h(A.Avatar,{name:'Nia Brooks',size:56}), h(A.Avatar,{name:'Jonah Lee',size:80})),
+  S('Verified creator', h(A.Avatar,{name:'Mira Rao',size:56,verified:true}), h(A.Avatar,{name:'Eli Chen',size:40,verified:true}))
+));
+</script>
+</body>
+</html>

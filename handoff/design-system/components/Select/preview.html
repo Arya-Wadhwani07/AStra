@@ -1,0 +1,18 @@
+<!-- @dsCard group="Inputs" height=272 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Select — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-grid-2'},
+  h(A.Select,{label:'Creative discipline',options:['Painter','Video creator','Musician','Dancer','Writer','Photographer','Educator','Streamer'],defaultValue:'Painter'}),
+  h(A.Select,{label:'Arrangement',options:[{value:'paid',label:'Paid'},{value:'exchange',label:'Skill exchange'},{value:'rev',label:'Revenue sharing'},{value:'unpaid',label:'Unpaid'},{value:'open',label:'Open to discussion'}],error:'Choose an arrangement so creators know what to expect.'}),
+  h(A.Select,{label:'Time zone',options:['Pacific Time (Los Angeles)'],disabled:true,helper:'Set from your profile.'})
+));
+</script>
+</body>
+</html>

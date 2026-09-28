@@ -1,0 +1,17 @@
+<!-- @dsCard group="Feedback & trust" height=188 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>StatusBadge — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-stack'},
+  S('Semantic tones', h(A.StatusBadge,{tone:'success'},'Paid'), h(A.StatusBadge,{tone:'info',icon:'hourglass-medium'},'Pending'), h(A.StatusBadge,{tone:'warning'},'Action needed'), h(A.StatusBadge,{tone:'error'},'Declined'), h(A.StatusBadge,{tone:'neutral',icon:'prohibit'},'Closed')),
+  S('Domain tones', h(A.StatusBadge,{tone:'points'},'Redeemed'), h(A.StatusBadge,{tone:'private'},'Creators only'), h(A.StatusBadge,{tone:'accent',icon:'sparkle'},'New'))
+));
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!-- @dsCard group="Inputs" height=418 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>FileUpload — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-stack'},
+  h(A.FileUpload,{label:'Artwork image'}),
+  h(A.FileUpload,{label:'Artwork image',state:'uploading',fileName:'chromatic-study.jpg',progress:62}),
+  h(A.FileUpload,{label:'Artwork image',state:'error'})
+));
+</script>
+</body>
+</html>

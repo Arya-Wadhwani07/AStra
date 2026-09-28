@@ -1,0 +1,18 @@
+<!-- @dsCard group="Collaboration" height=678 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>OpportunityCard — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+var base = {title:'Help turn my exhibition into a 30-second launch reel',poster:'Mira Rao',posterDiscipline:'painter',verified:true,discipline:'video',deliverable:'30-second launch reel',timing:'Two weeks',remote:true,arrangement:'paid',budget:'$150 example budget',criteria:[{label:'Video editing',kind:'required'},{label:'Available in the next two weeks',kind:'required'},{label:'Art-project experience',kind:'preferred'}]};
+render(h('div',{className:'as-grid-2',style:{alignItems:'start'}},
+  h(A.OpportunityCard,Object.assign({},base,{responses:8,limit:10,status:'open'})),
+  h(A.OpportunityCard,Object.assign({},base,{responses:10,limit:10,status:'paused'}))
+));
+</script>
+</body>
+</html>

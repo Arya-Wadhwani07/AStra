@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Loyalty history</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--rail" style="width: 1440px; height: 1400px; font-family: var(--font-sans); color: var(--ink); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient as-ambient--drift" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.SideNav" role="audience" active="loyalty" user="Alex Morgan" unread="{{ n2 }}" dual="{{ no }}"></x-import>
+<div class="as-shell__body">
+<x-import component-from-global-scope="AStra.TopBar" title="Loyalty" unread="{{ n2 }}"></x-import>
+<div class="as-shell__cols">
+<main class="as-shell__main">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<h2 class="as-section-title">History</h2>
+<x-import component-from-global-scope="AStra.SegmentedControl" size="sm" aria-label="Filter history" options="{{ filters }}" value="{{ f }}" on-change="{{ setF }}"></x-import>
+</div>
+<div role="table" aria-label="Points history" style="display: flex; flex-direction: column">
+<sc-for list="{{ rows }}" as="row" hint-placeholder-count="6">
+<x-import component-from-global-scope="AStra.LedgerRow" activity="{{ row.activity }}" source="{{ row.source }}" date="{{ row.date }}" change="{{ row.change }}" status="{{ row.status }}" reason="{{ row.reason }}"></x-import>
+</sc-for>
+</div>
+<p class="as-caption">Source labels explain where points came from. They don’t create separate wallets: approved points from any creator can be used with any participating creator.</p>
+</section>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<h2 class="as-section-title">How points work</h2>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px"><strong>100 points = $1 off</strong><span class="as-caption">A discount on eligible tickets and merchandise. Points aren’t money and can’t be withdrawn or transferred.</span></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><strong>Each creator sets a limit</strong><span class="as-caption">Creators choose the most you can take off with points, as a percentage. You pay the rest normally.</span></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><strong>Pending isn’t spendable</strong><span class="as-caption">Points become usable once approved. Points are only spent after payment succeeds.</span></div>
+</div>
+<x-import component-from-global-scope="AStra.Banner" tone="info" title="Still being decided">How points are earned, expiry, minimums and refund rules aren’t final. Activity shown here is sample data, not verified listening or streaming.</x-import>
+</section>
+</main>
+<aside class="as-shell__rail">
+<x-import component-from-global-scope="AStra.PointsBalance" available="{{ n100 }}" pending="{{ n50 }}" rule="100 pts = $1 off, up to each creator’s limit"></x-import>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<h2 class="as-section-title" style="font-size: 16px">Where you can use points</h2>
+<div style="display: flex; justify-content: space-between; align-items: center"><span>Mira Rao</span><x-import component-from-global-scope="AStra.StatusBadge" tone="points" icon="star-four">Up to 20% off</x-import></div>
+<div style="display: flex; justify-content: space-between; align-items: center"><span>Jonah Lee</span><x-import component-from-global-scope="AStra.StatusBadge" tone="points" icon="star-four">Up to 15% off</x-import></div>
+<div style="display: flex; justify-content: space-between; align-items: center"><span>Priya Nair</span><x-import component-from-global-scope="AStra.StatusBadge" tone="points" icon="star-four">Up to 10% off</x-import></div>
+<div style="display: flex; justify-content: space-between; align-items: center"><span>Nia Brooks</span><x-import component-from-global-scope="AStra.StatusBadge" tone="points" icon="star-four">Up to 25% off</x-import></div>
+<a href="Feed.dc.html" class="as-btn as-btn--quiet as-btn--sm" style="align-self: flex-start">Back to feed</a>
+</section>
+<span class="as-sample">Sample data · after order AST-24817</span>
+</aside>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ f: 'all' }, this.state || {});
+    const M = false;
+    const F = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Feed:['Feed','FeedMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Dashboard:['Dashboard','DashboardMobile'],Admin:['Admin','AdminMobile']};
+    const L = {'AStra':'Main','Feed':'Feed','Discover':'Profile','Favorites':'Profile','Loyalty':'Loyalty','Cart':'Checkout','Orders':'Checkout','Overview':'Dashboard','Home':'Dashboard','Publish':'Dashboard','Community':'CollabFind','Collaborate':'CollabFind','Collab':'CollabFind','Audience insights':'Dashboard','Creator':'Dashboard','Audience':'Feed','Review queue':'Admin','Verification':'Admin','Loyalty rules':'Admin','Commerce disputes':'Admin','Accounts':'Admin','Audit history':'Admin','View event':'Event','Read post':'Profile','View item':'Profile','View opportunity':'CollabRespond','Loyalty history':'Loyalty','Add to cart':'Checkout','Sign in':'SignIn','Join AStra':'SignIn','Explore creators':'Feed','Discover more':'Profile','Create opportunity':'CollabCreate','Find opportunities':'CollabFind','Publish opportunity':'CollabFind','Review responses':'CollabRespond'};
+    const X = {};
+    const go = (k) => { const a = this._root && this._root.querySelector('a[data-route="' + k + '"]'); if (a) a.click(); };
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h === '#') e.preventDefault();
+      this._root = e.currentTarget;
+      const NF = {Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Orders:['Orders','OrdersMobile'],Discover:['Discover','DiscoverMobile'],Onboarding:['Onboarding','OnboardingMobile']};
+      const DX = {'Discover':'Discover','Discover more':'Discover','Favorites':'Discover','Favorite creators':'Discover','Find creators':'Discover'};
+      const dk = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => DX[v])[0];
+      if (dk) { e.preventDefault(); const df = NF[DX[dk]]; const da = document.createElement('a'); da.setAttribute('href', df[M ? 1 : 0] + '.dc.html'); da.style.display = 'none'; this._root.appendChild(da); da.click(); da.remove(); return; }
+      const EX = {'Notifications':'Notifications','Settings':'Settings','More':'Settings','Orders':'Orders','Your orders':'Orders','Sign out':'Main','Mira Rao':'Profile','Color After Hours':'Event'};
+      const nav = (k) => { const f = F[k] || NF[k]; if (!f) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav(document.title.indexOf('Admin') > -1 ? 'Main' : 'Settings'); return; }
+      const cx = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent));
+      for (let i = 0; i < cx.length; i++) { const k = (cx[i] || '').trim().split(',')[0]; if (EX[k]) { e.preventDefault(); nav(EX[k]); return; } }
+      const c = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]);
+      for (let i = 0; i < c.length; i++) { const k = (c[i] || '').trim(); if (X[k]) { e.preventDefault(); X[k](); return; } if (L[k]) { e.preventDefault(); go(L[k]); return; } }
+    };
+    const routes = Object.keys(F).map((k) => ({ key: k, file: F[k][M ? 1 : 0] + '.dc.html' }));
+    const all = [
+      { activity: 'Redeemed on Color After Hours ticket', source: 'Mira Rao · order AST-24817', date: 'Sep 27, 2026', change: -500, status: 'redeemed', reason: '', kind: 'out' },
+      { activity: 'Sample activity', source: 'Jonah Lee', date: 'Sep 26, 2026', change: 50, status: 'pending', reason: 'Waiting for creator approval. Not spendable yet.', kind: 'in' },
+      { activity: 'Sample activity', source: 'Jonah Lee', date: 'Sep 20, 2026', change: 250, status: 'approved', reason: '', kind: 'in' },
+      { activity: 'Sample activity', source: 'Mira Rao', date: 'Sep 14, 2026', change: 200, status: 'approved', reason: '', kind: 'in' },
+      { activity: 'Sample activity', source: 'Nia Brooks', date: 'Sep 9, 2026', change: 150, status: 'approved', reason: '', kind: 'in' },
+      { activity: 'Sample activity', source: 'Nia Brooks', date: 'Sep 9, 2026', change: 100, status: 'rejected', reason: 'Duplicate of an activity already counted.', kind: 'in' }
+    ];
+    const rows = all.filter((r) => s.f === 'all' || r.kind === s.f);
+    return {
+      route, routes, no: false, n2: 2, n50: 50, n100: 100,
+      filters: [{ value: 'all', label: 'All' }, { value: 'in', label: 'Earned' }, { value: 'out', label: 'Redeemed' }],
+      f: s.f, setF: (v) => this.setState({ f: v }),
+      rows
+    };
+  }
+}
+</script>
+</body>
+</html>

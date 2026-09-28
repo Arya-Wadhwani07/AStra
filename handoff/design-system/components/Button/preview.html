@@ -1,0 +1,20 @@
+<!-- @dsCard group="Actions" height=496 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Button — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-stack'},
+  S('Variants', h(A.Button,null,'Add to cart'), h(A.Button,{variant:'secondary'},'View event'), h(A.Button,{variant:'quiet'},'Cancel'), h(A.Button,{variant:'destructive',icon:'trash'},'Delete post')),
+  S('Sizes sm / md / lg', h(A.Button,{size:'sm'},'Shortlist'), h(A.Button,null,'Publish'), h(A.Button,{size:'lg',icon:'lock-simple'},'Continue to payment')),
+  S('Icons, loading, disabled', h(A.Button,{icon:'plus'},'Create opportunity'), h(A.Button,{variant:'secondary',iconRight:'arrow-right'},'View opportunity'), h(A.Button,{loading:true,loadingText:'Processing payment…'},'Pay'), h(A.Button,{variant:'secondary',loading:true},'Saving')),
+  S('Disabled with reason', h(A.Button,{disabled:true,icon:'ticket',disabledReason:'Verify your creator account to sell tickets.'},'Publish event')),
+  S('Nav pill', h(A.Button,{size:'sm'},'Join AStra'))
+));
+</script>
+</body>
+</html>

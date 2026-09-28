@@ -1,0 +1,20 @@
+<!-- @dsCard group="Foundations" height=356 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Icon — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+var names = ['house','compass','heart','star-four','shopping-cart-simple','receipt','handshake','users-three','chart-line-up','lock-simple','shield-check','seal-check','ticket','t-shirt','article','palette','music-notes','pen-nib','person-simple-tai-chi','camera','video-camera','microphone-stage','book-open-text','bell'];
+render(h('div', {className:'as-stack'},
+  S('Regular (default) · 24px', names.map(function(n){ return h(A.Icon,{key:n,name:n,size:24}); })),
+  S('Fill (selected state)', names.slice(0,12).map(function(n){ return h(A.Icon,{key:n,name:n,size:24,weight:'fill'}); })),
+  S('Sizes 16 / 20 / 24 / 40', [16,20,24,40].map(function(s){ return h(A.Icon,{key:s,name:'palette',size:s}); })),
+  S('With text: icon + word, never icon alone for status', h(A.StatusBadge,{tone:'success'},'Paid'), h(A.StatusBadge,{tone:'private'},'Creators only'), h(A.Button,{variant:'secondary',icon:'heart'},'Favorite'))
+));
+</script>
+</body>
+</html>

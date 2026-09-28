@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Audience insights (mobile)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+.in-tile-num{font-size:28px;line-height:32px;font-variant-numeric:tabular-nums}
+.in-chart{display:grid;gap:8px;align-items:end;height:190px;padding:8px 4px 0;border-bottom:1px solid var(--border)}
+.in-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%;min-width:0}
+.in-bar{width:100%;max-width:56px;background:var(--accent);border-radius:10px 10px 4px 4px}
+.in-val{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+.in-xlab{display:grid;gap:8px;padding:0 4px}
+.in-xlab span{text-align:center;font-size:12px;line-height:16px;color:var(--ink-muted)}
+.in-row{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 14px;border-radius:12px;background:var(--surface-sunken)}
+.in-ico{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:var(--glass-highlight)}
+.in-city{display:grid;grid-template-columns:96px minmax(0,1fr) 48px;gap:12px;align-items:center;font-size:15px}
+.in-track{height:10px;border-radius:999px;background:var(--surface-sunken);overflow:hidden}
+.in-fill{height:100%;border-radius:999px;background:var(--accent)}
+.in-list{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:20px}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--mobile" style="width: 390px; height: 2440px; font-family: var(--font-sans); color: var(--ink); background: var(--bg); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient as-ambient--drift" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.TopBar" mobile="{{ yes }}" role="creator"></x-import>
+<div class="as-shell__mtitle"><h1 class="as-page-title">Audience insights</h1></div>
+<main class="as-shell__main">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap"><span class="as-sample">Sample data</span><span class="as-caption">{{ rangeShort }}</span></span>
+<div data-local>
+<x-import component-from-global-scope="AStra.SegmentedControl" aria-label="Time period" options="{{ periods }}" value="{{ period }}" on-change="{{ setPeriod }}" full-width="{{ yes }}" size="sm"></x-import>
+</div>
+</div>
+
+<sc-if value="{{ isLoaded }}" hint-placeholder-val="{{ true }}">
+<section style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px" aria-label="Totals for the period">
+<div class="as-neu-tile"><span class="as-caption">New followers</span><strong style="font-size: 24px">{{ d.followers }}</strong></div>
+<div class="as-neu-tile"><span class="as-caption">Favorites</span><strong style="font-size: 24px">{{ d.favorites }}</strong></div>
+<div class="as-neu-tile"><span class="as-caption">Event interest</span><strong style="font-size: 24px">{{ d.interest }}</strong></div>
+<div class="as-neu-tile"><span class="as-caption">Confirmed orders</span><strong style="font-size: 24px">{{ d.orders }}</strong></div>
+<div class="as-neu-tile" style="grid-column: 1 / -1"><span class="as-caption">Points redemptions</span><strong style="font-size: 24px; color: var(--points)">{{ d.redemptions }}</strong></div>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h2 class="as-section-title" style="font-size: 18px">{{ d.chartTitle }}</h2>
+<span class="as-caption">New followers, measured on AStra</span>
+</div>
+<div role="img" aria-label="{{ d.summary }}" style="display: flex; flex-direction: column; gap: 8px">
+<div class="in-chart" style="{{ d.cols }}">
+<sc-for list="{{ d.bars }}" as="b" hint-placeholder-count="4">
+<div class="in-col"><span class="in-val">{{ b.v }}</span><div class="in-bar" style="{{ b.style }}"></div></div>
+</sc-for>
+</div>
+<div class="in-xlab" style="{{ d.cols }}">
+<sc-for list="{{ d.bars }}" as="b" hint-placeholder-count="4"><span>{{ b.short }}</span></sc-for>
+</div>
+</div>
+<p class="as-helper" style="margin: 0">{{ d.summary }}</p>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 10px">
+<h2 class="as-section-title" style="font-size: 18px">What people engaged with</h2>
+<div class="in-row">
+<span class="in-ico"><x-import component-from-global-scope="AStra.Icon" name="ticket" size="{{ n20 }}"></x-import></span>
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><strong style="font-size: 15px">Color After Hours</strong><span class="as-caption">Event</span></span>
+<span style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px; font-size: 14px"><strong>31 interested</strong><span class="as-caption">6 tickets</span></span>
+</div>
+<div class="in-row">
+<span class="in-ico"><x-import component-from-global-scope="AStra.Icon" name="storefront" size="{{ n20 }}"></x-import></span>
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><strong style="font-size: 15px">Dusk Study print</strong><span class="as-caption">Merchandise</span></span>
+<span style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px; font-size: 14px"><strong>4 sold</strong><span class="as-caption">18 favorites</span></span>
+</div>
+<div class="in-row">
+<span class="in-ico"><x-import component-from-global-scope="AStra.Icon" name="article" size="{{ n20 }}"></x-import></span>
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><strong style="font-size: 15px">Studio wall update</strong><span class="as-caption">Post</span></span>
+<span style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px; font-size: 14px"><strong>22 favorites</strong></span>
+</div>
+<p class="as-caption" style="margin: 0">Since published</p>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h2 class="as-section-title" style="font-size: 18px">Where your audience is</h2>
+<span class="as-caption">Share of followers by city they set</span>
+</div>
+<div class="in-city"><span>Los Angeles</span><span class="in-track" aria-hidden="true"><span class="in-fill" style="display: block; width: 58%"></span></span><strong style="text-align: right">58%</strong></div>
+<div class="in-city"><span>Oakland</span><span class="in-track" aria-hidden="true"><span class="in-fill" style="display: block; width: 14%"></span></span><strong style="text-align: right">14%</strong></div>
+<div class="in-city"><span>Pasadena</span><span class="in-track" aria-hidden="true"><span class="in-fill" style="display: block; width: 9%"></span></span><strong style="text-align: right">9%</strong></div>
+<div class="in-city"><span>Other</span><span class="in-track" aria-hidden="true"><span class="in-fill" style="display: block; width: 19%"></span></span><strong style="text-align: right">19%</strong></div>
+</section>
+</sc-if>
+
+<sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+<section style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px" aria-busy="true" aria-label="Loading totals">
+<x-import component-from-global-scope="AStra.Skeleton" variant="card"></x-import>
+<x-import component-from-global-scope="AStra.Skeleton" variant="card"></x-import>
+<x-import component-from-global-scope="AStra.Skeleton" variant="card"></x-import>
+<x-import component-from-global-scope="AStra.Skeleton" variant="card"></x-import>
+</section>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 14px" aria-busy="true">
+<span class="as-caption">Loading insights for {{ rangeLower }}</span>
+<x-import component-from-global-scope="AStra.Skeleton" variant="card"></x-import>
+<x-import component-from-global-scope="AStra.Skeleton" variant="text" lines="{{ n2 }}"></x-import>
+</section>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<x-import component-from-global-scope="AStra.Skeleton" variant="row"></x-import>
+<x-import component-from-global-scope="AStra.Skeleton" variant="row"></x-import>
+<x-import component-from-global-scope="AStra.Skeleton" variant="row"></x-import>
+</section>
+</sc-if>
+
+<sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 16px; align-items: center; padding: 32px 20px">
+<x-import component-from-global-scope="AStra.EmptyState" tone="error" icon="warning-circle" title="Insights didn't load" body="We couldn't reach the insights service. Your followers, orders and points aren't affected."></x-import>
+<x-import component-from-global-scope="AStra.Button" variant="primary" icon="arrow-counter-clockwise" full-width="{{ yes }}">Try again</x-import>
+</section>
+</sc-if>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 10px">
+<h2 class="as-section-title" style="font-size: 16px; display: flex; align-items: center; gap: 8px"><x-import component-from-global-scope="AStra.Icon" name="chart-line-up" size="{{ n20 }}"></x-import>What we measure</h2>
+<p class="as-helper" style="margin: 0">Only activity on AStra: follows, favorites, event interest, orders and points redemptions.</p>
+<p class="as-helper" style="margin: 0">We don't show listening or viewing on other apps. Connected-app rewards aren't live.</p>
+<p class="as-caption" style="margin: 0">Every number here is sample activity for the prototype.</p>
+</section>
+
+<x-import component-from-global-scope="AStra.Banner" tone="private" title="Totals, not people">You see totals, not individual fans' activity, except buyers on their orders.</x-import>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 6px">
+<h2 class="as-section-title" style="font-size: 16px; display: flex; align-items: center; gap: 8px"><x-import component-from-global-scope="AStra.Icon" name="lock-simple" size="{{ n20 }}"></x-import>Contact export</h2>
+<p class="as-helper" style="margin: 0">Audience contact export isn't available yet.</p>
+</section>
+
+<section class="as-card" data-local style="display: flex; flex-direction: column; gap: 10px">
+<h2 class="as-section-title" style="font-size: 16px">Demo: show</h2>
+<x-import component-from-global-scope="AStra.SegmentedControl" aria-label="Demo state" options="{{ demos }}" value="{{ demo }}" on-change="{{ setDemo }}" full-width="{{ yes }}" size="sm"></x-import>
+</section>
+
+<a href="CreatorOrdersMobile.dc.html" class="as-btn as-btn--secondary as-btn--lg as-btn--full">See orders</a>
+</main>
+<x-import component-from-global-scope="AStra.BottomNav" role="creator" active="none"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2440}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ period: '30', demo: 'loaded' }, this.state || {});
+    const M = true;
+    /*ROUTES:creator*/
+    const P = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Onboarding:['Onboarding','OnboardingMobile'],Feed:['Feed','FeedMobile'],Discover:['Discover','DiscoverMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Orders:['Orders','OrdersMobile'],Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Dashboard:['Dashboard','DashboardMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Admin:['Admin','AdminMobile'],CreatorSetup:['CreatorSetup','CreatorSetupMobile'],ProfileEdit:['ProfileEdit','ProfileEditMobile'],Publish:['Publish','PublishMobile'],Insights:['Insights','InsightsMobile'],CreatorOrders:['CreatorOrders','CreatorOrdersMobile'],CreatorLoyalty:['CreatorLoyalty','CreatorLoyaltyMobile'],Community:['Community','CommunityMobile'],MyCollabs:['MyCollabs','MyCollabsMobile'],Messages:['Messages','MessagesMobile'],CreatorMenu:['Dashboard','CreatorMenuMobile']};
+    const L = {AStra:'Main','Sign out':'Main',Notifications:'Notifications',Settings:'Settings','Sign in':'SignIn','Join AStra':'SignIn',Overview:'Dashboard',Home:'Dashboard',Publish:'Publish',Community:'Community',Collaborate:'CollabFind',Collab:'CollabFind','Audience insights':'Insights',Insights:'Insights',Loyalty:'CreatorLoyalty',Orders:'CreatorOrders',More:'CreatorMenu',Audience:'Feed',Creator:'Dashboard',Messages:'Messages','My collaborations':'MyCollabs','Find opportunities':'CollabFind','Create opportunity':'CollabCreate','View opportunity':'CollabRespond','Review responses':'MyCollabs','Edit profile':'ProfileEdit','View public profile':'Profile',Verification:'CreatorSetup'};
+    const ACCOUNT = 'ProfileEdit';
+    /*END ROUTES*/
+    const X = {
+      'Try again': () => this.setState({ demo: 'loaded' })
+    };
+    /*ROUTER*/
+    const nav = (k) => { const f = P[k]; if (!f || !this._root) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+    const go = nav;
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      this._root = e.currentTarget;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h && h.charAt(0) === '#') e.preventDefault();
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav(ACCOUNT); return; }
+      const local = !!(t.closest && t.closest('[data-local]'));
+      const c = [(t.getAttribute('aria-label') || '').split(',')[0]].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => v);
+      for (let i = 0; i < c.length; i++) { if (X[c[i]]) { e.preventDefault(); X[c[i]](); return; } }
+      if (local) return;
+      for (let i = 0; i < c.length; i++) { if (L[c[i]]) { e.preventDefault(); nav(L[c[i]]); return; } }
+    };
+    const routes = Object.keys(P).map((k) => ({ key: k, file: P[k][M ? 1 : 0] + '.dc.html' }));
+    /*END ROUTER*/
+    const DATA = {
+      '7': { range: 'Sep 21-27, 2026', followers: 12, favorites: 41, interest: 9, orders: 2, redemptions: 1, chartTitle: 'Followers by day',
+        bars: [['Sep 21', 1, 'M'], ['Sep 22', 2, 'Tu'], ['Sep 23', 1, 'W'], ['Sep 24', 3, 'Th'], ['Sep 25', 1, 'F'], ['Sep 26', 2, 'Sa'], ['Sep 27', 2, 'Su']],
+        summary: '12 new followers over 7 days. Sep 24 was the busiest day, with 3.' },
+      '30': { range: 'Aug 29-Sep 27, 2026', followers: 48, favorites: 156, interest: 31, orders: 6, redemptions: 3, chartTitle: 'Followers by week',
+        bars: [['Week of Aug 31', 9, 'Aug 31'], ['Week of Sep 7', 11, 'Sep 7'], ['Week of Sep 14', 13, 'Sep 14'], ['Week of Sep 21', 15, 'Sep 21']],
+        summary: '48 new followers over 4 weeks, rising each week from 9 to 15.' },
+      '90': { range: 'Jun 30-Sep 27, 2026', followers: 121, favorites: 402, interest: 44, orders: 11, redemptions: 5, chartTitle: 'Followers by month',
+        bars: [['July', 29, 'Jul'], ['August', 44, 'Aug'], ['September', 48, 'Sep']],
+        summary: '121 new followers over 3 months. September had the most, with 48.' }
+    };
+    const raw = DATA[s.period] || DATA['30'];
+    const max = Math.max.apply(null, raw.bars.map((b) => b[1]));
+    const d = Object.assign({}, raw, {
+      cols: 'grid-template-columns: repeat(' + raw.bars.length + ', minmax(0, 1fr))',
+      bars: raw.bars.map((b) => ({ label: b[0], short: b[2], v: String(b[1]), style: 'height: ' + Math.max(6, Math.round(b[1] / max * 130)) + 'px' }))
+    });
+    const names = { '7': 'the last 7 days', '30': 'the last 30 days', '90': 'the last 90 days' };
+    return {
+      route, routes, yes: true, no: false, n2: 2, n3: 3, n4: 4, n20: 20,
+      periods: [{ value: '7', label: 'Last 7 days' }, { value: '30', label: 'Last 30 days' }, { value: '90', label: 'Last 90 days' }],
+      period: s.period, setPeriod: (v) => this.setState({ period: v }),
+      demos: [{ value: 'loaded', label: 'Loaded' }, { value: 'loading', label: 'Loading' }, { value: 'error', label: 'Error' }],
+      demo: s.demo, setDemo: (v) => this.setState({ demo: v }),
+      isLoaded: s.demo === 'loaded', isLoading: s.demo === 'loading', isError: s.demo === 'error',
+      rangeShort: raw.range + ' · on AStra', rangeLower: names[s.period],
+      d
+    };
+  }
+}
+</script>
+</body>
+</html>

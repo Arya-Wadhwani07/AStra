@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Set up your creator account</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+.cs-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.cs-step{display:flex;flex-direction:column;gap:6px;font-size:12px;line-height:16px;color:var(--ink-subtle)}
+.cs-step__bar{height:6px;border-radius:999px;background:var(--surface-sunken)}
+.cs-step--done{color:var(--ink-muted)}
+.cs-step--done .cs-step__bar{background:var(--action);opacity:.55}
+.cs-step--current{color:var(--ink);font-weight:600}
+.cs-step--current .cs-step__bar{background:var(--action)}
+.cs-gate{display:flex;align-items:flex-start;gap:10px;font-size:15px;line-height:22px}
+.cs-home{display:inline-flex;text-decoration:none}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-app--glass" style="width: 390px; height: 1720px; box-sizing: border-box; padding: 20px 16px 32px; display: flex; flex-direction: column; gap: 20px; background: var(--bg); color: var(--ink); font-family: var(--font-sans); overflow: hidden; position: relative">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<header style="display: flex; align-items: center; justify-content: space-between; gap: 8px; position: relative">
+<a href="LandingMobile.dc.html" class="cs-home" aria-label="AStra home"><x-import component-from-global-scope="AStra.Logo" size="{{ n28 }}"></x-import></a>
+<span class="as-sample">Sample data · demo account</span>
+</header>
+
+<div style="display: flex; flex-direction: column; gap: 20px; position: relative">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="as-caption">{{ stepLine }}</span>
+<h1 style="margin: 0; font-family: var(--font-display); font-size: 28px; line-height: 1.1; letter-spacing: -0.01em; font-weight: 600; text-wrap: balance">{{ heading }}</h1>
+<p style="margin: 0; font-size: 16px; line-height: 24px; color: var(--ink-muted)">{{ lead }}</p>
+</div>
+
+<ol class="cs-steps" aria-label="Setup progress" style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{ steps }}" as="st" hint-placeholder-count="3">
+<li class="{{ st.cls }}" aria-current="{{ st.current }}"><span class="cs-step__bar"></span><span>{{ st.short }}</span></li>
+</sc-for>
+</ol>
+
+<sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ true }}">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 18px">
+<h2 class="as-section-title" style="font-size: 18px">Essentials</h2>
+<x-import component-from-global-scope="AStra.TextField" label="Display name" default-value="Mira Rao" required="{{ yes }}" helper="Shown on your profile, posts and events." size="lg"></x-import>
+<x-import component-from-global-scope="AStra.Select" label="Primary discipline" options="{{ disciplines }}" default-value="painter" required="{{ yes }}" helper="You can add more disciplines later." size="lg"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="City" default-value="Los Angeles" icon="map-pin" helper="Use a city, never a street address." size="lg"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Short bio" multiline="{{ yes }}" rows="{{ n4 }}" max-length="{{ n160 }}" counter="{{ bioCount }}" default-value="{{ bio }}" required="{{ yes }}" helper="One or two sentences on what you make."></x-import>
+<x-import component-from-global-scope="AStra.Banner" tone="info" title="The rest can wait">You can add skills, links and portfolio later in Edit profile.</x-import>
+<x-import component-from-global-scope="AStra.Button" size="lg" icon-right="arrow-right" full-width="{{ yes }}">Continue</x-import>
+</section>
+</sc-if>
+
+<sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<h2 class="as-section-title" style="font-size: 18px">Portfolio</h2>
+<x-import component-from-global-scope="AStra.StatusBadge" tone="neutral" icon="{{ no }}">Optional</x-import>
+</div>
+<p class="as-helper" style="margin: 0">Add a few pieces that show your work. They appear on your public profile.</p>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 6px">
+<x-import component-from-global-scope="AStra.MediaFrame" ratio="4:5" art="painting" discipline="painter" label="Dusk study"></x-import>
+<figcaption class="as-caption">Dusk study</figcaption>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 6px">
+<x-import component-from-global-scope="AStra.MediaFrame" ratio="4:5" art="print" discipline="painter" label="Dusk Study print"></x-import>
+<figcaption class="as-caption">Dusk Study print</figcaption>
+</figure>
+</div>
+<span class="as-caption">Placeholder art</span>
+<x-import component-from-global-scope="AStra.FileUpload" label="Uploaded" state="done" file-name="dusk-study.jpg" helper="Added to your portfolio."></x-import>
+<x-import component-from-global-scope="AStra.FileUpload" label="Add another piece" state="idle" helper="JPG, PNG or MP4, up to 50 MB each."></x-import>
+<x-import component-from-global-scope="AStra.Button" size="lg" icon-right="arrow-right" full-width="{{ yes }}">Continue</x-import>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+<x-import component-from-global-scope="AStra.Button" variant="quiet" size="lg" icon="arrow-left" full-width="{{ yes }}">Back</x-import>
+<x-import component-from-global-scope="AStra.Button" variant="secondary" size="lg" full-width="{{ yes }}">Skip for now</x-import>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 16px">
+<h2 class="as-section-title" style="font-size: 18px">Verification</h2>
+<div data-local style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; background: var(--surface-sunken)">
+<span class="as-label">Demo: show status</span>
+<x-import component-from-global-scope="AStra.SegmentedControl" size="sm" aria-label="Demo: show status" options="{{ vOptions }}" value="{{ vs }}" on-change="{{ setVs }}" full-width="{{ yes }}"></x-import>
+</div>
+<x-import component-from-global-scope="AStra.VerificationStatus" status="{{ vs }}" gated-action="Selling tickets and merchandise" body="{{ vBody }}"></x-import>
+<sc-if value="{{ canStart }}" hint-placeholder-val="{{ true }}">
+<x-import component-from-global-scope="AStra.Button" size="lg" icon="shield-check" full-width="{{ yes }}">Start verification</x-import>
+</sc-if>
+<div style="display: flex; gap: 10px; align-items: flex-start">
+<x-import component-from-global-scope="AStra.Icon" name="lock-simple" size="{{ n18 }}" color="var(--private)"></x-import>
+<p class="as-caption" style="margin: 0">Verification provider not selected yet. Evidence is handled in the provider’s secure flow and isn’t stored in AStra.</p>
+</div>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<h2 class="as-section-title" style="font-size: 18px">What needs verification</h2>
+<p class="as-helper" style="margin: 0">Selling tickets, selling merchandise and accepting points discounts need verification in this pilot. Posting work and collaborating don’t.</p>
+<div class="cs-gate"><x-import component-from-global-scope="AStra.Icon" name="lock-simple" size="{{ n18 }}" color="var(--warning)"></x-import><span>Sell event tickets</span></div>
+<div class="cs-gate"><x-import component-from-global-scope="AStra.Icon" name="lock-simple" size="{{ n18 }}" color="var(--warning)"></x-import><span>Sell merchandise</span></div>
+<div class="cs-gate"><x-import component-from-global-scope="AStra.Icon" name="lock-simple" size="{{ n18 }}" color="var(--warning)"></x-import><span>Accept points discounts</span></div>
+<div class="cs-gate"><x-import component-from-global-scope="AStra.Icon" name="check-circle" size="{{ n18 }}" color="var(--success)"></x-import><span>Post work and free events (open now)</span></div>
+<div class="cs-gate"><x-import component-from-global-scope="AStra.Icon" name="check-circle" size="{{ n18 }}" color="var(--success)"></x-import><span>Find and join collaborations (open now)</span></div>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<span class="as-caption">Example of a gated action</span>
+<p style="margin: 0; font-weight: 600">Color After Hours · $25 ticket</p>
+<sc-if value="{{ isVerified }}" hint-placeholder-val="{{ false }}">
+<a href="PublishMobile.dc.html" class="as-btn as-btn--primary as-btn--lg as-btn--full">Publish a paid event</a>
+<span class="as-helper">Verified. Paid events, merchandise and points discounts are open.</span>
+</sc-if>
+<sc-if value="{{ notVerified }}" hint-placeholder-val="{{ true }}">
+<x-import component-from-global-scope="AStra.Button" size="lg" full-width="{{ yes }}" disabled="{{ yes }}" disabled-reason="{{ gateReason }}">Publish a paid event</x-import>
+</sc-if>
+</section>
+
+<x-import component-from-global-scope="AStra.Button" size="lg" icon-right="arrow-right" full-width="{{ yes }}">Finish setup</x-import>
+<x-import component-from-global-scope="AStra.Button" variant="quiet" size="lg" icon="arrow-left" full-width="{{ yes }}">Back</x-import>
+<span class="as-caption" style="text-align: center">You can verify later from Settings.</span>
+</sc-if>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1720}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ step: 1, vs: 'not_submitted' }, this.state || {});
+    const M = true;
+    /*ROUTES:creator*/
+    const P = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Onboarding:['Onboarding','OnboardingMobile'],Feed:['Feed','FeedMobile'],Discover:['Discover','DiscoverMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Orders:['Orders','OrdersMobile'],Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Dashboard:['Dashboard','DashboardMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Admin:['Admin','AdminMobile'],CreatorSetup:['CreatorSetup','CreatorSetupMobile'],ProfileEdit:['ProfileEdit','ProfileEditMobile'],Publish:['Publish','PublishMobile'],Insights:['Insights','InsightsMobile'],CreatorOrders:['CreatorOrders','CreatorOrdersMobile'],CreatorLoyalty:['CreatorLoyalty','CreatorLoyaltyMobile'],Community:['Community','CommunityMobile'],MyCollabs:['MyCollabs','MyCollabsMobile'],Messages:['Messages','MessagesMobile'],CreatorMenu:['Dashboard','CreatorMenuMobile']};
+    const L = {AStra:'Main','Sign out':'Main',Notifications:'Notifications',Settings:'Settings','Sign in':'SignIn','Join AStra':'SignIn',Overview:'Dashboard',Home:'Dashboard',Publish:'Publish',Community:'Community',Collaborate:'CollabFind',Collab:'CollabFind','Audience insights':'Insights',Insights:'Insights',Loyalty:'CreatorLoyalty',Orders:'CreatorOrders',More:'CreatorMenu',Audience:'Feed',Creator:'Dashboard',Messages:'Messages','My collaborations':'MyCollabs','Find opportunities':'CollabFind','Create opportunity':'CollabCreate','View opportunity':'CollabRespond','Review responses':'MyCollabs','Edit profile':'ProfileEdit','View public profile':'Profile',Verification:'CreatorSetup'};
+    const ACCOUNT = 'ProfileEdit';
+    /*END ROUTES*/
+    const X = {
+      'Continue': () => this.setState({ step: Math.min(3, s.step + 1) }),
+      'Back': () => this.setState({ step: Math.max(1, s.step - 1) }),
+      'Skip for now': () => this.setState({ step: 3 }),
+      'Start verification': () => this.setState({ vs: 'pending' }),
+      'Finish setup': () => nav('Dashboard')
+    };
+    /*ROUTER*/
+    const nav = (k) => { const f = P[k]; if (!f || !this._root) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+    const go = nav;
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      this._root = e.currentTarget;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h && h.charAt(0) === '#') e.preventDefault();
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav(ACCOUNT); return; }
+      const local = !!(t.closest && t.closest('[data-local]'));
+      const c = [(t.getAttribute('aria-label') || '').split(',')[0]].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => v);
+      for (let i = 0; i < c.length; i++) { if (X[c[i]]) { e.preventDefault(); X[c[i]](); return; } }
+      if (local) return;
+      for (let i = 0; i < c.length; i++) { if (L[c[i]]) { e.preventDefault(); nav(L[c[i]]); return; } }
+    };
+    const routes = Object.keys(P).map((k) => ({ key: k, file: P[k][M ? 1 : 0] + '.dc.html' }));
+    /*END ROUTER*/
+    const names = ['Essentials', 'Portfolio (optional)', 'Verification'];
+    const shorts = ['Essentials', 'Portfolio', 'Verify'];
+    const heads = ['Set up your creator profile', 'Show a little of your work', 'Verify to sell on AStra'];
+    const leads = [
+      'A few basics so fans and other creators know who you are. About two minutes.',
+      'Optional. Add a couple of pieces now, or skip and do it later in Edit profile.',
+      'Verification unlocks selling. Everything else on AStra is open to you right away.'
+    ];
+    const bodies = {
+      not_submitted: 'You haven’t started verification. Start it when you’re ready to sell tickets or merchandise.',
+      pending: 'We’re checking your details. This usually takes 1-2 business days. You can finish setup now.',
+      verified: 'You’re verified. Paid events, merchandise and points discounts are open to you.',
+      action_needed: 'The provider needs one more detail from you. Start verification again to continue where you left off.'
+    };
+    const bio = 'I paint large color-field canvases about the light in LA at dusk. Opening a small exhibition this October.';
+    return {
+      route, routes, yes: true, no: false, n4: 4, n18: 18, n28: 28, n160: 160,
+      stepLine: 'Step ' + s.step + ' of 3 · ' + names[s.step - 1],
+      heading: heads[s.step - 1], lead: leads[s.step - 1],
+      steps: shorts.map((n, i) => ({ short: n, cls: 'cs-step' + (i + 1 < s.step ? ' cs-step--done' : i + 1 === s.step ? ' cs-step--current' : ''), current: i + 1 === s.step ? 'step' : 'false' })),
+      isStep1: s.step === 1, isStep2: s.step === 2, isStep3: s.step === 3,
+      disciplines: [{ value: 'painter', label: 'Painter' }, { value: 'musician', label: 'Musician' }, { value: 'writer', label: 'Writer' }, { value: 'dancer', label: 'Dancer' }, { value: 'photographer', label: 'Photographer' }, { value: 'video', label: 'Video creator' }, { value: 'streamer', label: 'Streamer' }, { value: 'educator', label: 'Educator' }],
+      bio, bioCount: bio.length + ' / 160',
+      vOptions: [{ value: 'not_submitted', label: 'None' }, { value: 'pending', label: 'Pending' }, { value: 'verified', label: 'Verified' }, { value: 'action_needed', label: 'Action' }],
+      vs: s.vs, setVs: (v) => this.setState({ vs: v }), vBody: bodies[s.vs],
+      canStart: s.vs === 'not_submitted' || s.vs === 'action_needed',
+      isVerified: s.vs === 'verified', notVerified: s.vs !== 'verified',
+      gateReason: s.vs === 'pending' ? 'Available once verification finishes. Posting work stays open meanwhile.' : 'Verify your account to sell tickets. Posting work stays open.'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!-- @dsCard group="Motion" height=882 width=1280 page -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>MotionStoryboards — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+var SB = [["Creative convergence \u00b7 hero \u00b7 6 s intro + 12 s loop", [["Begin \u00b7 intro 0 s", "/_blob/e1275e348d2e17e8dba802d6a50d730f"], ["Middle \u00b7 intro 3.2 s", "/_blob/3416ecf5b143073528971c14ffae8e8f"], ["End \u00b7 loop 6 s (poster)", "/_blob/f7f2799a967cbb10c052b7a119ec6003"], ["Loop \u00b7 11.5 s \u2192 0", "/_blob/1e824b626b581192b01eecf46d0d7c51"]]], ["Cross-discipline collaboration \u00b7 10 s", [["Begin \u00b7 0 s", "/_blob/f7814edc9187119a272872eedb26037a"], ["Middle \u00b7 exchange 3.8 s", "/_blob/574e47610ba24fa83c96473ce54de3bf"], ["End \u00b7 shared form 7 s", "/_blob/3b7bf3a623ed48832ce2b727daf3b3c3"], ["Loop \u00b7 separate 9.4 s \u2192 0", "/_blob/7e25840bfbaffcf9671544044ad396de"]]], ["Shared support \u00b7 loyalty \u00b7 10 s", [["Begin \u00b7 0 s", "/_blob/5f5433350c25c84bdfdd4b4242235639"], ["Middle \u00b7 3.5 s", "/_blob/329820686a0dc527cc7214e25d0d8bfb"], ["End \u00b7 7 s", "/_blob/ca29fcd8b7c842563700339f42bf2330"], ["Loop \u00b7 9.5 s \u2192 0", "/_blob/2503e84c00a0ce97433bd037dde05459"]]]];
+
+render(h('div',{'data-theme':'cinema',className:'as-stack',style:{gap:28,padding:32,background:'var(--bg)',color:'var(--ink)'}},
+  h('div',{className:'as-stack',style:{gap:6}}, h(A.Eyebrow,null,'Motion system · storyboards'),
+    h('p',{className:'as-caption',style:{margin:0}},'Stills rendered from the placeholder loops. Every loop is seamless: its last frame returns to its first.')),
+  SB.map(function(row){ return h('section',{key:row[0],className:'as-stack',style:{gap:10}},
+    h('h3',{className:'as-section-title',style:{margin:0,fontSize:16}},row[0]),
+    h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:12}}, row[1].map(function(f,i){ return h('figure',{key:i,style:{margin:0}},
+      h('img',{src:f[1],alt:row[0]+' — '+f[0],style:{width:'100%',aspectRatio:'16/9',objectFit:'cover',borderRadius:'var(--radius-md)',display:'block',border:'1px solid var(--border)'}}),
+      h('figcaption',{className:'as-caption',style:{marginTop:6}}, h('span',{className:'as-code'},String(i+1).padStart(2,'0')),' ',f[0])); })));
+  })
+), {pad:0});
+</script>
+</body>
+</html>

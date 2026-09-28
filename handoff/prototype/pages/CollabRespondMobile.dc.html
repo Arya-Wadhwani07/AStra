@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Respond to an opportunity (mobile)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--mobile" style="width: 390px; height: 2300px; font-family: var(--font-sans); color: var(--ink); background: var(--bg); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.TopBar" mobile="{{ yes }}" role="creator"></x-import>
+<div class="as-shell__mtitle"><h1 class="as-page-title">Opportunity</h1></div>
+<main class="as-shell__main">
+<a href="CollabFindMobile.dc.html" style="font-size: 14px; font-weight: 600; min-height: 44px; display: flex; align-items: center">Back to opportunities</a>
+<sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+<x-import component-from-global-scope="AStra.EligibilityPanel" state="eligible" criteria="{{ critMet }}"></x-import>
+</sc-if>
+<sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.EligibilityPanel" state="responded"></x-import>
+</sc-if>
+<x-import component-from-global-scope="AStra.OpportunityCard" detail="{{ yes }}" title="Help turn my exhibition into a 30-second launch reel" poster="Mira Rao" poster-discipline="painter" verified="{{ yes }}" discipline="video" deliverable="30-second launch reel" timing="Two weeks" remote="{{ yes }}" arrangement="paid" budget="$150" criteria="{{ crit }}" responses="{{ count }}" limit="{{ n10 }}" status="open"></x-import>
+<sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+<x-import component-from-global-scope="AStra.ResponseForm" profile="Eli Chen · profile and portfolio" value="I cut launch reels for two gallery openings last year and love working from painted textures."></x-import>
+</sc-if>
+<sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<h2 class="as-section-title" style="font-size: 18px">Conversation with Mira</h2>
+<x-import component-from-global-scope="AStra.PrivateMarker">Private to you and Mira</x-import>
+<x-import component-from-global-scope="AStra.MessageBubble" own="{{ yes }}" author="Eli Chen" time="Just now" status="sent">I cut launch reels for two gallery openings last year and love working from painted textures.</x-import>
+</section>
+</sc-if>
+<p class="as-spec">Alternate frame · limit reached</p>
+<x-import component-from-global-scope="AStra.EligibilityPanel" state="paused"></x-import>
+<span class="as-sample">{{ sampleLabel }}</span>
+</main>
+<x-import component-from-global-scope="AStra.BottomNav" role="creator" active="collaborate"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ sent: false }, this.state || {});
+    const M = true;
+    /*ROUTES:creator*/
+    const P = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Onboarding:['Onboarding','OnboardingMobile'],Feed:['Feed','FeedMobile'],Discover:['Discover','DiscoverMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Orders:['Orders','OrdersMobile'],Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Dashboard:['Dashboard','DashboardMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Admin:['Admin','AdminMobile'],CreatorSetup:['CreatorSetup','CreatorSetupMobile'],ProfileEdit:['ProfileEdit','ProfileEditMobile'],Publish:['Publish','PublishMobile'],Insights:['Insights','InsightsMobile'],CreatorOrders:['CreatorOrders','CreatorOrdersMobile'],CreatorLoyalty:['CreatorLoyalty','CreatorLoyaltyMobile'],Community:['Community','CommunityMobile'],MyCollabs:['MyCollabs','MyCollabsMobile'],Messages:['Messages','MessagesMobile'],CreatorMenu:['Dashboard','CreatorMenuMobile']};
+    const L = {AStra:'Main','Sign out':'Main',Notifications:'Notifications',Settings:'Settings','Sign in':'SignIn','Join AStra':'SignIn',Overview:'Dashboard',Home:'Dashboard',Publish:'Publish',Community:'Community',Collaborate:'CollabFind',Collab:'CollabFind','Audience insights':'Insights',Insights:'Insights',Loyalty:'CreatorLoyalty',Orders:'CreatorOrders',More:'CreatorMenu',Audience:'Feed',Creator:'Dashboard',Messages:'Messages','My collaborations':'MyCollabs','Find opportunities':'CollabFind','Create opportunity':'CollabCreate','View opportunity':'CollabRespond','Review responses':'MyCollabs','Publish opportunity':'MyCollabs','Open conversation':'Messages','View responses':'MyCollabs','Edit profile':'ProfileEdit','View public profile':'Profile',Verification:'CreatorSetup'};
+    const ACCOUNT = 'ProfileEdit';
+    /*END ROUTES*/
+    const X = { 'Send response': () => this.setState({ sent: true }) };
+    /*ROUTER*/
+    const nav = (k) => { const f = P[k]; if (!f || !this._root) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+    const go = nav;
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      this._root = e.currentTarget;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h && h.charAt(0) === '#') e.preventDefault();
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav(ACCOUNT); return; }
+      const local = !!(t.closest && t.closest('[data-local]'));
+      const c = [(t.getAttribute('aria-label') || '').split(',')[0]].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => v);
+      for (let i = 0; i < c.length; i++) { if (X[c[i]]) { e.preventDefault(); X[c[i]](); return; } }
+      if (local) return;
+      for (let i = 0; i < c.length; i++) { if (L[c[i]]) { e.preventDefault(); nav(L[c[i]]); return; } }
+    };
+    const routes = Object.keys(P).map((k) => ({ key: k, file: P[k][M ? 1 : 0] + '.dc.html' }));
+    /*END ROUTER*/
+    return {
+      route, routes, yes: true, n10: 10,
+      sent: s.sent, notSent: !s.sent, count: s.sent ? 9 : 8,
+      sampleLabel: s.sent ? 'Sample data · 9/10 after Eli responds' : 'Sample data · 8/10 before Eli responds',
+      crit: [{ label: 'Video editing', kind: 'required' }, { label: 'Art-project experience', kind: 'preferred' }],
+      critMet: [{ label: 'Video editing', kind: 'required', met: true }, { label: 'Available in the next two weeks', kind: 'required', met: true }, { label: 'Art-project experience', kind: 'preferred', met: true }]
+    };
+  }
+}
+</script>
+</body>
+</html>

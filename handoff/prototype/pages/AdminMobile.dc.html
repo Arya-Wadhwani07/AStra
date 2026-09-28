@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Admin review queue (mobile)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--mobile" style="width: 390px; height: 1900px; font-family: var(--font-sans); color: var(--ink); background: var(--bg); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient as-ambient--quiet" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.TopBar" mobile="{{ yes }}"></x-import>
+<div class="as-shell__mtitle" style="display: flex; flex-direction: column; gap: 8px">
+<x-import component-from-global-scope="AStra.StatusBadge" tone="neutral" icon="shield-check">Admin</x-import>
+<h1 class="as-page-title">Review queue</h1>
+</div>
+<main class="as-shell__main">
+<span class="as-sample">Authenticated admin demo · sample data</span>
+<sc-for list="{{ cases }}" as="c" hint-placeholder-count="4">
+<article class="as-card" style="padding: 16px; display: flex; flex-direction: column; gap: 6px; border-width: {{ c.bw }}; border-color: {{ c.bc }}">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px"><code class="as-code">{{ c.id }}</code><x-import component-from-global-scope="AStra.StatusBadge" tone="{{ c.tone }}">{{ c.status }}</x-import></div>
+<strong style="font-size: 15px">{{ c.type }} · {{ c.subject }}</strong>
+<span class="as-caption">{{ c.detail }} · {{ c.age }}</span>
+</article>
+</sc-for>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="as-section-title" style="font-size: 18px">CASE-311 · Verification</h2>
+<x-import component-from-global-scope="AStra.CreatorSummary" compact="{{ yes }}" name="Mira Rao" discipline="painter" location="Los Angeles"></x-import>
+<p class="as-caption">Evidence is viewed in the provider’s secure panel and isn’t stored here.</p>
+<sc-if value="{{ open }}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<x-import component-from-global-scope="AStra.SegmentedControl" label="Decision" options="{{ decisions }}" default-value="approve" full-width="{{ yes }}"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Reason" multiline="{{ yes }}" rows="{{ n3 }}" required="{{ yes }}" default-value="Name and portfolio match the submitted details." helper="Sent to the creator and saved to the audit history."></x-import>
+<x-import component-from-global-scope="AStra.Button" size="lg" full-width="{{ yes }}">Record decision</x-import>
+</div>
+</sc-if>
+<sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="success" title="Decision recorded">Mira Rao was notified. Saved to audit history.</x-import>
+</sc-if>
+<ul style="margin: 0; padding: 0">
+<sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.AuditRow" action="Verified" record="CASE-311" actor="Admin demo" time="Sep 27 · 4:40 PM PT" reason="Name and portfolio match."></x-import>
+</sc-if>
+<x-import component-from-global-scope="AStra.AuditRow" action="Case opened" record="CASE-311" actor="System" time="Sep 25 · 4:12 PM PT"></x-import>
+</ul>
+</section>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 8px">
+<h2 class="as-section-title" style="font-size: 18px">Loyalty rules</h2>
+<p style="margin: 0; font-weight: 700; color: var(--points)">100 pts = $1 off · confirmed</p>
+<p class="as-caption">Creators set their own limit. Minimums, expiry, funding and refunds are pending decisions.</p>
+</section>
+<a href="LandingMobile.dc.html" style="font-size: 14px; font-weight: 600; min-height: 44px; display: flex; align-items: center">Exit admin demo</a>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ done: false }, this.state || {});
+    const M = true;
+    const F = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Feed:['Feed','FeedMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Dashboard:['Dashboard','DashboardMobile'],Admin:['Admin','AdminMobile']};
+    const L = {'AStra':'Main'};
+    const X = { 'Record decision': () => this.setState({ done: true }), 'Approve': () => {}, 'Request details': () => {}, 'Reject': () => {} };
+    const go = (k) => { const a = this._root && this._root.querySelector('a[data-route="' + k + '"]'); if (a) a.click(); };
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h === '#') e.preventDefault();
+      this._root = e.currentTarget;
+      const NF = {Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Orders:['Orders','OrdersMobile'],Discover:['Discover','DiscoverMobile'],Onboarding:['Onboarding','OnboardingMobile']};
+      const DX = {'Discover':'Discover','Discover more':'Discover','Favorites':'Discover','Favorite creators':'Discover','Find creators':'Discover'};
+      const dk = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => DX[v])[0];
+      if (dk) { e.preventDefault(); const df = NF[DX[dk]]; const da = document.createElement('a'); da.setAttribute('href', df[M ? 1 : 0] + '.dc.html'); da.style.display = 'none'; this._root.appendChild(da); da.click(); da.remove(); return; }
+      const EX = {'Notifications':'Admin','Sign out':'Main','Exit admin demo':'Main'};
+      const nav = (k) => { const f = F[k] || NF[k]; if (!f) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav('Main'); return; }
+      const cx = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent));
+      for (let i = 0; i < cx.length; i++) { const k = (cx[i] || '').trim().split(',')[0]; if (EX[k]) { e.preventDefault(); nav(EX[k]); return; } }
+      const c = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]);
+      for (let i = 0; i < c.length; i++) { const k = (c[i] || '').trim(); if (X[k]) { e.preventDefault(); X[k](); return; } if (L[k]) { e.preventDefault(); go(L[k]); return; } }
+    };
+    const routes = Object.keys(F).map((k) => ({ key: k, file: F[k][M ? 1 : 0] + '.dc.html' }));
+    const sel = { bw: '2px', bc: 'var(--action)' }, plain = { bw: '1px', bc: 'var(--border)' };
+    return {
+      route, routes, yes: true, n3: 3,
+      open: !s.done, done: s.done,
+      cases: [
+        Object.assign({ id: 'CASE-311', type: 'Verification', subject: 'Mira Rao', detail: 'Submitted Sep 25', age: '1d', tone: s.done ? 'success' : 'info', status: s.done ? 'Decided' : 'Pending review' }, sel),
+        Object.assign({ id: 'CASE-309', type: 'Loyalty', subject: 'Held reward · 400 pts', detail: '12 activities in 3 min', age: '2d', tone: 'warning', status: 'Held' }, plain),
+        Object.assign({ id: 'CASE-305', type: 'Order dispute', subject: 'AST-24790', detail: 'Refund requested', age: '4d', tone: 'warning', status: 'Appeal open' }, plain)
+      ],
+      decisions: [{ value: 'approve', label: 'Approve' }, { value: 'need', label: 'Details' }, { value: 'reject', label: 'Reject' }]
+    };
+  }
+}
+</script>
+</body>
+</html>

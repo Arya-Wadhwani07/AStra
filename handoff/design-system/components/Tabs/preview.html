@@ -1,0 +1,17 @@
+<!-- @dsCard group="Navigation" height=191 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Tabs — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-stack',style:{gap:32}},
+  h(A.Tabs,{ariaLabel:'Collaborate',defaultValue:'find',items:[{id:'create',label:'Create opportunity',icon:'plus'},{id:'find',label:'Find opportunities',icon:'magnifying-glass'},{id:'mine',label:'My collaborations',icon:'handshake',count:2}]}),
+  h(A.Tabs,{variant:'display',ariaLabel:'Account',defaultValue:'in',items:[{id:'in',label:'Sign in'},{id:'join',label:'Join'}]})
+));
+</script>
+</body>
+</html>

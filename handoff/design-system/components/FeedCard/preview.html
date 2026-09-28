@@ -1,0 +1,18 @@
+<!-- @dsCard group="Content & identity" height=635 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>FeedCard — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-grid-3',style:{alignItems:'start'}},
+  h(A.FeedCard,{type:'event',creator:'Mira Rao',discipline:'painter',verified:true,time:'2h ago',art:'event',credit:'Placeholder art',title:'Color After Hours',date:'Sat, Oct 10 · 6:00–8:00 PM PT',location:'Los Angeles',price:25,availability:'available',favorite:true}),
+  h(A.FeedCard,{type:'merch',creator:'Mira Rao',discipline:'painter',time:'Yesterday',art:'print',credit:'Placeholder art',title:'Chromatic Study — art print',body:'Giclée print, 12 × 16 in.',price:30,availability:'low',count:12}),
+  h(A.FeedCard,{type:'post',textOnly:true,creator:'Priya Nair',discipline:'writer',time:'3d ago',title:'Notes from a slow draft',body:'I rewrote the opening chapter four times this month. Here’s what finally made it click: reading it aloud to the dancers I’m writing about.'})
+));
+</script>
+</body>
+</html>

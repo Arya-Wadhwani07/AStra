@@ -1,0 +1,25 @@
+<!-- @dsCard group="Proof set" height=1361 width=1280 page -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>ProofOpportunityDesktop — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+var crit=[{label:'Video editing',kind:'required',met:true},{label:'Available in the next two weeks',kind:'required',met:true},{label:'Art-project experience',kind:'preferred',met:true}];
+var rail=[
+  h(A.EligibilityPanel,{key:1,state:'eligible',criteria:crit}),
+  h('div',{key:2,className:'as-stack'}, h('p',{className:'as-spec'},'Alternate frame · limit reached'), h(A.EligibilityPanel,{state:'paused'})),
+  h('div',{key:3,className:'as-stack'}, h('p',{className:'as-spec'},'Alternate frame · Nia Brooks (dancer)'), h(A.EligibilityPanel,{state:'ineligible',body:'Video editing is required and isn’t on your profile.'}))
+];
+render(h(A.AppShell,{role:'creator',active:'collaborate',title:'Opportunity',crumbs:['Collaborate','Find opportunities'],user:'Eli Chen',rail:rail},
+  h(A.Banner,{tone:'private',title:'Visible to creators only'},'Audience members can’t see this opportunity, its responses or conversations.'),
+  h(A.OpportunityCard,{detail:true,title:'Help turn my exhibition into a 30-second launch reel',description:'I’m opening a small exhibition of new color-field paintings on October 10. I’d like a short, energetic reel built from studio footage and photos of the work for launch week.',poster:'Mira Rao',posterDiscipline:'painter',verified:true,discipline:'video',deliverable:'30-second launch reel',timing:'Two weeks',remote:true,arrangement:'paid',budget:'$150 example budget',criteria:[{label:'Video editing',kind:'required'},{label:'Available in the next two weeks',kind:'required'},{label:'Art-project experience',kind:'preferred'}],responses:8,limit:10,status:'open'}),
+  h(A.ResponseForm,{profile:'Eli Chen · profile & 3 portfolio links',value:'I cut launch reels for two gallery openings last year and love working from painted textures. Happy to share a rough cut in week one.'}),
+  h('span',{className:'as-sample'},'Sample data · 8/10 before Eli responds')
+), {pad:0});
+</script>
+</body>
+</html>

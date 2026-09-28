@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Loyalty settings (mobile)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+.cl-prev{padding: 14px; border-radius: 12px; background: var(--points-bg); display: flex; flex-direction: column; gap: 4px; font-size: 14px; line-height: 20px}
+.cl-prev strong.cl-big{color: var(--points)}
+.cl-steps{margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px}
+.cl-steps li{display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; font-size: 14px; line-height: 20px; color: var(--ink-muted)}
+.cl-num{width: 28px; height: 28px; border-radius: 999px; background: var(--points-bg); color: var(--points); font-weight: 700; display: inline-flex; align-items: center; justify-content: center; font-size: 13px}
+.cl-open{display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px}
+.cl-open:last-child{border-bottom: 0}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--mobile" style="width: 390px; height: 3500px; font-family: var(--font-sans); color: var(--ink); background: var(--bg); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.TopBar" mobile="{{ yes }}" role="creator"></x-import>
+<div class="as-shell__mtitle"><h1 class="as-page-title">Loyalty settings</h1></div>
+<main class="as-shell__main">
+<x-import component-from-global-scope="AStra.Banner" tone="points" title="How AStra points work">AStra points are one shared balance fans earn across creators. 100 pts = $1 off, set by AStra. You choose how much of your price fans can cover with points. Points have no cash value.</x-import>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h2 class="as-section-title" style="font-size: 18px">Points discount limit</h2>
+<p class="as-helper">The most fans can take off one of your items with points. They pay the rest.</p>
+</div>
+<div data-local style="display: flex; flex-direction: column; gap: 20px">
+<x-import component-from-global-scope="AStra.SegmentedControl" label="Maximum points discount" options="{{ caps }}" value="{{ cap }}" on-change="{{ setCap }}" full-width="{{ yes }}"></x-import>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span class="as-label">Applies to</span>
+<x-import component-from-global-scope="AStra.Checkbox" label="Tickets" checked="{{ tix }}" on-change="{{ toggleTix }}"></x-import>
+<x-import component-from-global-scope="AStra.Checkbox" label="Merchandise" checked="{{ merch }}" on-change="{{ toggleMerch }}"></x-import>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div class="cl-prev">
+<strong>Preview · $25.00 ticket</strong>
+<span>{{ tixPts }}</span>
+<span>{{ tixOff }}</span>
+<strong class="cl-big">{{ tixSale }}</strong>
+</div>
+<div class="cl-prev">
+<strong>Preview · $40.00 print</strong>
+<span>{{ prPts }}</span>
+<span>{{ prOff }}</span>
+<strong class="cl-big">{{ prSale }}</strong>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: stretch; gap: 12px">
+<p class="as-caption" style="margin: 0">Allowed range and per-item overrides are prototype assumptions pending policy.</p>
+<x-import component-from-global-scope="AStra.Button" icon="check" size="lg" full-width="{{ yes }}">Save limit</x-import>
+</div>
+<sc-if value="{{ saved }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="success" title="Limit saved">Limit saved. Applies to new orders.</x-import>
+</sc-if>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h2 class="as-section-title" style="font-size: 18px">Earning campaign</h2>
+<p class="as-helper">A draft proposal for how fans could earn points with you.</p>
+</div>
+<sc-if value="{{ isDraft }}" hint-placeholder-val="{{ true }}">
+<x-import component-from-global-scope="AStra.StatusBadge" tone="warning" icon="pencil-simple">Draft · not live</x-import>
+</sc-if>
+<sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.StatusBadge" tone="info" icon="hourglass-medium">In review</x-import>
+</sc-if>
+</div>
+<x-import component-from-global-scope="AStra.Banner" tone="info">Earning isn’t live yet. AStra hasn’t approved an earning mechanism, so campaigns stay as drafts.</x-import>
+<div data-local style="display: flex; flex-direction: column; gap: 16px">
+<x-import component-from-global-scope="AStra.TextField" label="Campaign name" default-value="Opening night regulars"></x-import>
+<x-import component-from-global-scope="AStra.Select" label="Activity" options="{{ activities }}" default-value="checkin"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Points awarded" default-value="100" suffix="pts" helper="Worth $1 off at any creator who allows points."></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Dates" default-value="Oct 1 - Oct 31, 2026" icon="calendar-blank"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Quantity limit" default-value="200" suffix="fans"></x-import>
+<x-import component-from-global-scope="AStra.Select" label="Repeat limit" options="{{ repeats }}" default-value="fan"></x-import>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<x-import component-from-global-scope="AStra.Button" icon="paper-plane-tilt" size="lg" full-width="{{ yes }}">Submit for review</x-import>
+<x-import component-from-global-scope="AStra.Button" variant="secondary" size="lg" full-width="{{ yes }}">Save draft</x-import>
+<sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+<span class="as-helper">An admin reviews campaigns against loyalty rules.</span>
+</sc-if>
+</div>
+<sc-if value="{{ draftSaved }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="success" title="Draft saved">Only you can see this draft. It won’t award points.</x-import>
+</sc-if>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+<h2 class="as-section-title" style="font-size: 18px">Redemptions on your items</h2>
+<span class="as-sample">Sample data</span>
+</div>
+<div role="table" aria-label="Points redemptions on your items" style="display: flex; flex-direction: column">
+<sc-for list="{{ rows }}" as="row" hint-placeholder-count="3">
+<x-import component-from-global-scope="AStra.LedgerRow" activity="{{ row.activity }}" source="{{ row.source }}" date="{{ row.date }}" change="{{ row.change }}" status="{{ row.status }}" reason="{{ row.reason }}"></x-import>
+</sc-for>
+</div>
+<p class="as-caption" style="margin: 0">Sale price after points, before charges. Who funds discounts is still being decided.</p>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="as-section-title" style="font-size: 16px">How it works</h2>
+<ol class="cl-steps">
+<li><span class="cl-num">1</span><span>Fans earn one shared AStra balance, not a separate one per creator.</span></li>
+<li><span class="cl-num">2</span><span>At checkout, 100 pts take $1 off, up to the limit you set.</span></li>
+<li><span class="cl-num">3</span><span>Fans pay the rest. Points can’t be cashed out or withdrawn.</span></li>
+</ol>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<h2 class="as-section-title" style="font-size: 16px">What fans see</h2>
+<span class="as-caption">Checkout preview</span>
+</div>
+<div class="cl-prev" style="gap: 8px">
+<span style="display: flex; align-items: center; gap: 8px"><x-import component-from-global-scope="AStra.Icon" name="star-four" size="{{ n16 }}" color="var(--points)"></x-import><strong>{{ fanCap }}</strong></span>
+<span style="color: var(--ink-muted)">Color After Hours · $25.00 ticket</span>
+<strong class="cl-big">{{ fanUse }}</strong>
+</div>
+<p class="as-caption" style="margin: 0">Based on a fan with 600 pts.</p>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 6px">
+<h2 class="as-section-title" style="font-size: 16px">Pending policy decisions</h2>
+<p class="as-helper">These rules aren’t set yet and may change your settings.</p>
+<div class="cl-open"><span>Minimum price or points per order</span><x-import component-from-global-scope="AStra.StatusBadge" tone="neutral" icon="clock">Open</x-import></div>
+<div class="cl-open"><span>Whether points expire</span><x-import component-from-global-scope="AStra.StatusBadge" tone="neutral" icon="clock">Open</x-import></div>
+<div class="cl-open"><span>Who funds points discounts</span><x-import component-from-global-scope="AStra.StatusBadge" tone="neutral" icon="clock">Open</x-import></div>
+<div class="cl-open"><span>Stacking with other discounts</span><x-import component-from-global-scope="AStra.StatusBadge" tone="neutral" icon="clock">Open</x-import></div>
+</section>
+</main>
+<x-import component-from-global-scope="AStra.BottomNav" role="creator" active="none"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":3500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ cap: 20, tix: true, merch: true, saved: false, draftSaved: false, submitted: false }, this.state || {});
+    const M = true;
+    /*ROUTES:creator*/
+    const P = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Onboarding:['Onboarding','OnboardingMobile'],Feed:['Feed','FeedMobile'],Discover:['Discover','DiscoverMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Orders:['Orders','OrdersMobile'],Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Dashboard:['Dashboard','DashboardMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Admin:['Admin','AdminMobile'],CreatorSetup:['CreatorSetup','CreatorSetupMobile'],ProfileEdit:['ProfileEdit','ProfileEditMobile'],Publish:['Publish','PublishMobile'],Insights:['Insights','InsightsMobile'],CreatorOrders:['CreatorOrders','CreatorOrdersMobile'],CreatorLoyalty:['CreatorLoyalty','CreatorLoyaltyMobile'],Community:['Community','CommunityMobile'],MyCollabs:['MyCollabs','MyCollabsMobile'],Messages:['Messages','MessagesMobile'],CreatorMenu:['Dashboard','CreatorMenuMobile']};
+    const L = {AStra:'Main','Sign out':'Main',Notifications:'Notifications',Settings:'Settings','Sign in':'SignIn','Join AStra':'SignIn',Overview:'Dashboard',Home:'Dashboard',Publish:'Publish',Community:'Community',Collaborate:'CollabFind',Collab:'CollabFind','Audience insights':'Insights',Insights:'Insights',Loyalty:'CreatorLoyalty',Orders:'CreatorOrders',More:'CreatorMenu',Audience:'Feed',Creator:'Dashboard',Messages:'Messages','My collaborations':'MyCollabs','Find opportunities':'CollabFind','Create opportunity':'CollabCreate','View opportunity':'CollabRespond','Review responses':'MyCollabs','Edit profile':'ProfileEdit','View public profile':'Profile',Verification:'CreatorSetup'};
+    const ACCOUNT = 'ProfileEdit';
+    /*END ROUTES*/
+    const X = {
+      'Save limit': () => this.setState({ saved: true }),
+      'Save draft': () => this.setState({ draftSaved: true }),
+      'Submit for review': () => this.setState({ submitted: true, draftSaved: false })
+    };
+    /*ROUTER*/
+    const nav = (k) => { const f = P[k]; if (!f || !this._root) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+    const go = nav;
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      this._root = e.currentTarget;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h && h.charAt(0) === '#') e.preventDefault();
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav(ACCOUNT); return; }
+      const local = !!(t.closest && t.closest('[data-local]'));
+      const c = [(t.getAttribute('aria-label') || '').split(',')[0]].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => v);
+      for (let i = 0; i < c.length; i++) { if (X[c[i]]) { e.preventDefault(); X[c[i]](); return; } }
+      if (local) return;
+      for (let i = 0; i < c.length; i++) { if (L[c[i]]) { e.preventDefault(); nav(L[c[i]]); return; } }
+    };
+    const routes = Object.keys(P).map((k) => ({ key: k, file: P[k][M ? 1 : 0] + '.dc.html' }));
+    /*END ROUTER*/
+    const money = (v) => '$' + v.toFixed(2);
+    const prev = (price, on, label) => {
+      if (!s.cap) return { pts: 'Points are off for your items.', off: 'No points discount.', sale: 'Sale price: ' + money(price) + ' before charges' };
+      if (!on) return { pts: 'Points are off for ' + label + '.', off: 'No points discount.', sale: 'Sale price: ' + money(price) + ' before charges' };
+      const pts = price * s.cap; const off = pts / 100;
+      return { pts: 'Max points usable: ' + pts.toLocaleString('en-US') + ' pts', off: 'Discount: ' + money(off) + ' off', sale: 'Lowest sale price after points: ' + money(price - off) + ' before charges' };
+    };
+    const t = prev(25, s.tix, 'tickets'); const p = prev(40, s.merch, 'merchandise');
+    const tixMax = s.cap && s.tix ? 25 * s.cap : 0;
+    return {
+      route, routes, yes: true, no: false, n3: 3, n16: 16,
+      caps: [{ value: 0, label: 'Off' }, { value: 10, label: '10%' }, { value: 20, label: '20%' }, { value: 30, label: '30%' }],
+      cap: s.cap, setCap: (v) => this.setState({ cap: v, saved: false }),
+      tix: s.tix, merch: s.merch,
+      toggleTix: () => this.setState({ tix: !s.tix, saved: false }),
+      toggleMerch: () => this.setState({ merch: !s.merch, saved: false }),
+      tixPts: t.pts, tixOff: t.off, tixSale: t.sale, prPts: p.pts, prOff: p.off, prSale: p.sale,
+      saved: s.saved, draftSaved: s.draftSaved, submitted: s.submitted, isDraft: !s.submitted,
+      activities: [{ value: 'checkin', label: 'Check in at an event (organizer confirmed)' }, { value: 'ticket', label: 'Buy a ticket' }, { value: 'merch', label: 'Buy merchandise' }],
+      repeats: [{ value: 'fan', label: 'Once per fan' }, { value: 'event', label: 'Once per event' }],
+      rows: [
+        { activity: 'Color After Hours ticket', source: 'Alex M.', date: 'Sep 27, 2026', change: -500, status: 'redeemed', reason: '$5.00 off' },
+        { activity: 'Color After Hours ticket', source: 'Sam K.', date: 'Sep 24, 2026', change: -500, status: 'redeemed', reason: '$5.00 off' },
+        { activity: 'Dusk Study print', source: 'Taylor R.', date: 'Sep 22, 2026', change: -400, status: 'redeemed', reason: '$4.00 off' }
+      ],
+      fanCap: tixMax ? 'This creator allows up to ' + s.cap + '% off with points' : 'Points can’t be used on this item',
+      fanUse: tixMax ? '600 available · uses ' + Math.min(600, tixMax) + ' max' : '600 available, none usable here'
+    };
+  }
+}
+</script>
+</body>
+</html>

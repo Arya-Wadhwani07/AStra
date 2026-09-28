@@ -1,0 +1,43 @@
+{
+  "name": "astra",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "ASTRA_DEMO=1 next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "ASTRA_DEMO=1 next start --hostname 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "test:http": "tsx scripts/check-http.ts",
+    "test:mongo": "tsx scripts/check-mongo.ts",
+    "test:spotify": "tsx scripts/check-spotify.ts",
+    "test:youtube": "tsx scripts/check-youtube.ts",
+    "test:browser": "playwright test",
+    "spotify:check": "node scripts/check-spotify-config.mjs",
+    "admin:key": "node scripts/admin-key.mjs",
+    "db:start": "node scripts/mongo.mjs",
+    "db:export-legacy": "node scripts/export-legacy.mjs"
+  },
+  "dependencies": {
+    "@phosphor-icons/react": "latest",
+    "google-auth-library": "^11.1.0",
+    "mongodb": "^7.6.0",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "mongodb-memory-server-core": "^11.3.0",
+    "prettier": "^3.9.9",
+    "tsx": "latest",
+    "typescript": "latest"
+  },
+  "engines": {
+    "node": ">=22.13"
+  }
+}

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AStra component gallery</title>
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="components/bundle.css">
+<style>
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+header{position:sticky;top:0;z-index:5;display:flex;gap:16px;align-items:center;padding:14px 24px;background:var(--surface);border-bottom:1px solid var(--border)}
+header h1{font-size:16px;margin:0}header select{font:inherit;padding:6px 8px;border-radius:8px}
+main{padding:24px;display:flex;flex-direction:column;gap:28px;max-width:1280px;margin:0 auto}
+h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin:12px 0 0}
+section{display:flex;flex-direction:column;gap:8px}section h3{margin:0;font-size:16px}section a{font-size:13px}
+iframe{width:100%;border:1px solid var(--border);border-radius:16px;background:var(--bg)}
+</style></head>
+<body><header><h1>AStra component gallery</h1><label>Theme <select id="theme">
+<option value="light">Studio (light)</option><option value="glass" selected>Glass (signed-in app)</option><option value="cinema">Cinema (motion)</option><option value="crimson">Crimson</option><option value="chrome">Chrome</option><option value="prism">Prism</option></select></label>
+<span class="as-caption">Live previews from components/*/preview.html rendered with components/bundle.js. Serve over http.</span></header>
+<main id="m"></main>
+<script>
+var ITEMS = [{"name": "AuroraText", "group": "Foundations", "height": 247}, {"name": "Icon", "group": "Foundations", "height": 356}, {"name": "Logo", "group": "Foundations", "height": 327}, {"name": "OrbitingCircles", "group": "Foundations", "height": 334}, {"name": "Button", "group": "Actions", "height": 496}, {"name": "IconButton", "group": "Actions", "height": 224}, {"name": "Checkbox", "group": "Inputs", "height": 262}, {"name": "Chip", "group": "Inputs", "height": 272}, {"name": "FileUpload", "group": "Inputs", "height": 418}, {"name": "SearchField", "group": "Inputs", "height": 106}, {"name": "SegmentedControl", "group": "Inputs", "height": 234}, {"name": "Select", "group": "Inputs", "height": 272}, {"name": "Switch", "group": "Inputs", "height": 190}, {"name": "TextField", "group": "Inputs", "height": 568}, {"name": "AppShell", "group": "Navigation", "height": 530}, {"name": "BottomNav", "group": "Navigation", "height": 127}, {"name": "Breadcrumbs", "group": "Navigation", "height": 120}, {"name": "RoleSwitch", "group": "Navigation", "height": 144}, {"name": "SideNav", "group": "Navigation", "height": 608}, {"name": "Tabs", "group": "Navigation", "height": 191}, {"name": "Avatar", "group": "Content & identity", "height": 272}, {"name": "CreatorSummary", "group": "Content & identity", "height": 262}, {"name": "FavoriteButton", "group": "Content & identity", "height": 130}, {"name": "FeedCard", "group": "Content & identity", "height": 635}, {"name": "MediaFrame", "group": "Content & identity", "height": 298}, {"name": "PriceTag", "group": "Content & identity", "height": 194}, {"name": "Banner", "group": "Feedback & trust", "height": 474}, {"name": "ConsentCard", "group": "Feedback & trust", "height": 438}, {"name": "Dialog", "group": "Feedback & trust", "height": 460}, {"name": "EmptyState", "group": "Feedback & trust", "height": 350}, {"name": "Skeleton", "group": "Feedback & trust", "height": 414}, {"name": "StatusBadge", "group": "Feedback & trust", "height": 188}, {"name": "Toast", "group": "Feedback & trust", "height": 274}, {"name": "Tooltip", "group": "Feedback & trust", "height": 156}, {"name": "VerificationStatus", "group": "Feedback & trust", "height": 540}, {"name": "BriefStatus", "group": "Collaboration", "height": 428}, {"name": "EligibilityPanel", "group": "Collaboration", "height": 746}, {"name": "MessageBubble", "group": "Collaboration", "height": 482}, {"name": "OpportunityCard", "group": "Collaboration", "height": 678}, {"name": "ParticipantRow", "group": "Collaboration", "height": 385}, {"name": "ResponseCounter", "group": "Collaboration", "height": 163}, {"name": "ResponseForm", "group": "Collaboration", "height": 516}, {"name": "CartItem", "group": "Commerce & loyalty", "height": 470}, {"name": "DeliveryStatus", "group": "Commerce & loyalty", "height": 542}, {"name": "LedgerRow", "group": "Commerce & loyalty", "height": 402}, {"name": "OrderSummary", "group": "Commerce & loyalty", "height": 476}, {"name": "PointsBalance", "group": "Commerce & loyalty", "height": 386}, {"name": "QuantityStepper", "group": "Commerce & loyalty", "height": 94}, {"name": "AdminTable", "group": "Administration", "height": 398}, {"name": "AuditRow", "group": "Administration", "height": 398}, {"name": "MotionCollabIntro", "group": "Motion", "height": 560}, {"name": "MotionHeroDesktop", "group": "Motion", "height": 720}, {"name": "MotionHeroMobile", "group": "Motion", "height": 880}, {"name": "MotionLoop", "group": "Motion", "height": 578}, {"name": "MotionLoyaltyIntro", "group": "Motion", "height": 620}, {"name": "MotionStage", "group": "Motion", "height": 655}, {"name": "MotionStoryboards", "group": "Motion", "height": 882}, {"name": "Cover", "group": "Other", "height": 400}, {"name": "ProofAdmin", "group": "Proof set", "height": 900}, {"name": "ProofCartDesktop", "group": "Proof set", "height": 980}, {"name": "ProofFeedDesktop", "group": "Proof set", "height": 1466}, {"name": "ProofMobile", "group": "Proof set", "height": 888}, {"name": "ProofOpportunityDesktop", "group": "Proof set", "height": 1361}, {"name": "ProofThemes", "group": "Proof set", "height": 1112}];
+var base = location.href.replace(/[^/]*$/, '');
+function frame(it, theme) {
+  return fetch('components/' + it.name + '/preview.html').then(function (r) { return r.text(); }).then(function (src) {
+    var body = src.slice(src.indexOf('<body>') + 6, src.lastIndexOf('</body>'));
+    var ambient = theme === 'glass' ? '<div class="as-ambient" aria-hidden="true" style="position:fixed"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>' : '';
+    return '<!doctype html><html data-theme="' + theme + '"><head><meta charset="utf-8"><base href="' + base + '">' +
+      '<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="components/bundle.css">' +
+      '<script src="../prototype/vendor/react.production.min.js"><\/script><script src="../prototype/vendor/react-dom.production.min.js"><\/script><script src="components/bundle.js"><\/script>' +
+      '<style>body{margin:0;background:var(--bg)} #root{position:relative}</style></head><body class="' + (theme === 'glass' ? 'as-app--glass' : '') + '" data-theme="' + theme + '">' + ambient + body + '</body></html>';
+  });
+}
+function build() {
+  var theme = document.getElementById('theme').value, m = document.getElementById('m'), last = '';
+  m.innerHTML = '';
+  ITEMS.forEach(function (it) {
+    if (it.group !== last) { var g = document.createElement('h2'); g.textContent = it.group; m.appendChild(g); last = it.group; }
+    var s = document.createElement('section');
+    s.innerHTML = '<h3>' + it.name + '</h3><a href="components/' + it.name + '/README.md">Usage notes (README.md)</a>';
+    var f = document.createElement('iframe'); f.style.height = (it.height + 40) + 'px'; f.title = it.name + ' preview'; s.appendChild(f); m.appendChild(s);
+    frame(it, theme).then(function (html) { f.srcdoc = html; });
+  });
+}
+document.getElementById('theme').onchange = build; build();
+</script></body></html>

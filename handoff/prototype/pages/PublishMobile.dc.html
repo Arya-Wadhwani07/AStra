@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Publish (mobile)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+.pb-row{display:flex;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid var(--border)}
+.pb-row:last-child{border-bottom:0}
+.pb-ico{width:36px;height:36px;border-radius:12px;background:var(--surface-sunken);color:var(--ink-muted);display:grid;place-items:center;flex:none}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--mobile" style="width: 390px; height: 3500px; font-family: var(--font-sans); color: var(--ink); background: var(--bg); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.TopBar" mobile="{{ yes }}" role="creator"></x-import>
+<div class="as-shell__mtitle"><h1 class="as-page-title">Publish</h1></div>
+<main class="as-shell__main">
+<sc-if value="{{ notDeleted }}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap">
+<h2 class="as-section-title" style="font-size: 18px">What are you publishing?</h2>
+<span class="as-caption">{{ typeHint }}</span>
+</div>
+<div data-local><x-import component-from-global-scope="AStra.SegmentedControl" aria-label="Content type" options="{{ types }}" value="{{ type }}" on-change="{{ setType }}" full-width="{{ yes }}"></x-import></div>
+</section>
+<sc-if value="{{ isPublished }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="success" title="Published. It’s now in your followers’ feeds."><span style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px"><a href="FeedMobile.dc.html" class="as-btn as-btn--secondary as-btn--sm">View in feed</a><button type="button" class="as-btn as-btn--quiet as-btn--sm">Unpublish</button></span></x-import>
+</sc-if>
+<sc-if value="{{ isUnpublished }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="info" title="Unpublished. Only you can see it.">It’s back in your drafts. Publish again whenever you’re ready.</x-import>
+</sc-if>
+<sc-if value="{{ gated }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="warning" title="Verification pending">Paid events and merchandise go live once your identity is verified. Posts can still be published. <a href="CreatorSetupMobile.dc.html">Check verification</a></x-import>
+</sc-if>
+<sc-if value="{{ isPost }}" hint-placeholder-val="{{ true }}">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 20px">
+<h2 class="as-section-title" style="font-size: 18px">Post</h2>
+<sc-if value="{{ noErr }}" hint-placeholder-val="{{ true }}"><x-import component-from-global-scope="AStra.TextField" label="Title" default-value="Studio wall update" required="{{ yes }}" counter="18 / 80" size="lg"></x-import></sc-if>
+<sc-if value="{{ showErr }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="AStra.TextField" label="Title" value="" placeholder="Give your post a title" required="{{ yes }}" error="Add a title so people know what this is." counter="0 / 80" size="lg"></x-import></sc-if>
+<x-import component-from-global-scope="AStra.TextField" label="Body" multiline="{{ yes }}" rows="{{ n4 }}" default-value="Moved the three dusk canvases onto the long wall this week. Seeing them side by side changed the order for the show. Here’s where they landed."></x-import>
+<div style="display: grid; grid-template-columns: 1fr; gap: 20px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<x-import component-from-global-scope="AStra.FileUpload" label="Photo or video" state="done" file-name="studio-wall.jpg" helper="JPG, PNG or MP4 up to 50 MB."></x-import>
+<div data-local><x-import component-from-global-scope="AStra.SegmentedControl" label="Who can see this" options="{{ audiences }}" value="{{ aud }}" on-change="{{ setAud }}" full-width="{{ yes }}"></x-import></div>
+<sc-if value="{{ creatorsOnly }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="AStra.Banner" tone="private" title="Creators only">Visible to creators only. It won’t appear in audience feeds.</x-import></sc-if>
+</div>
+<x-import component-from-global-scope="AStra.MediaFrame" ratio="16:9" art="painting" credit="Artwork: Mira Rao" alt="Three color-field canvases hung on a long studio wall"></x-import>
+</div>
+</section>
+</sc-if>
+<sc-if value="{{ isEvent }}" hint-placeholder-val="{{ false }}">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 20px">
+<h2 class="as-section-title" style="font-size: 18px">Event</h2>
+<sc-if value="{{ noErr }}" hint-placeholder-val="{{ true }}"><x-import component-from-global-scope="AStra.TextField" label="Event title" default-value="Color After Hours" required="{{ yes }}" counter="17 / 80" size="lg"></x-import></sc-if>
+<sc-if value="{{ showErr }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="AStra.TextField" label="Event title" value="" placeholder="Name your event" required="{{ yes }}" error="Add a title so people know what this is." counter="0 / 80" size="lg"></x-import></sc-if>
+<x-import component-from-global-scope="AStra.TextField" label="Description" multiline="{{ yes }}" rows="{{ n3 }}" default-value="A small evening show of new color-field work. Prints available at the door."></x-import>
+<div style="display: grid; grid-template-columns: 1fr; gap: 16px">
+<x-import component-from-global-scope="AStra.TextField" label="Date" default-value="Sat, Oct 10, 2026" icon="calendar-blank" size="lg"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Starts" default-value="6:00 PM" icon="clock" size="lg"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Ends" default-value="8:00 PM PT" icon="clock" size="lg"></x-import>
+</div>
+<div style="display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start">
+<x-import component-from-global-scope="AStra.TextField" label="Venue" default-value="Studio 4, Arts District" icon="map-pin" size="lg"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="City" default-value="Los Angeles" size="lg"></x-import>
+</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start">
+<x-import component-from-global-scope="AStra.TextField" label="Ticket price" default-value="25" suffix="USD" size="lg"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Capacity" default-value="40" suffix="tickets" size="lg"></x-import>
+</div>
+<div data-local style="padding: 14px 16px; border-radius: 12px; background: var(--points-bg)"><x-import component-from-global-scope="AStra.Switch" label="Accept points discounts" description="Up to your 20% limit. 100 pts = $1 off, set by AStra. Change your limit in Loyalty." checked="{{ pts }}" on-change="{{ setPts }}"></x-import></div>
+<div style="display: grid; grid-template-columns: 1fr; gap: 20px; align-items: start">
+<x-import component-from-global-scope="AStra.FileUpload" label="Event image" state="done" file-name="color-after-hours.jpg" helper="Shown on the event page and in feeds."></x-import>
+<x-import component-from-global-scope="AStra.MediaFrame" ratio="16:9" art="event" credit="Placeholder art" alt="Gallery wall with three canvases"></x-import>
+</div>
+</section>
+</sc-if>
+<sc-if value="{{ isMerch }}" hint-placeholder-val="{{ false }}">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 20px">
+<h2 class="as-section-title" style="font-size: 18px">Merchandise</h2>
+<sc-if value="{{ noErr }}" hint-placeholder-val="{{ true }}"><x-import component-from-global-scope="AStra.TextField" label="Item title" default-value="Dusk Study print" required="{{ yes }}" counter="16 / 80" size="lg"></x-import></sc-if>
+<sc-if value="{{ showErr }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="AStra.TextField" label="Item title" value="" placeholder="Name your item" required="{{ yes }}" error="Add a title so people know what this is." counter="0 / 80" size="lg"></x-import></sc-if>
+<x-import component-from-global-scope="AStra.TextField" label="Description" multiline="{{ yes }}" rows="{{ n3 }}" default-value="Giclee print of the Dusk Study canvas on cotton rag paper, 12 x 16 in. Signed on the back."></x-import>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start">
+<x-import component-from-global-scope="AStra.TextField" label="Price" default-value="40" suffix="USD" size="lg"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="In stock" default-value="12" suffix="prints" size="lg"></x-import>
+</div>
+<div style="display: grid; grid-template-columns: 1fr; gap: 20px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<x-import component-from-global-scope="AStra.Select" label="Fulfillment" options="{{ fulfill }}" default-value="ship" size="lg"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Shipping note" default-value="Ships flat in a rigid mailer within 5 business days. US only for now." optional="{{ yes }}" size="lg"></x-import>
+<div data-local style="display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border-radius: 12px; background: var(--surface-sunken)">
+<x-import component-from-global-scope="AStra.Switch" label="Mark as sold out" description="Demo toggle. Shows how a sold-out item looks." checked="{{ soldOut }}" on-change="{{ setSold }}"></x-import>
+<sc-if value="{{ soldOut }}" hint-placeholder-val="{{ false }}"><div style="display: flex; flex-direction: column; gap: 6px"><x-import component-from-global-scope="AStra.AvailabilityLabel" status="soldout"></x-import><span class="as-helper">Sold-out items can’t be added to carts.</span></div></sc-if>
+</div>
+</div>
+<x-import component-from-global-scope="AStra.MediaFrame" ratio="16:9" art="print" credit="Artwork: Mira Rao" alt="Study of overlapping orange rectangles"></x-import>
+</div>
+</section>
+</sc-if>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 2px"><h2 class="as-section-title" style="font-size: 18px">Rights and credits</h2><span class="as-caption">Optional. Tell people who made this and how it can be used.</span></div>
+<sc-if value="{{ rightsClosed }}" hint-placeholder-val="{{ true }}"><x-import component-from-global-scope="AStra.Button" variant="quiet" size="sm" icon="caret-down">Show rights and credits</x-import></sc-if>
+<sc-if value="{{ rightsOpen }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="AStra.Button" variant="quiet" size="sm" icon="x">Hide rights and credits</x-import></sc-if>
+</div>
+<sc-if value="{{ rightsOpen }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start">
+<x-import component-from-global-scope="AStra.TextField" label="Owner and credit" default-value="Artwork: Mira Rao" size="lg"></x-import>
+<x-import component-from-global-scope="AStra.Select" label="License" options="{{ licenses }}" default-value="all" size="lg"></x-import>
+</div>
+<x-import component-from-global-scope="AStra.TextField" label="Intended use" multiline="{{ yes }}" rows="{{ n2 }}" optional="{{ yes }}" default-value="Share with credit. Please ask before using it in ads or products."></x-import>
+<p class="as-caption" style="margin: 0; display: flex; gap: 8px; align-items: flex-start"><x-import component-from-global-scope="AStra.Icon" name="info" size="{{ n16 }}"></x-import><span>This records what you tell us. It isn’t copyright registration, ownership verification or legal advice.</span></p>
+</div>
+</sc-if>
+</section>
+<sc-if value="{{ savedToast }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="AStra.Toast" tone="success" title="Draft saved · 4:32 PM">Only you can see drafts.</x-import></sc-if>
+<sc-if value="{{ showDialog }}" hint-placeholder-val="{{ false }}">
+<div style="display: block; border-radius: 28px; overflow: hidden"><x-import component-from-global-scope="AStra.Dialog" inline="{{ yes }}" tone="destructive" title="Delete this draft?"><p style="margin: 0">This removes the {{ typeNoun }} and its media from AStra. It can’t be undone.</p><div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 16px; flex-wrap: wrap"><x-import component-from-global-scope="AStra.Button" variant="secondary">Keep it</x-import><x-import component-from-global-scope="AStra.Button" variant="destructive" icon="trash">Delete draft</x-import></div></x-import></div>
+</sc-if>
+<div style="display: grid; grid-template-columns: 1fr; gap: 10px">
+<sc-if value="{{ canPublish }}" hint-placeholder-val="{{ true }}"><x-import component-from-global-scope="AStra.Button" variant="primary" icon="paper-plane-tilt" size="lg" full-width="{{ yes }}">{{ pubLabel }}</x-import></sc-if>
+<sc-if value="{{ gated }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="AStra.Button" variant="primary" icon="paper-plane-tilt" disabled="{{ yes }}" disabled-reason="Verify your identity to sell tickets and merchandise" size="lg" full-width="{{ yes }}">{{ pubLabel }}</x-import></sc-if>
+<x-import component-from-global-scope="AStra.Button" variant="secondary" size="lg" full-width="{{ yes }}">Save draft</x-import>
+<x-import component-from-global-scope="AStra.Button" variant="destructive" icon="trash" size="lg" full-width="{{ yes }}">Delete</x-import>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ isDeleted }}" hint-placeholder-val="{{ false }}">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 16px; align-items: center; padding: 40px 20px">
+<x-import component-from-global-scope="AStra.EmptyState" tone="empty" icon="trash" title="Draft deleted" body="It’s gone from your drafts, along with its media. Anything you’ve already published stays as it was."></x-import>
+<x-import component-from-global-scope="AStra.Button" variant="primary" icon="plus" size="lg">Start a new post</x-import>
+</section>
+</sc-if>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<h2 class="as-section-title" style="font-size: 18px">Preview</h2>
+<x-import component-from-global-scope="AStra.StatusBadge" tone="{{ previewTone }}" icon="{{ previewIcon }}">{{ previewCaption }}</x-import>
+</div>
+<span class="as-caption">{{ previewNote }}</span>
+<sc-if value="{{ isPost }}" hint-placeholder-val="{{ true }}"><x-import component-from-global-scope="AStra.FeedCard" type="post" creator="Mira Rao" discipline="painter" verified="{{ yes }}" time="Just now" art="painting" credit="Placeholder art" title="Studio wall update" body="Moved the three dusk canvases onto the long wall this week." ratio="3:2"></x-import></sc-if>
+<sc-if value="{{ isEvent }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="AStra.FeedCard" type="event" creator="Mira Rao" discipline="painter" verified="{{ yes }}" time="Just now" art="event" credit="Placeholder art" title="Color After Hours" date="Sat, Oct 10 · 6-8 PM PT" location="Los Angeles" price="{{ n25 }}" availability="available" ratio="3:2"></x-import></sc-if>
+<sc-if value="{{ isMerch }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="AStra.FeedCard" type="merch" creator="Mira Rao" discipline="painter" verified="{{ yes }}" time="Just now" art="print" credit="Placeholder art" title="Dusk Study print" price="{{ n40 }}" availability="{{ merchAvail }}" count="{{ n12 }}" ratio="3:2"></x-import></sc-if>
+</section>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px"><h2 class="as-section-title" style="font-size: 18px">Recently published</h2><span class="as-sample">Sample data</span></div>
+<sc-for list="{{ recent }}" as="r2" hint-placeholder-count="3">
+<div class="pb-row">
+<span class="pb-ico"><x-import component-from-global-scope="AStra.Icon" name="{{ r2.icon }}" size="{{ n18 }}"></x-import></span>
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1"><strong style="font-size: 14px">{{ r2.title }}</strong><span class="as-caption">{{ r2.meta }}</span></div>
+<x-import component-from-global-scope="AStra.StatusBadge" tone="{{ r2.tone }}">{{ r2.status }}</x-import>
+</div>
+</sc-for>
+</section>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px; border-style: dashed">
+<h2 class="as-section-title" style="font-size: 18px">Prototype controls</h2>
+<div data-local><x-import component-from-global-scope="AStra.SegmentedControl" label="Demo: verification status" options="{{ vers }}" value="{{ ver }}" on-change="{{ setVer }}" full-width="{{ yes }}"></x-import></div>
+<p class="as-caption" style="margin: 0">Paid events and merchandise need a verified identity. Posts don’t.</p>
+<sc-if value="{{ noErr }}" hint-placeholder-val="{{ true }}"><x-import component-from-global-scope="AStra.Button" variant="secondary" size="sm" icon="warning-circle" full-width="{{ yes }}">Show validation example</x-import></sc-if>
+<sc-if value="{{ showErr }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="AStra.Button" variant="secondary" size="sm" icon="x" full-width="{{ yes }}">Hide validation example</x-import></sc-if>
+</section>
+</main>
+<x-import component-from-global-scope="AStra.BottomNav" role="creator" active="publish"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":3500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ type: 'post', aud: 'everyone', pts: true, soldOut: false, rights: false, ver: 'verified', life: 'editing', saved: false, dialog: false, err: false }, this.state || {});
+    const M = true;
+    /*ROUTES:creator*/
+    const P = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Onboarding:['Onboarding','OnboardingMobile'],Feed:['Feed','FeedMobile'],Discover:['Discover','DiscoverMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Orders:['Orders','OrdersMobile'],Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Dashboard:['Dashboard','DashboardMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Admin:['Admin','AdminMobile'],CreatorSetup:['CreatorSetup','CreatorSetupMobile'],ProfileEdit:['ProfileEdit','ProfileEditMobile'],Publish:['Publish','PublishMobile'],Insights:['Insights','InsightsMobile'],CreatorOrders:['CreatorOrders','CreatorOrdersMobile'],CreatorLoyalty:['CreatorLoyalty','CreatorLoyaltyMobile'],Community:['Community','CommunityMobile'],MyCollabs:['MyCollabs','MyCollabsMobile'],Messages:['Messages','MessagesMobile'],CreatorMenu:['Dashboard','CreatorMenuMobile']};
+    const L = {AStra:'Main','Sign out':'Main',Notifications:'Notifications',Settings:'Settings','Sign in':'SignIn','Join AStra':'SignIn',Overview:'Dashboard',Home:'Dashboard',Publish:'Publish',Community:'Community',Collaborate:'CollabFind',Collab:'CollabFind','Audience insights':'Insights',Insights:'Insights',Loyalty:'CreatorLoyalty',Orders:'CreatorOrders',More:'CreatorMenu',Audience:'Feed',Creator:'Dashboard',Messages:'Messages','My collaborations':'MyCollabs','Find opportunities':'CollabFind','Create opportunity':'CollabCreate','View opportunity':'CollabRespond','Review responses':'MyCollabs','Edit profile':'ProfileEdit','View public profile':'Profile',Verification:'CreatorSetup'};
+    const ACCOUNT = 'ProfileEdit';
+    /*END ROUTES*/
+    const publish = () => this.setState({ life: 'published', saved: false, dialog: false, err: false });
+    const X = {
+      'Publish post': publish,
+      'Publish event': publish,
+      'Publish item': publish,
+      'Save draft': () => this.setState({ saved: true, dialog: false }),
+      'Unpublish': () => this.setState({ life: 'unpublished', saved: false }),
+      'Delete': () => this.setState({ dialog: true, saved: false }),
+      'Keep it': () => this.setState({ dialog: false }),
+      'Delete draft': () => this.setState({ life: 'deleted', dialog: false, saved: false }),
+      'Start a new post': () => this.setState({ type: 'post', aud: 'everyone', pts: true, soldOut: false, rights: false, life: 'editing', saved: false, dialog: false, err: false }),
+      'Show rights and credits': () => this.setState({ rights: true }),
+      'Hide rights and credits': () => this.setState({ rights: false }),
+      'Show validation example': () => this.setState({ err: true, life: s.life === 'deleted' ? 'editing' : s.life }),
+      'Hide validation example': () => this.setState({ err: false })
+    };
+    /*ROUTER*/
+    const nav = (k) => { const f = P[k]; if (!f || !this._root) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+    const go = nav;
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      this._root = e.currentTarget;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h && h.charAt(0) === '#') e.preventDefault();
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav(ACCOUNT); return; }
+      const local = !!(t.closest && t.closest('[data-local]'));
+      const c = [(t.getAttribute('aria-label') || '').split(',')[0]].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => v);
+      for (let i = 0; i < c.length; i++) { if (X[c[i]]) { e.preventDefault(); X[c[i]](); return; } }
+      if (local) return;
+      for (let i = 0; i < c.length; i++) { if (L[c[i]]) { e.preventDefault(); nav(L[c[i]]); return; } }
+    };
+    const routes = Object.keys(P).map((k) => ({ key: k, file: P[k][M ? 1 : 0] + '.dc.html' }));
+    /*END ROUTER*/
+    const paid = s.type !== 'post';
+    const gated = paid && s.ver === 'pending';
+    const live = s.life !== 'deleted';
+    const creatorsOnly = s.type === 'post' && s.aud === 'creators';
+    const nouns = { post: 'post', event: 'event', merch: 'item' };
+    return {
+      route, routes, yes: true, no: false, n2: 2, n3: 3, n4: 4, n12: 12, n16: 16, n18: 18, n25: 25, n40: 40,
+      types: [{ value: 'post', label: 'Post', icon: 'article' }, { value: 'event', label: 'Event', icon: 'ticket' }, { value: 'merch', label: 'Merchandise', icon: 't-shirt' }],
+      type: s.type, setType: (v) => this.setState({ type: v, dialog: false, saved: false }),
+      typeHint: { post: 'Updates, process shots and news for your followers.', event: 'Ticketed events. Needs a verified identity.', merch: 'Prints and goods you sell. Needs a verified identity.' }[s.type],
+      isPost: live && s.type === 'post', isEvent: live && s.type === 'event', isMerch: live && s.type === 'merch',
+      isDeleted: !live, notDeleted: live,
+      audiences: [{ value: 'everyone', label: 'Everyone (audience feed)' }, { value: 'creators', label: 'Creators only (community)' }],
+      aud: s.aud, setAud: (v) => this.setState({ aud: v }), creatorsOnly: live && creatorsOnly,
+      pts: s.pts, setPts: (v) => this.setState({ pts: !!v }),
+      soldOut: s.soldOut, setSold: (v) => this.setState({ soldOut: !!v }),
+      merchAvail: s.soldOut ? 'soldout' : 'low',
+      fulfill: [{ value: 'ship', label: 'Ship from me' }, { value: 'pickup', label: 'Pick up at event' }],
+      licenses: [{ value: 'all', label: 'All rights reserved' }, { value: 'personal', label: 'Personal use allowed' }, { value: 'ccby', label: 'Creative Commons BY' }],
+      rightsOpen: live && s.rights, rightsClosed: live && !s.rights,
+      vers: [{ value: 'verified', label: 'Verified' }, { value: 'pending', label: 'Pending' }],
+      ver: s.ver, setVer: (v) => this.setState({ ver: v }),
+      gated: live && gated, canPublish: live && !gated,
+      pubLabel: { post: 'Publish post', event: 'Publish event', merch: 'Publish item' }[s.type],
+      typeNoun: nouns[s.type],
+      isPublished: live && s.life === 'published', isUnpublished: live && s.life === 'unpublished',
+      savedToast: live && s.saved, showDialog: live && s.dialog,
+      showErr: s.err, noErr: !s.err,
+      previewNote: creatorsOnly ? 'Creators only preview. Shown in Community, not in audience feeds.' : 'Audience preview. How followers see it in their feed.',
+      previewCaption: creatorsOnly ? 'Creators only' : 'Audience',
+      previewTone: creatorsOnly ? 'private' : 'info',
+      previewIcon: creatorsOnly ? 'lock-simple' : 'globe-simple',
+      recent: [
+        { title: 'Studio wall update', meta: 'Post, Sep 24', icon: 'article', status: 'Published', tone: 'success' },
+        { title: 'Color After Hours', meta: 'Event, Sep 20', icon: 'ticket', status: 'On sale', tone: 'success' },
+        { title: 'Dusk Study print', meta: 'Merchandise, Sep 18', icon: 't-shirt', status: '12 left', tone: 'info' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

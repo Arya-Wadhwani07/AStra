@@ -1,0 +1,18 @@
+<!-- @dsCard group="Commerce & loyalty" height=470 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>CartItem — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-card',style:{maxWidth:640}},
+  h(A.CartItem,{title:'Color After Hours',type:'event',creator:'Mira Rao',detail:'Sat, Oct 10 · 6:00–8:00 PM PT · Los Angeles',art:'event',price:25,qty:1,max:4,pointsEligible:true}),
+  h(A.CartItem,{title:'Chromatic Study — art print',type:'merch',creator:'Mira Rao',art:'print',price:30,compare:28,qty:1,changed:'Price changed from $28.00 to $30.00.'}),
+  h(A.CartItem,{title:'Studio zine #3',type:'merch',creator:'Priya Nair',discipline:'writer',price:12,unavailable:'Sold out since you added it. Remove it to continue.'})
+));
+</script>
+</body>
+</html>

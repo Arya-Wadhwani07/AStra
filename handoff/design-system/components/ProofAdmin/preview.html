@@ -1,0 +1,33 @@
+<!-- @dsCard group="Proof set" height=900 width=1280 page -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>ProofAdmin — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h(A.AppShell,{role:'admin',active:'queue',title:'Review queue',user:'Admin demo'},
+  h('div',{className:'as-row'}, h('span',{className:'as-sample'},'Authenticated admin demo scenario')),
+  h('div',{style:{display:'grid',gridTemplateColumns:'minmax(0,1.7fr) minmax(0,1fr)',gap:24,alignItems:'start'}},
+    h('div',{className:'as-stack',style:{gap:24}},
+      h(A.AdminTable,{title:'Open cases'},
+        h(A.AdminCaseRow,{id:'CASE-311',type:'Verification',icon:'shield-check',subject:'Mira Rao',detail:'Submitted Sep 25',status:'pending',age:'1d',selected:true}),
+        h(A.AdminCaseRow,{id:'CASE-309',type:'Loyalty',icon:'star-four',subject:'Held reward · 400 pts',detail:'12 shares in 3 min',status:'held',age:'2d'}),
+        h(A.AdminCaseRow,{id:'CASE-305',type:'Order dispute',icon:'receipt',subject:'Order AST-24790',detail:'Refund requested',status:'appealed',age:'4d'})),
+      h(A.EmptyState,{compact:true,icon:'flag',title:'No appeals waiting',body:'Appeals from decided cases will appear here.'})),
+    h('section',{className:'as-card as-stack'},
+      h('div',{className:'as-row',style:{justifyContent:'space-between'}}, h('h2',{className:'as-section-title'},'CASE-311 · Verification'), h(A.StatusBadge,{tone:'info',icon:'hourglass-medium'},'Pending review')),
+      h(A.CreatorSummary,{compact:true,name:'Mira Rao',discipline:'painter',location:'Los Angeles'}),
+      h('p',{className:'as-caption'},'Evidence is viewed in the provider’s secure panel and is not stored here.'),
+      h(A.SegmentedControl,{label:'Decision',defaultValue:'approve',options:[{value:'approve',label:'Approve'},{value:'need',label:'Request details'},{value:'reject',label:'Reject'}]}),
+      h(A.TextField,{label:'Reason',multiline:true,rows:2,required:true,value:'Name and portfolio match the submitted details.',helper:'Sent to the creator and saved to the audit history.'}),
+      h('div',{className:'as-row',style:{justifyContent:'flex-end'}}, h(A.Button,{variant:'quiet'},'Cancel'), h(A.Button,null,'Record decision')),
+      h('h3',{className:'as-label',style:{marginTop:8}},'History'),
+      h('ul',{style:{margin:0,padding:0}}, h(A.AuditRow,{action:'Case opened',record:'CASE-311',actor:'System',time:'Sep 25, 2026 · 4:12 PM PT'})))
+  )
+), {pad:0});
+</script>
+</body>
+</html>

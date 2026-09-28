@@ -1,0 +1,562 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Admin.dc.html": {
+      "h": 1200,
+      "is_interactive": true,
+      "title": "Admin review queue · desktop",
+      "w": 1440,
+      "x": 1990,
+      "y": 15680
+    },
+    "AdminMobile.dc.html": {
+      "h": 1900,
+      "is_interactive": true,
+      "title": "Admin review queue · mobile",
+      "w": 390,
+      "x": 3510,
+      "y": 15680
+    },
+    "Checkout.dc.html": {
+      "h": 1200,
+      "is_interactive": true,
+      "title": "Cart & checkout with points · desktop",
+      "w": 1440,
+      "x": 0,
+      "y": 12980
+    },
+    "CheckoutMobile.dc.html": {
+      "h": 1900,
+      "is_interactive": true,
+      "title": "Cart & checkout with points · mobile",
+      "w": 390,
+      "x": 1520,
+      "y": 12980
+    },
+    "CollabCreate.dc.html": {
+      "h": 1900,
+      "is_interactive": true,
+      "title": "Create opportunity · desktop",
+      "w": 1440,
+      "x": 1990,
+      "y": 9480
+    },
+    "CollabCreateMobile.dc.html": {
+      "h": 2600,
+      "is_interactive": true,
+      "title": "Create opportunity · mobile",
+      "w": 390,
+      "x": 3510,
+      "y": 9480
+    },
+    "CollabFind.dc.html": {
+      "h": 1680,
+      "is_interactive": true,
+      "title": "Find opportunities · desktop",
+      "w": 1440,
+      "x": 0,
+      "y": 9480
+    },
+    "CollabFindMobile.dc.html": {
+      "h": 2800,
+      "is_interactive": true,
+      "title": "Find opportunities · mobile",
+      "w": 390,
+      "x": 1520,
+      "y": 9480
+    },
+    "CollabRespond.dc.html": {
+      "h": 1500,
+      "is_interactive": true,
+      "title": "Respond to opportunity · desktop",
+      "w": 1440,
+      "x": 3980,
+      "y": 9480
+    },
+    "CollabRespondMobile.dc.html": {
+      "h": 2300,
+      "is_interactive": true,
+      "title": "Respond to opportunity · mobile",
+      "w": 390,
+      "x": 5500,
+      "y": 9480
+    },
+    "Dashboard.dc.html": {
+      "h": 1500,
+      "is_interactive": true,
+      "title": "Creator dashboard · desktop",
+      "w": 1440,
+      "x": 0,
+      "y": 15680
+    },
+    "DashboardMobile.dc.html": {
+      "h": 1800,
+      "is_interactive": true,
+      "title": "Creator dashboard · mobile",
+      "w": 390,
+      "x": 1520,
+      "y": 15680
+    },
+    "Event.dc.html": {
+      "h": 2080,
+      "is_interactive": true,
+      "title": "Event detail · desktop",
+      "w": 1440,
+      "x": 3980,
+      "y": 5520
+    },
+    "EventMobile.dc.html": {
+      "h": 1700,
+      "is_interactive": true,
+      "title": "Event detail · mobile",
+      "w": 390,
+      "x": 5500,
+      "y": 5520
+    },
+    "Feed.dc.html": {
+      "h": 3260,
+      "is_interactive": true,
+      "title": "Audience feed · desktop",
+      "w": 1440,
+      "x": 0,
+      "y": 5520
+    },
+    "FeedMobile.dc.html": {
+      "h": 2240,
+      "is_interactive": true,
+      "title": "Audience feed · mobile",
+      "w": 390,
+      "x": 1520,
+      "y": 5520
+    },
+    "LandingMobile.dc.html": {
+      "h": 4700,
+      "is_interactive": true,
+      "title": "Landing · mobile",
+      "w": 390,
+      "x": 1520,
+      "y": 0
+    },
+    "Loyalty.dc.html": {
+      "h": 1400,
+      "is_interactive": true,
+      "title": "Loyalty history · desktop",
+      "w": 1440,
+      "x": 1990,
+      "y": 12980
+    },
+    "LoyaltyMobile.dc.html": {
+      "h": 2000,
+      "is_interactive": true,
+      "title": "Loyalty history · mobile",
+      "w": 390,
+      "x": 3510,
+      "y": 12980
+    },
+    "Main.dc.html": {
+      "h": 4820,
+      "is_interactive": true,
+      "title": "Landing · desktop",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Profile.dc.html": {
+      "h": 1700,
+      "is_interactive": true,
+      "title": "Creator profile · desktop",
+      "w": 1440,
+      "x": 1990,
+      "y": 5520
+    },
+    "ProfileMobile.dc.html": {
+      "h": 2200,
+      "is_interactive": true,
+      "title": "Creator profile · mobile",
+      "w": 390,
+      "x": 3510,
+      "y": 5520
+    },
+    "SignIn.dc.html": {
+      "h": 960,
+      "is_interactive": true,
+      "title": "Sign in / join · desktop",
+      "w": 1440,
+      "x": 1990,
+      "y": 0
+    },
+    "SignInMobile.dc.html": {
+      "h": 1300,
+      "is_interactive": true,
+      "title": "Sign in / join · mobile",
+      "w": 390,
+      "x": 3510,
+      "y": 0
+    },
+    "Notifications.dc.html": {
+      "h": 1100,
+      "is_interactive": true,
+      "title": "Notifications · desktop",
+      "w": 1440,
+      "x": 0,
+      "y": 18280
+    },
+    "NotificationsMobile.dc.html": {
+      "h": 1500,
+      "is_interactive": true,
+      "title": "Notifications · mobile",
+      "w": 390,
+      "x": 1520,
+      "y": 18280
+    },
+    "Settings.dc.html": {
+      "h": 1610,
+      "is_interactive": true,
+      "title": "Settings · desktop",
+      "w": 1440,
+      "x": 1990,
+      "y": 18280
+    },
+    "SettingsMobile.dc.html": {
+      "h": 1900,
+      "is_interactive": true,
+      "title": "Menu and settings · mobile",
+      "w": 390,
+      "x": 3510,
+      "y": 18280
+    },
+    "Orders.dc.html": {
+      "h": 1200,
+      "is_interactive": true,
+      "title": "Your orders · desktop",
+      "w": 1440,
+      "x": 3980,
+      "y": 18280
+    },
+    "OrdersMobile.dc.html": {
+      "h": 1700,
+      "is_interactive": true,
+      "title": "Your orders · mobile",
+      "w": 390,
+      "x": 5500,
+      "y": 18280
+    },
+    "Onboarding.dc.html": {
+      "h": 1400,
+      "is_interactive": true,
+      "title": "Onboarding · pick favorite creators · desktop",
+      "w": 1440,
+      "x": 3980,
+      "y": 0
+    },
+    "OnboardingMobile.dc.html": {
+      "h": 1900,
+      "is_interactive": true,
+      "title": "Onboarding · pick favorite creators · mobile",
+      "w": 390,
+      "x": 5500,
+      "y": 0
+    },
+    "Discover.dc.html": {
+      "h": 2000,
+      "is_interactive": true,
+      "title": "Discover creators · desktop",
+      "w": 1440,
+      "x": 5970,
+      "y": 5520
+    },
+    "DiscoverMobile.dc.html": {
+      "h": 2200,
+      "is_interactive": true,
+      "title": "Discover creators · mobile",
+      "w": 390,
+      "x": 7490,
+      "y": 5520
+    },
+    "CreatorSetup.dc.html": {
+      "h": 1180,
+      "is_interactive": true,
+      "title": "Creator setup and verification · desktop",
+      "w": 1440,
+      "x": 0,
+      "y": 20880
+    },
+    "CreatorSetupMobile.dc.html": {
+      "h": 1720,
+      "is_interactive": true,
+      "title": "Creator setup and verification · mobile",
+      "w": 390,
+      "x": 1520,
+      "y": 20880
+    },
+    "ProfileEdit.dc.html": {
+      "h": 2060,
+      "is_interactive": true,
+      "title": "Edit creator profile · desktop",
+      "w": 1440,
+      "x": 1990,
+      "y": 20880
+    },
+    "ProfileEditMobile.dc.html": {
+      "h": 2760,
+      "is_interactive": true,
+      "title": "Edit creator profile · mobile",
+      "w": 390,
+      "x": 3510,
+      "y": 20880
+    },
+    "Publish.dc.html": {
+      "h": 2000,
+      "is_interactive": true,
+      "title": "Publish post, event or merchandise · desktop",
+      "w": 1440,
+      "x": 3980,
+      "y": 20880
+    },
+    "PublishMobile.dc.html": {
+      "h": 3500,
+      "is_interactive": true,
+      "title": "Publish post, event or merchandise · mobile",
+      "w": 390,
+      "x": 5500,
+      "y": 20880
+    },
+    "CreatorMenuMobile.dc.html": {
+      "h": 1520,
+      "is_interactive": true,
+      "title": "Creator menu · mobile",
+      "w": 390,
+      "x": 5970,
+      "y": 20880
+    },
+    "Insights.dc.html": {
+      "h": 1400,
+      "is_interactive": true,
+      "title": "Audience insights · desktop",
+      "w": 1440,
+      "x": 0,
+      "y": 25080
+    },
+    "InsightsMobile.dc.html": {
+      "h": 2440,
+      "is_interactive": true,
+      "title": "Audience insights · mobile",
+      "w": 390,
+      "x": 1520,
+      "y": 25080
+    },
+    "CreatorOrders.dc.html": {
+      "h": 1240,
+      "is_interactive": true,
+      "title": "Creator orders · desktop",
+      "w": 1440,
+      "x": 1990,
+      "y": 25080
+    },
+    "CreatorOrdersMobile.dc.html": {
+      "h": 2400,
+      "is_interactive": true,
+      "title": "Creator orders · mobile",
+      "w": 390,
+      "x": 3510,
+      "y": 25080
+    },
+    "CreatorLoyalty.dc.html": {
+      "h": 1960,
+      "is_interactive": true,
+      "title": "Creator loyalty settings · desktop",
+      "w": 1440,
+      "x": 3980,
+      "y": 25080
+    },
+    "CreatorLoyaltyMobile.dc.html": {
+      "h": 3500,
+      "is_interactive": true,
+      "title": "Creator loyalty settings · mobile",
+      "w": 390,
+      "x": 5500,
+      "y": 25080
+    },
+    "Community.dc.html": {
+      "h": 2550,
+      "is_interactive": true,
+      "title": "Creator community · desktop",
+      "w": 1440,
+      "x": 0,
+      "y": 29280
+    },
+    "CommunityMobile.dc.html": {
+      "h": 3500,
+      "is_interactive": true,
+      "title": "Creator community · mobile",
+      "w": 390,
+      "x": 1520,
+      "y": 29280
+    },
+    "MyCollabs.dc.html": {
+      "h": 1480,
+      "is_interactive": true,
+      "title": "My collaborations · desktop",
+      "w": 1440,
+      "x": 1990,
+      "y": 29280
+    },
+    "MyCollabsMobile.dc.html": {
+      "h": 2350,
+      "is_interactive": true,
+      "title": "My collaborations · mobile",
+      "w": 390,
+      "x": 3510,
+      "y": 29280
+    },
+    "Messages.dc.html": {
+      "h": 1040,
+      "is_interactive": true,
+      "title": "Messages · desktop",
+      "w": 1440,
+      "x": 3980,
+      "y": 29280
+    },
+    "MessagesMobile.dc.html": {
+      "h": 1500,
+      "is_interactive": true,
+      "title": "Messages · mobile",
+      "w": 390,
+      "x": 5500,
+      "y": 29280
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-09-27T16:20:00Z",
+    "v": 1
+  },
+  "designSystems": [
+    {
+      "artifact": "https://claude.ai/artifact/Qpg6ocPayCmFkyVW8QdKKi",
+      "copiedAt": "2026-09-27T21:05:00Z",
+      "namespace": "astra",
+      "title": "AStra",
+      "version": "1790537034-01eb"
+    }
+  ],
+  "launch": {
+    "view": "focused",
+    "file": "Main.dc.html"
+  },
+  "notes": {
+    "t_audience": {
+      "kind": "title1",
+      "maxW": 7880,
+      "text": "Audience · feed, creator profile, event, discover",
+      "w": 240,
+      "x": 0,
+      "y": 5220
+    },
+    "t_collab": {
+      "kind": "title1",
+      "maxW": 5890,
+      "text": "Collaboration · creators only",
+      "w": 240,
+      "x": 0,
+      "y": 9180
+    },
+    "t_commerce": {
+      "kind": "title1",
+      "maxW": 3900,
+      "text": "Commerce and loyalty",
+      "w": 240,
+      "x": 0,
+      "y": 12680
+    },
+    "t_ops": {
+      "kind": "title1",
+      "maxW": 3900,
+      "text": "Creator dashboard and admin",
+      "w": 240,
+      "x": 0,
+      "y": 15380
+    },
+    "t_account": {
+      "kind": "title1",
+      "maxW": 5890,
+      "text": "Account · notifications, settings, orders",
+      "x": 0,
+      "y": 17980,
+      "w": 240
+    },
+    "t_public": {
+      "kind": "title1",
+      "maxW": 5890,
+      "text": "Public · landing, sign in and onboarding",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "t_creator": {
+      "kind": "title1",
+      "maxW": 6400,
+      "text": "Creator workspace · setup, publish, insights, loyalty, community, collaborations",
+      "w": 240,
+      "x": 0,
+      "y": 20580
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "LandingMobile.dc.html",
+    "SignIn.dc.html",
+    "SignInMobile.dc.html",
+    "Onboarding.dc.html",
+    "OnboardingMobile.dc.html",
+    "Feed.dc.html",
+    "FeedMobile.dc.html",
+    "Profile.dc.html",
+    "ProfileMobile.dc.html",
+    "Event.dc.html",
+    "EventMobile.dc.html",
+    "Discover.dc.html",
+    "DiscoverMobile.dc.html",
+    "CollabFind.dc.html",
+    "CollabFindMobile.dc.html",
+    "CollabCreate.dc.html",
+    "CollabCreateMobile.dc.html",
+    "CollabRespond.dc.html",
+    "CollabRespondMobile.dc.html",
+    "Checkout.dc.html",
+    "CheckoutMobile.dc.html",
+    "Loyalty.dc.html",
+    "LoyaltyMobile.dc.html",
+    "Dashboard.dc.html",
+    "DashboardMobile.dc.html",
+    "Admin.dc.html",
+    "AdminMobile.dc.html",
+    "Notifications.dc.html",
+    "NotificationsMobile.dc.html",
+    "Settings.dc.html",
+    "SettingsMobile.dc.html",
+    "Orders.dc.html",
+    "OrdersMobile.dc.html",
+    "CreatorSetup.dc.html",
+    "CreatorSetupMobile.dc.html",
+    "ProfileEdit.dc.html",
+    "ProfileEditMobile.dc.html",
+    "Publish.dc.html",
+    "PublishMobile.dc.html",
+    "CreatorMenuMobile.dc.html",
+    "Insights.dc.html",
+    "InsightsMobile.dc.html",
+    "CreatorOrders.dc.html",
+    "CreatorOrdersMobile.dc.html",
+    "CreatorLoyalty.dc.html",
+    "CreatorLoyaltyMobile.dc.html",
+    "Community.dc.html",
+    "CommunityMobile.dc.html",
+    "MyCollabs.dc.html",
+    "MyCollabsMobile.dc.html",
+    "Messages.dc.html",
+    "MessagesMobile.dc.html"
+  ],
+  "pages": [],
+  "title": "AStra website prototype"
+}

@@ -1,0 +1,17 @@
+<!-- @dsCard group="Feedback & trust" height=156 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Tooltip — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-row',style:{paddingTop:60,gap:48}},
+  h(A.Tooltip,{text:'Points are non-cash loyalty units.',open:true}, h('button',{className:'as-iconbtn as-iconbtn--secondary','aria-label':'About points'}, h(A.Icon,{name:'info'}))),
+  h(A.Tooltip,{text:'Remove from favorites'}, h('button',{className:'as-iconbtn as-iconbtn--secondary','aria-label':'Favorite'}, h(A.Icon,{name:'heart',weight:'fill'})))
+));
+</script>
+</body>
+</html>

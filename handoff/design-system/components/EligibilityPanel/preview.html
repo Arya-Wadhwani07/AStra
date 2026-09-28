@@ -1,0 +1,20 @@
+<!-- @dsCard group="Collaboration" height=746 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>EligibilityPanel — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+var crit = function(a,b,c){ return [{label:'Video editing',kind:'required',met:a},{label:'Available in the next two weeks',kind:'required',met:b},{label:'Art-project experience',kind:'preferred',met:c}]; };
+render(h('div',{className:'as-grid-2',style:{alignItems:'start'}},
+  h(A.EligibilityPanel,{state:'eligible',criteria:crit(true,true,true)}),
+  h(A.EligibilityPanel,{state:'ineligible',criteria:crit(false,true,false),body:'Video editing is required and isn’t on your profile. Preferred criteria never block you.',action:h(A.Button,{variant:'secondary',size:'sm'},'Browse other opportunities')}),
+  h(A.EligibilityPanel,{state:'missing',criteria:crit(true,undefined,false),body:'Add your availability so we can check the timing requirement. We won’t guess.',action:h(A.Button,{size:'sm',icon:'pencil-simple'},'Edit profile')}),
+  h(A.EligibilityPanel,{state:'responded',action:h(A.Button,{variant:'secondary',size:'sm',icon:'chat-circle-text'},'Open conversation')})
+));
+</script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Pick creators to follow</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+.ob-tile{all:unset;box-sizing:border-box;position:relative;display:flex;flex-direction:column;gap:12px;padding:12px;border-radius:20px;cursor:pointer;background:var(--glass-fill);-webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);border:1px solid var(--glass-edge);box-shadow:inset 0 1px 0 var(--glass-highlight),0 18px 40px -18px rgba(15,26,51,.3);color:var(--ink);transition:box-shadow 120ms ease}
+.ob-tile:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.ob-tile[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--action),inset 0 1px 0 var(--glass-highlight),0 18px 40px -18px rgba(15,26,51,.35)}
+.ob-check{position:absolute;top:20px;right:20px;z-index:2;display:grid;place-items:center;width:32px;height:32px;border-radius:999px;background:var(--action);color:var(--on-action);border:1px solid var(--action-edge)}
+.ob-bar{position:sticky;bottom:0;display:flex;align-items:center;gap:16px;padding:16px 24px;border-radius:20px;background:var(--glass-fill);-webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);border:1px solid var(--glass-edge);box-shadow:inset 0 1px 0 var(--glass-highlight),0 18px 40px -18px rgba(15,26,51,.35)}
+.as-mascot .as-motion__ctl{right:8px;bottom:8px;width:28px;height:28px}.as-mascot .as-motion__ctl::after{inset:-8px}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-app--glass" style="width: 1440px; height: 1400px; box-sizing: border-box; padding: 32px 120px 40px; display: flex; flex-direction: column; gap: 32px; background: var(--bg); color: var(--ink); font-family: var(--font-sans); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<header style="display: flex; align-items: center; justify-content: space-between">
+<x-import component-from-global-scope="AStra.Logo"></x-import>
+<span class="as-caption">Step 2 of 2 · your account is ready</span>
+</header>
+<div style="display: flex; align-items: center; gap: 32px">
+<div class="as-mascot" style="position: relative; width: 160px; height: 160px; flex-shrink: 0; border-radius: 28px; overflow: hidden; border: 1px solid var(--glass-edge); box-shadow: inset 0 1px 0 var(--glass-highlight), 0 24px 48px -24px rgba(0, 0, 0, 0.6)"><x-import component-from-global-scope="AStra.MotionLoop" dc-props="{{ mascot }}"></x-import></div>
+<div style="display: flex; flex-direction: column; gap: 12px; max-width: 720px">
+<h1 style="margin: 0; font-family: var(--font-display); font-size: 40px; line-height: 1.05; letter-spacing: -0.015em; font-weight: 600; text-wrap: balance">Pick a few creators to start your feed</h1>
+<p class="as-measure" style="margin: 0; font-size: 17px; line-height: 26px; color: var(--ink-muted)">Their posts, events and merchandise show up in your feed, newest first. You can change this any time in Discover.</p>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+<span class="as-label" style="margin-right: 4px">What are you into?</span>
+<sc-for list="{{ chips }}" as="c" hint-placeholder-count="7">
+<x-import component-from-global-scope="AStra.Chip" interactive="{{ yes }}" icon="{{ c.icon }}" selected="{{ c.sel }}" on-click="{{ c.pick }}">{{ c.label }}</x-import>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px">
+<sc-for list="{{ shown }}" as="p" hint-placeholder-count="8">
+<button type="button" class="ob-tile" aria-pressed="{{ p.pressed }}" aria-label="{{ p.aria }}" onClick="{{ p.toggle }}">
+<sc-if value="{{ p.on }}" hint-placeholder-val="{{ false }}"><span class="ob-check"><x-import component-from-global-scope="AStra.Icon" name="check" size="{{ n18 }}"></x-import></span></sc-if>
+<x-import component-from-global-scope="AStra.MediaFrame" ratio="4:5" art="{{ p.art }}" discipline="{{ p.disc }}"></x-import>
+<x-import component-from-global-scope="AStra.CreatorSummary" compact="{{ yes }}" name="{{ p.name }}" discipline="{{ p.disc }}" location="{{ p.loc }}"></x-import>
+</button>
+</sc-for>
+</div>
+<div class="ob-bar">
+<strong style="font-size: 16px">{{ countLabel }}</strong>
+<span class="as-caption">Sample data · fictional creators</span>
+<span style="margin-left: auto; display: flex; gap: 12px; align-items: center">
+<a href="Feed.dc.html" class="as-btn as-btn--quiet">Skip for now</a>
+<sc-if value="{{ ready }}" hint-placeholder-val="{{ false }}"><a href="Feed.dc.html" class="as-btn as-btn--primary as-btn--lg">Continue to my feed</a></sc-if>
+<sc-if value="{{ notReady }}" hint-placeholder-val="{{ true }}"><x-import component-from-global-scope="AStra.Button" size="lg" disabled="{{ yes }}" disabled-reason="Pick at least one creator, or skip for now.">Continue to my feed</x-import></sc-if>
+</span>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ picked: {}, disc: {} }, this.state || {});
+    const M = false;
+    const F = {Main:['Main','LandingMobile'],Feed:['Feed','FeedMobile']};
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      if (t.classList && t.classList.contains('as-logo')) { this._root = e.currentTarget; const a = document.createElement('a'); a.setAttribute('href', 'Main.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); }
+    };
+    const routes = Object.keys(F).map((k) => ({ key: k, file: F[k][M ? 1 : 0] + '.dc.html' }));
+    const people = [
+      { id: 'mira', name: 'Mira Rao', disc: 'painter', loc: 'Los Angeles', art: 'painting' },
+      { id: 'jonah', name: 'Jonah Lee', disc: 'musician', loc: 'Oakland', art: 'chrome' },
+      { id: 'nia', name: 'Nia Brooks', disc: 'dancer', loc: 'Oakland', art: 'dance' },
+      { id: 'priya', name: 'Priya Nair', disc: 'writer', loc: 'Pasadena', art: 'print' },
+      { id: 'eli', name: 'Eli Chen', disc: 'video', loc: 'Remote', art: 'reel' },
+      { id: 'sam', name: 'Sam Ortiz', disc: 'photographer', loc: 'San Diego', art: 'prism' },
+      { id: 'dana', name: 'Dana Kim', disc: 'educator', loc: 'Online', art: 'event' },
+      { id: 'ravi', name: 'Ravi Menon', disc: 'streamer', loc: 'Online', art: 'reel' }
+    ];
+    const chipDefs = [['painter', 'Painting', 'palette'], ['musician', 'Music', 'music-notes'], ['dancer', 'Dance', 'person-simple-tai-chi'], ['writer', 'Writing', 'pen-nib'], ['photographer', 'Photography', 'camera'], ['video', 'Film and video', 'video-camera'], ['educator', 'Learning', 'book-open-text']];
+    const anyDisc = Object.keys(s.disc).some((k) => s.disc[k]);
+    const shown = people.filter((p) => !anyDisc || s.disc[p.disc]).map((p) => {
+      const on = !!s.picked[p.id];
+      return Object.assign({}, p, { on, pressed: on ? 'true' : 'false', aria: (on ? 'Unfollow ' : 'Follow ') + p.name, toggle: () => { const picked = Object.assign({}, s.picked); picked[p.id] = !picked[p.id]; this.setState({ picked }); } });
+    });
+    const n = Object.keys(s.picked).filter((k) => s.picked[k]).length;
+    return {
+      mascot: { src: '/_blob/27a6ee2726cba4c206decc2a41a1cbc7', webm: '/_blob/00afdd88d7eb72d65e2a1c08a18f55d2', poster: '/_blob/753cadc2e9b8fd61c0bf655e7d999fb9', focus: '50% 45%', preload: 'auto', label: 'Animation: the AStra pixel robot mascot waves and types ASTRA on its visor.', style: { position: 'absolute', inset: 0 } },
+            route, routes, yes: true, n18: 18,
+      chips: chipDefs.map((c) => ({ label: c[1], icon: c[2], sel: !!s.disc[c[0]], pick: () => { const disc = Object.assign({}, s.disc); disc[c[0]] = !disc[c[0]]; this.setState({ disc }); } })),
+      shown,
+      countLabel: n === 0 ? 'No creators picked yet' : n + (n === 1 ? ' creator picked' : ' creators picked'),
+      ready: n > 0, notReady: n === 0
+    };
+  }
+}
+</script>
+</body>
+</html>

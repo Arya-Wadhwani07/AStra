@@ -1,0 +1,21 @@
+<!-- @dsCard group="Proof set" height=888 width=1000 page -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>ProofMobile — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-row',style:{alignItems:'flex-start',gap:32,justifyContent:'center'}},
+  h('div',{className:'as-phone'}, h(A.AppShell,{mobile:true,role:'audience',active:'feed',title:'Your feed',cartCount:1},
+    h(A.FeedCard,{type:'event',creator:'Mira Rao',discipline:'painter',verified:true,time:'2h ago',art:'event',credit:'Placeholder art',title:'Color After Hours',date:'Oct 10 · 6–8 PM PT',location:'Los Angeles',price:25,availability:'available',favorite:true}),
+    h(A.FeedCard,{type:'merch',creator:'Mira Rao',discipline:'painter',time:'Yesterday',art:'print',credit:'Placeholder art',title:'Chromatic Study — art print',price:30,availability:'low',count:12}))),
+  h('div',{className:'as-phone'}, h(A.AppShell,{mobile:true,role:'creator',active:'collaborate',title:'Opportunity'},
+    h(A.EligibilityPanel,{state:'responded',action:h(A.Button,{fullWidth:true,size:'lg',variant:'secondary',icon:'chat-circle-text'},'Open conversation')}),
+    h(A.OpportunityCard,{detail:true,title:'Help turn my exhibition into a 30-second launch reel',poster:'Mira Rao',posterDiscipline:'painter',verified:true,discipline:'video',deliverable:'30-second launch reel',timing:'Two weeks',remote:true,arrangement:'paid',budget:'$150',criteria:[{label:'Video editing',kind:'required',met:true},{label:'Art projects',kind:'preferred',met:true}],responses:9,limit:10,status:'open'})))
+), {pad:24});
+</script>
+</body>
+</html>

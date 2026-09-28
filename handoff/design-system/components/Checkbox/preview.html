@@ -1,0 +1,24 @@
+<!-- @dsCard group="Inputs" height=262 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Checkbox — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-grid-2'},
+  h('div',{className:'as-stack'}, h('p',{className:'as-spec'},'Checkbox'),
+    h(A.Checkbox,{label:'Remote',defaultChecked:true}),
+    h(A.Checkbox,{label:'In person',description:'Los Angeles and nearby'}),
+    h(A.Checkbox,{label:'All disciplines',indeterminate:true}),
+    h(A.Checkbox,{label:'Show in collaboration search',checked:true,disabled:true,description:'Required while an opportunity is open.'})),
+  h('div',{className:'as-stack'}, h('p',{className:'as-spec'},'Radio · criterion kind'),
+    h(A.Radio,{name:'k',label:'Required',description:'Creators who don’t match can’t respond.',defaultChecked:true}),
+    h(A.Radio,{name:'k',label:'Preferred',description:'Highlights stronger matches; nobody is blocked.'}),
+    h(A.Radio,{name:'k2',label:'Unavailable option',disabled:true}))
+));
+</script>
+</body>
+</html>

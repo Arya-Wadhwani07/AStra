@@ -1,0 +1,14 @@
+# Local development environment and generated app output
+.environment/
+node_modules/
+.next/
+out/
+coverage/
+test-results/
+playwright-report/
+*.tsbuildinfo
+.env*
+!.env.example
+.DS_Store
+Screen Recording*.movScreen Recording*.mov
+Screen Recording*.mov

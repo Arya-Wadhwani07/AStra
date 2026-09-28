@@ -1,0 +1,19 @@
+<!-- @dsCard group="Administration" height=398 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>AdminTable — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h(A.AdminTable,{title:'Review queue',tools:h(A.SegmentedControl,{size:'sm',ariaLabel:'Filter',defaultValue:'all',options:[{value:'all',label:'All'},{value:'v',label:'Verification'},{value:'l',label:'Loyalty'},{value:'o',label:'Orders'}]})},
+  h(A.AdminCaseRow,{id:'CASE-311',type:'Verification',icon:'shield-check',subject:'Mira Rao',detail:'Creator verification · submitted Sep 25',status:'pending',age:'1d',selected:true}),
+  h(A.AdminCaseRow,{id:'CASE-309',type:'Loyalty',icon:'star-four',subject:'Held reward · 400 pts',detail:'12 shares in 3 minutes',status:'held',age:'2d'}),
+  h(A.AdminCaseRow,{id:'CASE-305',type:'Order dispute',icon:'receipt',subject:'Order AST-24790',detail:'Refund requested',status:'appealed',age:'4d'}),
+  h(A.AdminCaseRow,{id:'CASE-298',type:'Content report',icon:'flag',subject:'Post by Jonah Lee',detail:'Reported as spam',status:'decided',age:'6d'})
+), {pad:16});
+</script>
+</body>
+</html>

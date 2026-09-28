@@ -1,0 +1,5 @@
+/* Optional Tailwind v4 adapter. Import after Tailwind only if the app lacks this token.
+   Reuses the app's border color; does not apply the full God UI theme. */
+@theme inline {
+  --color-border: var(--border, oklch(0.922 0 0));
+}

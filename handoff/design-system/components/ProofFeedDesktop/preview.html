@@ -1,0 +1,26 @@
+<!-- @dsCard group="Proof set" height=1466 width=1280 page -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>ProofFeedDesktop — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+var rail = [
+  h(A.PointsBalance,{key:1,available:600,pending:50,rule:'100 pts = $1 off Color After Hours (demo rule)',action:h(A.Button,{variant:'secondary',size:'sm',iconRight:'arrow-right'},'Loyalty history')}),
+  h('section',{key:2,className:'as-card as-stack'}, h('h3',{className:'as-section-title',style:{fontSize:16}},'Favorite creators'),
+    h(A.CreatorSummary,{compact:true,name:'Mira Rao',discipline:'painter',verified:true}), h(A.CreatorSummary,{compact:true,name:'Jonah Lee',discipline:'musician'}), h(A.CreatorSummary,{compact:true,name:'Priya Nair',discipline:'writer'}),
+    h(A.Button,{variant:'quiet',size:'sm',icon:'compass'},'Discover more')),
+  h('span',{key:3,className:'as-sample'},'Sample data')
+];
+render(h(A.AppShell,{role:'audience',active:'feed',title:'Your feed',user:'Alex Morgan',unread:2,rail:rail,dual:false},
+  h('div',{className:'as-row'}, h(A.Chip,{interactive:true,selected:true},'All'), h(A.Chip,{interactive:true,icon:'article'},'Posts'), h(A.Chip,{interactive:true,icon:'ticket'},'Events'), h(A.Chip,{interactive:true,icon:'t-shirt'},'Merchandise'), h('span',{className:'as-caption'},'Optional filter · newest first')),
+  h(A.FeedCard,{type:'event',creator:'Mira Rao',discipline:'painter',verified:true,time:'2h ago',art:'event',credit:'Placeholder art',title:'Color After Hours',body:'A small evening show of new color-field work. Prints available at the door.',date:'Sat, Oct 10 · 6:00–8:00 PM PT',location:'Los Angeles',price:25,availability:'available',favorite:true}),
+  h(A.FeedCard,{type:'post',textOnly:true,creator:'Priya Nair',discipline:'writer',time:'5h ago',title:'Notes from a slow draft',body:'I rewrote the opening chapter four times this month. What finally made it click: reading it aloud to the dancers I’m writing about.',favorite:true}),
+  h(A.Loading,{label:'Loading earlier posts'}, h(A.Skeleton,{variant:'card'}))
+), {pad:0});
+</script>
+</body>
+</html>

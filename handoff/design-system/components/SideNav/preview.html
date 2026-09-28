@@ -1,0 +1,18 @@
+<!-- @dsCard group="Navigation" height=608 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>SideNav — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-row',style:{alignItems:'stretch',gap:16}},
+  h('div',{style:{width:248,height:600}}, h(A.SideNav,{role:'creator',active:'collaborate',user:'Mira Rao',unread:3})),
+  h('div',{style:{width:248,height:600}}, h(A.SideNav,{role:'audience',active:'feed',user:'Alex Morgan'})),
+  h('div',{style:{width:248,height:600}}, h(A.SideNav,{role:'admin',active:'queue',user:'Admin demo'}))
+), {pad:0});
+</script>
+</body>
+</html>

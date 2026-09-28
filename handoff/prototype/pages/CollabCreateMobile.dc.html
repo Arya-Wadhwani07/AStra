@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Create opportunity (mobile)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--mobile" style="width: 390px; height: 2600px; font-family: var(--font-sans); color: var(--ink); background: var(--bg); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.TopBar" mobile="{{ yes }}" role="creator"></x-import>
+<div class="as-shell__mtitle"><h1 class="as-page-title">New opportunity</h1></div>
+<form class="as-shell__main" onSubmit="{{ noSubmit }}">
+<x-import component-from-global-scope="AStra.Banner" tone="private" title="Creators only">Fans can’t see this opportunity or its responses.</x-import>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 16px">
+<h2 class="as-section-title" style="font-size: 18px">The project</h2>
+<x-import component-from-global-scope="AStra.TextField" label="Title" default-value="Help turn my exhibition into a 30-second launch reel" size="lg"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Description" multiline="{{ yes }}" rows="{{ n4 }}" default-value="A short, energetic reel from studio footage and photos for launch week."></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Expected deliverable" default-value="30-second launch reel" size="lg"></x-import>
+<x-import component-from-global-scope="AStra.Select" label="Discipline needed" options="{{ disciplines }}" default-value="video" size="lg"></x-import>
+</section>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 16px">
+<h2 class="as-section-title" style="font-size: 18px">Arrangement</h2>
+<x-import component-from-global-scope="AStra.Select" label="Arrangement" options="{{ arrangements }}" value="{{ arr }}" on-change="{{ setArrEv }}" size="lg"></x-import>
+<sc-if value="{{ isPaid }}" hint-placeholder-val="{{ true }}">
+<x-import component-from-global-scope="AStra.TextField" label="Proposed budget" default-value="150" suffix="USD" size="lg"></x-import>
+</sc-if>
+<x-import component-from-global-scope="AStra.SegmentedControl" label="Work mode" options="{{ modes }}" default-value="remote" full-width="{{ yes }}"></x-import>
+</section>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<h2 class="as-section-title" style="font-size: 18px">Who can respond</h2>
+<div class="as-chiprow">
+<x-import component-from-global-scope="AStra.Chip" tone="required">Video editing</x-import>
+<x-import component-from-global-scope="AStra.Chip" tone="required">Available in 2 weeks</x-import>
+<x-import component-from-global-scope="AStra.Chip" tone="preferred">Art projects</x-import>
+</div>
+<x-import component-from-global-scope="AStra.SegmentedControl" label="Response limit" options="{{ limits }}" value="{{ limit }}" on-change="{{ setLimit }}" full-width="{{ yes }}" helper="Pauses automatically at the limit."></x-import>
+</section>
+<p class="as-spec">Preview · visible to creators only</p>
+<x-import component-from-global-scope="AStra.OpportunityCard" title="Help turn my exhibition into a 30-second launch reel" poster="Mira Rao" poster-discipline="painter" verified="{{ yes }}" discipline="video" deliverable="30-second launch reel" timing="Two weeks" remote="{{ yes }}" arrangement="{{ arr }}" budget="{{ budget }}" responses="{{ n0 }}" limit="{{ limit }}" status="draft"></x-import>
+<a href="CollabFindMobile.dc.html" class="as-btn as-btn--primary as-btn--lg as-btn--full">Publish opportunity</a>
+<span class="as-sample">Sample data</span>
+</form>
+<x-import component-from-global-scope="AStra.BottomNav" role="creator" active="collaborate"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2600}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ arr: 'paid', limit: 10 }, this.state || {});
+    const M = true;
+    /*ROUTES:creator*/
+    const P = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Onboarding:['Onboarding','OnboardingMobile'],Feed:['Feed','FeedMobile'],Discover:['Discover','DiscoverMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Orders:['Orders','OrdersMobile'],Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Dashboard:['Dashboard','DashboardMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Admin:['Admin','AdminMobile'],CreatorSetup:['CreatorSetup','CreatorSetupMobile'],ProfileEdit:['ProfileEdit','ProfileEditMobile'],Publish:['Publish','PublishMobile'],Insights:['Insights','InsightsMobile'],CreatorOrders:['CreatorOrders','CreatorOrdersMobile'],CreatorLoyalty:['CreatorLoyalty','CreatorLoyaltyMobile'],Community:['Community','CommunityMobile'],MyCollabs:['MyCollabs','MyCollabsMobile'],Messages:['Messages','MessagesMobile'],CreatorMenu:['Dashboard','CreatorMenuMobile']};
+    const L = {AStra:'Main','Sign out':'Main',Notifications:'Notifications',Settings:'Settings','Sign in':'SignIn','Join AStra':'SignIn',Overview:'Dashboard',Home:'Dashboard',Publish:'Publish',Community:'Community',Collaborate:'CollabFind',Collab:'CollabFind','Audience insights':'Insights',Insights:'Insights',Loyalty:'CreatorLoyalty',Orders:'CreatorOrders',More:'CreatorMenu',Audience:'Feed',Creator:'Dashboard',Messages:'Messages','My collaborations':'MyCollabs','Find opportunities':'CollabFind','Create opportunity':'CollabCreate','View opportunity':'CollabRespond','Review responses':'MyCollabs','Publish opportunity':'MyCollabs','Open conversation':'Messages','View responses':'MyCollabs','Edit profile':'ProfileEdit','View public profile':'Profile',Verification:'CreatorSetup'};
+    const ACCOUNT = 'ProfileEdit';
+    /*END ROUTES*/
+    const X = {};
+    /*ROUTER*/
+    const nav = (k) => { const f = P[k]; if (!f || !this._root) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+    const go = nav;
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      this._root = e.currentTarget;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h && h.charAt(0) === '#') e.preventDefault();
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav(ACCOUNT); return; }
+      const local = !!(t.closest && t.closest('[data-local]'));
+      const c = [(t.getAttribute('aria-label') || '').split(',')[0]].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => v);
+      for (let i = 0; i < c.length; i++) { if (X[c[i]]) { e.preventDefault(); X[c[i]](); return; } }
+      if (local) return;
+      for (let i = 0; i < c.length; i++) { if (L[c[i]]) { e.preventDefault(); nav(L[c[i]]); return; } }
+    };
+    const routes = Object.keys(P).map((k) => ({ key: k, file: P[k][M ? 1 : 0] + '.dc.html' }));
+    /*END ROUTER*/
+    return {
+      route, routes, yes: true, n0: 0, n4: 4, noSubmit: (e) => e.preventDefault(),
+      disciplines: [{ value: 'video', label: 'Video creator' }, { value: 'musician', label: 'Musician' }, { value: 'dancer', label: 'Dancer' }, { value: 'photographer', label: 'Photographer' }, { value: 'writer', label: 'Writer' }],
+      modes: [{ value: 'remote', label: 'Remote' }, { value: 'inperson', label: 'In person' }, { value: 'either', label: 'Either' }],
+      arrangements: [{ value: 'paid', label: 'Paid' }, { value: 'exchange', label: 'Skill exchange' }, { value: 'revenue', label: 'Revenue sharing' }, { value: 'unpaid', label: 'Unpaid' }, { value: 'open', label: 'Open to discussion' }],
+      limits: [{ value: 5, label: '5' }, { value: 10, label: '10', note: 'default' }, { value: 20, label: '20' }],
+      arr: s.arr, setArrEv: (e) => this.setState({ arr: e && e.target ? e.target.value : e }), isPaid: s.arr === 'paid',
+      budget: s.arr === 'paid' ? '$150' : '',
+      limit: s.limit, setLimit: (v) => this.setState({ limit: v })
+    };
+  }
+}
+</script>
+</body>
+</html>

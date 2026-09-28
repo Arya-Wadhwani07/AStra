@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Creator community (mobile)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+.cm-post{display: flex; flex-direction: column; gap: 14px}
+.cm-head{display: flex; flex-direction: column; align-items: flex-start; gap: 8px}
+.cm-meta{display: flex; align-items: center; gap: 10px; flex-shrink: 0}
+.cm-title{margin: 0; font-size: 18px; line-height: 24px; font-weight: 700}
+.cm-body{margin: 0; font-size: 15px; line-height: 22px; color: var(--ink-muted)}
+.cm-foot{display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 12px; border-top: 1px solid var(--border)}
+.cm-actions{display: flex; align-items: center; gap: 8px; flex-wrap: wrap}
+.cm-event{display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 14px; align-items: center; padding: 14px; border-radius: 12px; background: var(--surface-sunken)}
+.cm-date{width: 56px; height: 56px; border-radius: 12px; background: var(--accent); color: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1}
+.cm-date small{font-size: 11px; font-weight: 700; letter-spacing: .06em}
+.cm-date strong{font-size: 22px}
+.cm-person{display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border)}
+.cm-person:last-child{border-bottom: 0}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--mobile" style="width: 390px; height: 3500px; font-family: var(--font-sans); color: var(--ink); background: var(--bg); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient as-ambient--drift" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.TopBar" mobile="{{ yes }}" role="creator"></x-import>
+<div class="as-shell__mtitle"><h1 class="as-page-title">Community</h1></div>
+<main class="as-shell__main">
+<x-import component-from-global-scope="AStra.Banner" tone="private" title="Creators only">Creators only. Audiences never see this feed, opportunities or conversations.</x-import>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 14px">
+<x-import component-from-global-scope="AStra.TextField" label="Share with other creators" multiline="{{ yes }}" rows="{{ n3 }}" placeholder="Work in progress, a question, or something you’re looking for"></x-import>
+<x-import component-from-global-scope="AStra.PrivateMarker">Visible to creators only</x-import>
+<x-import component-from-global-scope="AStra.Button" icon="paper-plane-tilt" size="lg" full-width="{{ yes }}">Post to community</x-import>
+</section>
+
+<div data-local class="as-chiprow" role="group" aria-label="Filter posts">
+<x-import component-from-global-scope="AStra.Chip" interactive="{{ yes }}" selected="{{ fAll }}">All</x-import>
+<x-import component-from-global-scope="AStra.Chip" interactive="{{ yes }}" selected="{{ fWip }}" icon="palette">Work in progress</x-import>
+<x-import component-from-global-scope="AStra.Chip" interactive="{{ yes }}" selected="{{ fOpp }}" icon="handshake">Opportunities</x-import>
+<x-import component-from-global-scope="AStra.Chip" interactive="{{ yes }}" selected="{{ fEvt }}" icon="calendar-blank">Events</x-import>
+<span class="as-sample">Sample data</span>
+</div>
+
+<sc-if value="{{ reported }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="success" title="Report sent">Thanks. An admin will review this post.</x-import>
+</sc-if>
+
+<sc-if value="{{ showMira }}" hint-placeholder-val="{{ false }}">
+<article class="as-card cm-post">
+<div class="cm-head">
+<x-import component-from-global-scope="AStra.CreatorSummary" compact="{{ yes }}" name="Mira Rao" discipline="painter" location="Los Angeles" verified="{{ yes }}"></x-import>
+<div class="cm-meta"><span class="as-caption">Just posted</span><x-import component-from-global-scope="AStra.PrivateMarker">Creators only</x-import></div>
+</div>
+<p class="cm-body">Last canvas for Color After Hours is drying. Anyone framing large work this month want to swap notes on float frames?</p>
+<div class="cm-foot">
+<x-import component-from-global-scope="AStra.StatusBadge" tone="accent" icon="palette">Work in progress</x-import>
+<span class="as-caption">Your post</span>
+</div>
+</article>
+</sc-if>
+
+<sc-if value="{{ showJonah }}" hint-placeholder-val="{{ true }}">
+<article class="as-card cm-post">
+<div class="cm-head">
+<x-import component-from-global-scope="AStra.CreatorSummary" compact="{{ yes }}" name="Jonah Lee" discipline="musician" location="Oakland"></x-import>
+<div class="cm-meta"><span class="as-caption">2h ago</span><x-import component-from-global-scope="AStra.PrivateMarker">Creators only</x-import></div>
+</div>
+<h3 class="cm-title">Looking for a painter for EP artwork, 3 square pieces</h3>
+<p class="cm-body">Four-track EP coming out in December. I’d love textured, color-heavy work that could also live as prints. Happy to talk budget and credit.</p>
+<div class="cm-foot">
+<div class="cm-actions">
+<x-import component-from-global-scope="AStra.StatusBadge" tone="accent" icon="palette">Looking for: painter</x-import>
+<x-import component-from-global-scope="AStra.Button" size="sm" icon="chat-circle-text">Message Jonah</x-import>
+</div>
+<x-import component-from-global-scope="AStra.Button" variant="quiet" size="sm" icon="flag">Report</x-import>
+</div>
+</article>
+</sc-if>
+
+<sc-if value="{{ showNia }}" hint-placeholder-val="{{ true }}">
+<article class="as-card cm-post">
+<div class="cm-head">
+<x-import component-from-global-scope="AStra.CreatorSummary" compact="{{ yes }}" name="Nia Brooks" discipline="dancer" location="Oakland"></x-import>
+<div class="cm-meta"><span class="as-caption">Yesterday</span><x-import component-from-global-scope="AStra.PrivateMarker">Creators only</x-import></div>
+</div>
+<h3 class="cm-title">Rehearsal stills from the November piece</h3>
+<p class="cm-body">Still working out the lighting for the second half. Notes on color and framing welcome.</p>
+<x-import component-from-global-scope="AStra.MediaFrame" ratio="16:9" art="dance" credit="Placeholder art" discipline="dancer" label="Work in progress"></x-import>
+<div class="cm-foot">
+<x-import component-from-global-scope="AStra.StatusBadge" tone="accent" icon="person-simple-tai-chi">Work in progress</x-import>
+<x-import component-from-global-scope="AStra.Button" variant="quiet" size="sm" icon="flag">Report</x-import>
+</div>
+</article>
+</sc-if>
+
+<sc-if value="{{ showPriya }}" hint-placeholder-val="{{ true }}">
+<article class="as-card cm-post">
+<div class="cm-head">
+<x-import component-from-global-scope="AStra.CreatorSummary" compact="{{ yes }}" name="Priya Nair" discipline="writer" location="Pasadena"></x-import>
+<div class="cm-meta"><span class="as-caption">Sep 25</span><x-import component-from-global-scope="AStra.PrivateMarker">Creators only</x-import></div>
+</div>
+<p class="cm-body" style="color: var(--ink)">Posted an opportunity</p>
+<x-import component-from-global-scope="AStra.OpportunityCard" title="Illustrations for an essay series" poster="Priya Nair" poster-discipline="writer" discipline="painter" deliverable="4 illustrations, one per essay" timing="Through November" remote="{{ yes }}" arrangement="paid" budget="$300" responses="{{ n3 }}" limit="{{ n10 }}" status="open"></x-import>
+<div class="cm-foot">
+
+<x-import component-from-global-scope="AStra.Button" variant="quiet" size="sm" icon="flag">Report</x-import>
+</div>
+</article>
+</sc-if>
+
+<sc-if value="{{ showEli }}" hint-placeholder-val="{{ true }}">
+<article class="as-card cm-post">
+<div class="cm-head">
+<x-import component-from-global-scope="AStra.CreatorSummary" compact="{{ yes }}" name="Eli Chen" discipline="video" location="Remote"></x-import>
+<div class="cm-meta"><span class="as-caption">Sep 24</span><x-import component-from-global-scope="AStra.PrivateMarker">Creators only</x-import></div>
+</div>
+<p class="cm-body" style="color: var(--ink)">Shared an event</p>
+<div class="cm-event">
+<div class="cm-date" aria-hidden="true"><small>OCT</small><strong>3</strong></div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<strong>Open studio night for video creators</strong>
+<span class="as-caption">Sat, Oct 3 · 7-9 PM PT</span>
+<span class="as-helper">Bring a cut in progress. Short screenings and feedback, creators only.</span>
+</div>
+</div>
+<div class="cm-foot">
+<x-import component-from-global-scope="AStra.Button" size="sm" variant="secondary" icon="chat-circle-text">Message Eli</x-import>
+<x-import component-from-global-scope="AStra.Button" variant="quiet" size="sm" icon="flag">Report</x-import>
+</div>
+</article>
+</sc-if>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 6px">
+<h2 class="as-section-title" style="font-size: 18px">Suggested collaborators</h2>
+<p class="as-helper">Based on your discipline and recent posts.</p>
+<div class="cm-person">
+<x-import component-from-global-scope="AStra.CreatorSummary" compact="{{ yes }}" name="Eli Chen" discipline="video" location="Remote"></x-import>
+<x-import component-from-global-scope="AStra.Button" variant="secondary" size="sm">Message</x-import>
+</div>
+<div class="cm-person">
+<x-import component-from-global-scope="AStra.CreatorSummary" compact="{{ yes }}" name="Rae Park" discipline="video"></x-import>
+<x-import component-from-global-scope="AStra.Button" variant="secondary" size="sm">Message</x-import>
+</div>
+<div class="cm-person">
+<x-import component-from-global-scope="AStra.CreatorSummary" compact="{{ yes }}" name="Jonah Lee" discipline="musician" location="Oakland"></x-import>
+<x-import component-from-global-scope="AStra.Button" variant="secondary" size="sm">Message</x-import>
+</div>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px">
+<x-import component-from-global-scope="AStra.Icon" name="handshake" size="{{ n20 }}" color="var(--accent)"></x-import>
+<h2 class="as-section-title" style="font-size: 18px">Your collaborations</h2>
+</div>
+<p style="margin: 0; font-weight: 600">30-second launch reel with Eli Chen</p>
+<p class="as-caption" style="margin: 0">1 project in progress · brief v2</p>
+<a href="MyCollabsMobile.dc.html" class="as-btn as-btn--secondary as-btn--sm" style="align-self: flex-start">Open my collaborations</a>
+<div style="border-top: 1px solid var(--border); padding-top: 12px; display: flex; flex-direction: column; gap: 8px">
+<p class="as-helper" style="margin: 0">Need help with a project? Post it for creators only.</p>
+<a href="CollabCreateMobile.dc.html" class="as-btn as-btn--primary as-btn--sm" style="align-self: flex-start">Create opportunity</a>
+</div>
+</section>
+
+<section class="as-card" style="display: flex; gap: 10px; align-items: flex-start">
+<x-import component-from-global-scope="AStra.Icon" name="shield-check" size="{{ n20 }}" color="var(--ink-muted)"></x-import>
+<p class="as-helper" style="margin: 0">See something wrong? Use Report on any post. An admin reviews every report.</p>
+</section>
+</main>
+<x-import component-from-global-scope="AStra.BottomNav" role="creator" active="community"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":3500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ filter: 'all', posted: false, reported: false }, this.state || {});
+    const M = true;
+    /*ROUTES:creator*/
+    const P = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Onboarding:['Onboarding','OnboardingMobile'],Feed:['Feed','FeedMobile'],Discover:['Discover','DiscoverMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Orders:['Orders','OrdersMobile'],Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Dashboard:['Dashboard','DashboardMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Admin:['Admin','AdminMobile'],CreatorSetup:['CreatorSetup','CreatorSetupMobile'],ProfileEdit:['ProfileEdit','ProfileEditMobile'],Publish:['Publish','PublishMobile'],Insights:['Insights','InsightsMobile'],CreatorOrders:['CreatorOrders','CreatorOrdersMobile'],CreatorLoyalty:['CreatorLoyalty','CreatorLoyaltyMobile'],Community:['Community','CommunityMobile'],MyCollabs:['MyCollabs','MyCollabsMobile'],Messages:['Messages','MessagesMobile'],CreatorMenu:['Dashboard','CreatorMenuMobile']};
+    const L = {AStra:'Main','Sign out':'Main',Notifications:'Notifications',Settings:'Settings','Sign in':'SignIn','Join AStra':'SignIn',Overview:'Dashboard',Home:'Dashboard',Publish:'Publish',Community:'Community',Collaborate:'CollabFind',Collab:'CollabFind','Audience insights':'Insights',Insights:'Insights',Loyalty:'CreatorLoyalty',Orders:'CreatorOrders',More:'CreatorMenu',Audience:'Feed',Creator:'Dashboard',Messages:'Messages','My collaborations':'MyCollabs','Find opportunities':'CollabFind','Create opportunity':'CollabCreate','View opportunity':'CollabRespond','Review responses':'MyCollabs','Edit profile':'ProfileEdit','View public profile':'Profile',Verification:'CreatorSetup'};
+    const ACCOUNT = 'ProfileEdit';
+    /*END ROUTES*/
+    const X = {
+      'All': () => this.setState({ filter: 'all' }),
+      'Work in progress': () => this.setState({ filter: 'wip' }),
+      'Opportunities': () => this.setState({ filter: 'opp' }),
+      'Events': () => this.setState({ filter: 'evt' }),
+      'Post to community': () => this.setState({ posted: true, filter: 'all' }),
+      'Report': () => this.setState({ reported: true }),
+      'Message Jonah': () => nav('Messages'),
+      'Message Eli': () => nav('Messages'),
+      'Message': () => nav('Messages')
+    };
+    /*ROUTER*/
+    const nav = (k) => { const f = P[k]; if (!f || !this._root) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+    const go = nav;
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      this._root = e.currentTarget;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h && h.charAt(0) === '#') e.preventDefault();
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav(ACCOUNT); return; }
+      const local = !!(t.closest && t.closest('[data-local]'));
+      const c = [(t.getAttribute('aria-label') || '').split(',')[0]].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => v);
+      for (let i = 0; i < c.length; i++) { if (X[c[i]]) { e.preventDefault(); X[c[i]](); return; } }
+      if (local) return;
+      for (let i = 0; i < c.length; i++) { if (L[c[i]]) { e.preventDefault(); nav(L[c[i]]); return; } }
+    };
+    const routes = Object.keys(P).map((k) => ({ key: k, file: P[k][M ? 1 : 0] + '.dc.html' }));
+    /*END ROUTER*/
+    const f = s.filter;
+    const show = (kind) => f === 'all' || f === kind;
+    return {
+      route, routes, yes: true, no: false, n2: 2, n3: 3, n10: 10, n20: 20, n40: 40,
+      fAll: f === 'all', fWip: f === 'wip', fOpp: f === 'opp', fEvt: f === 'evt',
+      reported: s.reported,
+      showMira: s.posted && show('wip'),
+      showJonah: show('opp'),
+      showNia: show('wip'),
+      showPriya: show('opp'),
+      showEli: show('evt')
+    };
+  }
+}
+</script>
+</body>
+</html>

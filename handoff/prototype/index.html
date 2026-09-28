@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AStra prototype viewer</title>
+<link rel="stylesheet" href="../design-system/tokens.css">
+<link rel="stylesheet" href="../design-system/components/bundle.css">
+<script src="vendor/react.production.min.js"></script>
+<script src="vendor/react-dom.production.min.js"></script>
+<script src="../design-system/components/bundle.js"></script>
+<script src="runtime.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; background: #0b1430; }
+  body { display: grid; grid-template-columns: 280px minmax(0, 1fr); font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #e9ecf5; }
+  #nav { height: 100vh; overflow: auto; padding: 16px 12px 40px; box-sizing: border-box; background: #080e22; border-right: 1px solid rgba(255,255,255,.08); }
+  #nav h1 { font-size: 15px; margin: 0 8px 4px; }
+  #nav p { font-size: 12px; line-height: 17px; color: #9aa3bd; margin: 0 8px 12px; }
+  #nav h2 { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8a93ad; margin: 18px 8px 6px; }
+  #nav a { display: flex; justify-content: space-between; gap: 8px; padding: 6px 8px; border-radius: 8px; font-size: 13px; color: #d6dbea; text-decoration: none; }
+  #nav a:hover { background: rgba(255,255,255,.06); }
+  #nav a.on { background: #f4f1ee; color: #16244a; font-weight: 600; }
+  #nav a small { color: inherit; opacity: .6; }
+  #stage { height: 100vh; overflow: auto; }
+  #bar { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 12px; padding: 10px 20px; background: rgba(8,14,34,.92); border-bottom: 1px solid rgba(255,255,255,.08); font-size: 13px; }
+  #bar strong { font-size: 14px; }
+  #bar span { color: #9aa3bd; }
+  #bar button { margin-left: auto; font: inherit; color: #e9ecf5; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+  #frame { display: flex; justify-content: center; padding: 24px; }
+  #page { flex-shrink: 0; box-shadow: 0 30px 80px -30px rgba(0,0,0,.8); }
+  #page.fit { transform-origin: top center; }
+  body.shot { display: block; height: auto; } body.shot #nav, body.shot #bar { display: none; } body.shot #stage { height: auto; overflow: visible; } body.shot #frame { padding: 0; justify-content: flex-start; } body.shot #page { box-shadow: none; }
+</style>
+</head>
+<body>
+<nav id="nav" aria-label="Pages"><h1>AStra prototype</h1><p>Every screen from the Claude Design canvas. Click anything inside a page to move through the flows, just like Play mode. Sample data only.</p><div id="list"></div></nav>
+<div id="stage">
+  <div id="bar"><strong id="ptitle">Loading</strong><span id="pmeta"></span><button id="fit" type="button">Fit to window</button></div>
+  <div id="frame"><div id="page"></div></div>
+</div>
+<script>
+(function () {
+  if (/[?&]shot\b/.test(location.search)) document.body.classList.add('shot');
+  var list = document.getElementById('list'), page = document.getElementById('page');
+  var canvas = null, fit = false, current = null;
+  function groupOf(b) {
+    var notes = Object.keys(canvas.notes || {}).map(function (k) { return canvas.notes[k]; }).sort(function (a, c) { return a.y - c.y; });
+    var g = 'Screens';
+    notes.forEach(function (n) { if (n.y < b.y) g = n.text; });
+    return g;
+  }
+  function load(stem, push) {
+    current = stem;
+    fetch('pages/' + stem + '.dc.html').then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }).then(function (src) {
+      AStraViewer.mount(page, src, {}, function (c) {
+        var w = c.preview.width || 1440;
+        page.style.width = w + 'px';
+        document.getElementById('ptitle').textContent = (canvas && canvas.boards[stem + '.dc.html'] || {}).title || c.title;
+        document.getElementById('pmeta').textContent = 'pages/' + stem + '.dc.html · ' + w + ' x ' + (c.preview.height || '') + 'px';
+        applyFit();
+        document.getElementById('stage').scrollTop = 0;
+      });
+      Array.prototype.forEach.call(list.querySelectorAll('a'), function (a) { a.classList.toggle('on', a.dataset.stem === stem); });
+      if (push !== false) history.replaceState(null, '', '#' + stem);
+    }).catch(function (e) {
+      page.innerHTML = '<p style="padding:24px;color:#fff">Couldn’t load pages/' + stem + '.dc.html. Serve this folder over http (see README) instead of opening the file directly.</p>';
+    });
+  }
+  function applyFit() {
+    var w = parseInt(page.style.width || '1440', 10), avail = document.getElementById('stage').clientWidth - 48;
+    var s = fit && w > avail ? avail / w : 1;
+    page.style.transform = s < 1 ? 'scale(' + s + ')' : '';
+    page.style.transformOrigin = 'top center';
+    page.style.marginBottom = s < 1 ? (-(1 - s) * page.offsetHeight) + 'px' : '';
+  }
+  document.getElementById('fit').onclick = function () { fit = !fit; this.textContent = fit ? 'Actual size' : 'Fit to window'; applyFit(); };
+  window.addEventListener('resize', applyFit);
+  // Page links and the prototype router both navigate by clicking <a href="X.dc.html">.
+  page.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a'); if (!a) return;
+    var href = a.getAttribute('href') || '';
+    var m = href.match(/^([A-Za-z]+)\.dc\.html$/);
+    if (m) { e.preventDefault(); var s = m[1]; setTimeout(function () { load(s); }, 0); }
+    else if (href.charAt(0) === '#') e.preventDefault();
+  });
+  fetch('pages/canvas.json').then(function (r) { return r.json(); }).then(function (c) {
+    canvas = c; var groups = {};
+    c.order.forEach(function (f) { var b = c.boards[f]; if (!b) return; var g = groupOf(b); (groups[g] = groups[g] || []).push([f.replace('.dc.html', ''), b]); });
+    Object.keys(groups).forEach(function (g) {
+      var hd = document.createElement('h2'); hd.textContent = g; list.appendChild(hd);
+      groups[g].forEach(function (x) {
+        var a = document.createElement('a'); a.href = '#' + x[0]; a.dataset.stem = x[0];
+        a.innerHTML = '<span>' + x[1].title.replace(/ · (desktop|mobile)$/, '') + '</span><small>' + (x[1].w < 800 ? 'mobile' : 'desktop') + '</small>';
+        a.onclick = function (e) { e.preventDefault(); load(x[0]); };
+        list.appendChild(a);
+      });
+    });
+    load((location.hash || '#Main').slice(1), false);
+  }).catch(function () { load((location.hash || '#Main').slice(1), false); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!-- @dsCard group="Content & identity" height=262 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>CreatorSummary — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-stack'},
+  h(A.CreatorSummary,{card:true,name:'Mira Rao',discipline:'painter',location:'Los Angeles',verified:true,bio:'Painter working in saturated color fields. Opening a small exhibition this October.',skills:['Acrylic','Large format','Art prints'],favorite:true}),
+  h('div',{className:'as-grid-3'},
+    h(A.CreatorSummary,{compact:true,name:'Eli Chen',discipline:'video',location:'Remote'}),
+    h(A.CreatorSummary,{compact:true,name:'Jonah Lee',discipline:'musician',location:'Oakland'}),
+    h(A.CreatorSummary,{compact:true,name:'Nia Brooks',discipline:'dancer',location:'Los Angeles'}))
+));
+</script>
+</body>
+</html>

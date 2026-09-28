@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Edit profile</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+.pe-row{display:grid;grid-template-columns:88px minmax(0,1fr);gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.pe-row:last-child{border-bottom:0}
+.pe-row__actions{display:flex;gap:4px;flex-wrap:wrap}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--mobile" style="width: 390px; height: 2760px; font-family: var(--font-sans); color: var(--ink); background: var(--bg); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.TopBar" mobile="{{ yes }}" role="creator"></x-import>
+<div class="as-shell__mtitle"><h1 class="as-page-title">Edit profile</h1></div>
+<main class="as-shell__main">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<a href="ProfileMobile.dc.html" class="as-btn as-btn--secondary as-btn--sm"><span>Preview as visitor</span></a>
+<span class="as-sample">Sample data</span>
+</div>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 16px">
+<h2 class="as-section-title" style="font-size: 18px">Public details</h2>
+<x-import component-from-global-scope="AStra.TextField" label="Display name" default-value="Mira Rao" required="{{ yes }}" size="lg"></x-import>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="as-label">Disciplines</span>
+<div class="as-chiprow" style="align-items: center">
+<sc-for list="{{ discs }}" as="d" hint-placeholder-count="2">
+<x-import component-from-global-scope="AStra.Chip" icon="{{ d.icon }}" on-remove="{{ d.remove }}">{{ d.label }}</x-import>
+</sc-for>
+<sc-if value="{{ canAddDisc }}" hint-placeholder-val="{{ true }}">
+<x-import component-from-global-scope="AStra.Button" variant="quiet" size="sm" icon="plus">Add discipline</x-import>
+</sc-if>
+</div>
+</div>
+<x-import component-from-global-scope="AStra.TextField" label="City" default-value="Los Angeles" icon="map-pin" helper="A city only, never a street address." size="lg"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Bio" multiline="{{ yes }}" rows="{{ n4 }}" max-length="{{ n160 }}" counter="{{ bioCount }}" default-value="{{ bio }}"></x-import>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="as-section-title" style="font-size: 18px">Skills</h2>
+<div class="as-chiprow">
+<sc-for list="{{ skills }}" as="k" hint-placeholder-count="4">
+<x-import component-from-global-scope="AStra.Chip" on-remove="{{ k.remove }}">{{ k.label }}</x-import>
+</sc-for>
+</div>
+<x-import component-from-global-scope="AStra.TextField" label="Add a skill" placeholder="Mural commissions" size="lg"></x-import>
+<x-import component-from-global-scope="AStra.Button" variant="secondary" size="lg" icon="plus" full-width="{{ yes }}">Add skill</x-import>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="as-section-title" style="font-size: 18px">Links</h2>
+<x-import component-from-global-scope="AStra.TextField" label="Website" default-value="mirarao.example" icon="globe-simple" optional="{{ yes }}" size="lg"></x-import>
+<x-import component-from-global-scope="AStra.TextField" label="Instagram handle" default-value="@mira.paints" icon="link-simple" optional="{{ yes }}" size="lg"></x-import>
+<span class="as-helper">Links open another service. AStra doesn’t read or import anything from these accounts.</span>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px">
+<h2 class="as-section-title" style="font-size: 18px">Portfolio</h2>
+<span class="as-caption">{{ pieceCount }}</span>
+</div>
+<div>
+<sc-for list="{{ pieces }}" as="p" hint-placeholder-count="3">
+<div class="pe-row">
+<x-import component-from-global-scope="AStra.MediaFrame" ratio="1:1" art="{{ p.art }}" discipline="painter" label="{{ p.title }}"></x-import>
+<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+<strong style="font-size: 15px; line-height: 20px">{{ p.pos }}</strong>
+<div class="pe-row__actions">
+<button type="button" class="as-btn as-btn--quiet as-btn--sm" onClick="{{ p.up }}" disabled="{{ p.first }}">Move up</button>
+<button type="button" class="as-btn as-btn--quiet as-btn--sm" onClick="{{ p.remove }}">Remove</button>
+</div>
+</div>
+</div>
+</sc-for>
+</div>
+<span class="as-caption">Placeholder art</span>
+<x-import component-from-global-scope="AStra.FileUpload" label="Add work" state="idle" helper="JPG, PNG or MP4, up to 50 MB each."></x-import>
+</section>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<h2 class="as-section-title" style="font-size: 18px">Collaboration</h2>
+<x-import component-from-global-scope="AStra.StatusBadge" tone="private" icon="lock-simple">Creators only</x-import>
+</div>
+<x-import component-from-global-scope="AStra.Switch" label="Show ‘open to collaborate’ to other creators" description="Only creators see this. Audiences never see collaboration details." checked="{{ openCollab }}" on-change="{{ setOpen }}"></x-import>
+</section>
+
+<x-import component-from-global-scope="AStra.VerificationStatus" status="verified"></x-import>
+<div style="display: flex; gap: 10px; align-items: flex-start">
+<x-import component-from-global-scope="AStra.Icon" name="lock-simple" size="{{ n18 }}" color="var(--private)"></x-import>
+<p class="as-caption" style="margin: 0">Private drafts and conversations never appear on your public profile.</p>
+</div>
+
+<sc-if value="{{ saved }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="success" title="Profile saved">Visitors see the updated details on your public profile now.</x-import>
+</sc-if>
+<x-import component-from-global-scope="AStra.Button" size="lg" icon="check" full-width="{{ yes }}">Save changes</x-import>
+<x-import component-from-global-scope="AStra.Button" variant="quiet" size="lg" full-width="{{ yes }}">Discard changes</x-import>
+</main>
+<x-import component-from-global-scope="AStra.BottomNav" role="creator" active="none"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2760}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const D0 = { discs: ['painter', 'educator'], skills: ['Color field painting', 'Large-format canvas', 'Live painting', 'Gallery installation'], order: ['dusk', 'print', 'event'], openCollab: true, saved: false };
+    const s = Object.assign({}, D0, this.state || {});
+    const M = true;
+    /*ROUTES:creator*/
+    const P = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Onboarding:['Onboarding','OnboardingMobile'],Feed:['Feed','FeedMobile'],Discover:['Discover','DiscoverMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Orders:['Orders','OrdersMobile'],Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Dashboard:['Dashboard','DashboardMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Admin:['Admin','AdminMobile'],CreatorSetup:['CreatorSetup','CreatorSetupMobile'],ProfileEdit:['ProfileEdit','ProfileEditMobile'],Publish:['Publish','PublishMobile'],Insights:['Insights','InsightsMobile'],CreatorOrders:['CreatorOrders','CreatorOrdersMobile'],CreatorLoyalty:['CreatorLoyalty','CreatorLoyaltyMobile'],Community:['Community','CommunityMobile'],MyCollabs:['MyCollabs','MyCollabsMobile'],Messages:['Messages','MessagesMobile'],CreatorMenu:['Dashboard','CreatorMenuMobile']};
+    const L = {AStra:'Main','Sign out':'Main',Notifications:'Notifications',Settings:'Settings','Sign in':'SignIn','Join AStra':'SignIn',Overview:'Dashboard',Home:'Dashboard',Publish:'Publish',Community:'Community',Collaborate:'CollabFind',Collab:'CollabFind','Audience insights':'Insights',Insights:'Insights',Loyalty:'CreatorLoyalty',Orders:'CreatorOrders',More:'CreatorMenu',Audience:'Feed',Creator:'Dashboard',Messages:'Messages','My collaborations':'MyCollabs','Find opportunities':'CollabFind','Create opportunity':'CollabCreate','View opportunity':'CollabRespond','Review responses':'MyCollabs','Edit profile':'ProfileEdit','View public profile':'Profile',Verification:'CreatorSetup'};
+    const ACCOUNT = 'ProfileEdit';
+    /*END ROUTES*/
+    const DISC = { painter: ['Painter', 'palette'], educator: ['Educator', 'book-open-text'], photographer: ['Photographer', 'camera'], musician: ['Musician', 'music-notes'] };
+    const X = {
+      'Save changes': () => this.setState({ saved: true }),
+      'Discard changes': () => this.setState(Object.assign({}, D0)),
+      'Add discipline': () => { const next = Object.keys(DISC).filter((k) => s.discs.indexOf(k) < 0)[0]; if (next) this.setState({ discs: s.discs.concat([next]), saved: false }); },
+      'Add skill': () => { if (s.skills.indexOf('Mural commissions') < 0) this.setState({ skills: s.skills.concat(['Mural commissions']), saved: false }); }
+    };
+    /*ROUTER*/
+    const nav = (k) => { const f = P[k]; if (!f || !this._root) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+    const go = nav;
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      this._root = e.currentTarget;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h && h.charAt(0) === '#') e.preventDefault();
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav(ACCOUNT); return; }
+      const local = !!(t.closest && t.closest('[data-local]'));
+      const c = [(t.getAttribute('aria-label') || '').split(',')[0]].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => v);
+      for (let i = 0; i < c.length; i++) { if (X[c[i]]) { e.preventDefault(); X[c[i]](); return; } }
+      if (local) return;
+      for (let i = 0; i < c.length; i++) { if (L[c[i]]) { e.preventDefault(); nav(L[c[i]]); return; } }
+    };
+    const routes = Object.keys(P).map((k) => ({ key: k, file: P[k][M ? 1 : 0] + '.dc.html' }));
+    /*END ROUTER*/
+    const PIECES = { dusk: { art: 'painting', title: 'Dusk study' }, print: { art: 'print', title: 'Dusk Study print' }, event: { art: 'event', title: 'Color After Hours' } };
+    const bio = 'I paint large color-field canvases about the light in LA at dusk. Opening a small exhibition this October, with prints of the new work.';
+    const n = s.order.length;
+    return {
+      route, routes, yes: true, n4: 4, n18: 18, n160: 160,
+      bio, bioCount: bio.length + ' / 160',
+      discs: s.discs.map((k) => ({ label: DISC[k][0], icon: DISC[k][1], remove: () => this.setState({ discs: s.discs.filter((x) => x !== k), saved: false }) })),
+      canAddDisc: s.discs.length < 4,
+      skills: s.skills.map((k) => ({ label: k, remove: () => this.setState({ skills: s.skills.filter((x) => x !== k), saved: false }) })),
+      pieceCount: n + (n === 1 ? ' piece' : ' pieces'),
+      pieces: s.order.map((id, i) => ({
+        art: PIECES[id].art, title: PIECES[id].title, pos: (i + 1) + '. ' + PIECES[id].title, first: i === 0,
+        up: () => { if (i === 0) return; const o = s.order.slice(); o[i] = o[i - 1]; o[i - 1] = id; this.setState({ order: o, saved: false }); },
+        remove: () => this.setState({ order: s.order.filter((x) => x !== id), saved: false })
+      })),
+      openCollab: s.openCollab, setOpen: (on) => this.setState({ openCollab: on, saved: false }),
+      saved: s.saved
+    };
+  }
+}
+</script>
+</body>
+</html>

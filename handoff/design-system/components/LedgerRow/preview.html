@@ -1,0 +1,19 @@
+<!-- @dsCard group="Commerce & loyalty" height=402 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>LedgerRow — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-card',style:{maxWidth:680}},
+  h(A.LedgerRow,{activity:'Redeemed for Color After Hours',source:'Order AST-24817',date:'Sep 26',change:-500,status:'redeemed'}),
+  h(A.LedgerRow,{activity:'Attended studio livestream',source:'Mira Rao campaign',date:'Sep 24',change:50,status:'pending',reason:'Confirms after the creator reviews attendance.'}),
+  h(A.LedgerRow,{activity:'Shared a post',source:'Jonah Lee campaign',date:'Sep 20',change:20,status:'rejected',reason:'Repeat limit reached: 1 share reward per day.'}),
+  h(A.LedgerRow,{activity:'Refund of order AST-24817',source:'Order AST-24817',date:'Oct 2',change:500,status:'restored',reason:'Full refund restores redeemed points (demo assumption).'})
+));
+</script>
+</body>
+</html>

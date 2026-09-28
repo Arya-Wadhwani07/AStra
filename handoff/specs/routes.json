@@ -1,0 +1,535 @@
+{
+  "Main": {
+    "route": "/",
+    "title": "Landing",
+    "desktop": {
+      "source": "prototype/pages/Main.dc.html",
+      "screenshot": "screens/desktop/Main.png",
+      "size": [
+        1440,
+        4820
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/LandingMobile.dc.html",
+      "screenshot": "screens/mobile/LandingMobile.png",
+      "size": [
+        390,
+        4700
+      ]
+    }
+  },
+  "SignIn": {
+    "route": "/signin",
+    "title": "Sign in / join",
+    "desktop": {
+      "source": "prototype/pages/SignIn.dc.html",
+      "screenshot": "screens/desktop/SignIn.png",
+      "size": [
+        1440,
+        960
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/SignInMobile.dc.html",
+      "screenshot": "screens/mobile/SignInMobile.png",
+      "size": [
+        390,
+        1300
+      ]
+    }
+  },
+  "Onboarding": {
+    "route": "/onboarding",
+    "title": "Onboarding \u00b7 pick favorite creators",
+    "desktop": {
+      "source": "prototype/pages/Onboarding.dc.html",
+      "screenshot": "screens/desktop/Onboarding.png",
+      "size": [
+        1440,
+        1400
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/OnboardingMobile.dc.html",
+      "screenshot": "screens/mobile/OnboardingMobile.png",
+      "size": [
+        390,
+        1900
+      ]
+    }
+  },
+  "Feed": {
+    "route": "/feed",
+    "title": "Audience feed",
+    "desktop": {
+      "source": "prototype/pages/Feed.dc.html",
+      "screenshot": "screens/desktop/Feed.png",
+      "size": [
+        1440,
+        3260
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/FeedMobile.dc.html",
+      "screenshot": "screens/mobile/FeedMobile.png",
+      "size": [
+        390,
+        2240
+      ]
+    }
+  },
+  "Profile": {
+    "route": "/creators/mira-rao",
+    "title": "Creator profile",
+    "desktop": {
+      "source": "prototype/pages/Profile.dc.html",
+      "screenshot": "screens/desktop/Profile.png",
+      "size": [
+        1440,
+        1700
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/ProfileMobile.dc.html",
+      "screenshot": "screens/mobile/ProfileMobile.png",
+      "size": [
+        390,
+        2200
+      ]
+    }
+  },
+  "Event": {
+    "route": "/events/color-after-hours",
+    "title": "Event detail",
+    "desktop": {
+      "source": "prototype/pages/Event.dc.html",
+      "screenshot": "screens/desktop/Event.png",
+      "size": [
+        1440,
+        2080
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/EventMobile.dc.html",
+      "screenshot": "screens/mobile/EventMobile.png",
+      "size": [
+        390,
+        1700
+      ]
+    }
+  },
+  "Discover": {
+    "route": "/discover",
+    "title": "Discover creators",
+    "desktop": {
+      "source": "prototype/pages/Discover.dc.html",
+      "screenshot": "screens/desktop/Discover.png",
+      "size": [
+        1440,
+        2000
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/DiscoverMobile.dc.html",
+      "screenshot": "screens/mobile/DiscoverMobile.png",
+      "size": [
+        390,
+        2200
+      ]
+    }
+  },
+  "CollabFind": {
+    "route": "/studio/collaborate",
+    "title": "Find opportunities",
+    "desktop": {
+      "source": "prototype/pages/CollabFind.dc.html",
+      "screenshot": "screens/desktop/CollabFind.png",
+      "size": [
+        1440,
+        1680
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/CollabFindMobile.dc.html",
+      "screenshot": "screens/mobile/CollabFindMobile.png",
+      "size": [
+        390,
+        2800
+      ]
+    }
+  },
+  "CollabCreate": {
+    "route": "/studio/collaborate/new",
+    "title": "Create opportunity",
+    "desktop": {
+      "source": "prototype/pages/CollabCreate.dc.html",
+      "screenshot": "screens/desktop/CollabCreate.png",
+      "size": [
+        1440,
+        1900
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/CollabCreateMobile.dc.html",
+      "screenshot": "screens/mobile/CollabCreateMobile.png",
+      "size": [
+        390,
+        2600
+      ]
+    }
+  },
+  "CollabRespond": {
+    "route": "/studio/collaborate/launch-reel",
+    "title": "Respond to opportunity",
+    "desktop": {
+      "source": "prototype/pages/CollabRespond.dc.html",
+      "screenshot": "screens/desktop/CollabRespond.png",
+      "size": [
+        1440,
+        1500
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/CollabRespondMobile.dc.html",
+      "screenshot": "screens/mobile/CollabRespondMobile.png",
+      "size": [
+        390,
+        2300
+      ]
+    }
+  },
+  "Checkout": {
+    "route": "/cart",
+    "title": "Cart & checkout with points",
+    "desktop": {
+      "source": "prototype/pages/Checkout.dc.html",
+      "screenshot": "screens/desktop/Checkout.png",
+      "size": [
+        1440,
+        1200
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/CheckoutMobile.dc.html",
+      "screenshot": "screens/mobile/CheckoutMobile.png",
+      "size": [
+        390,
+        1900
+      ]
+    }
+  },
+  "Loyalty": {
+    "route": "/loyalty",
+    "title": "Loyalty history",
+    "desktop": {
+      "source": "prototype/pages/Loyalty.dc.html",
+      "screenshot": "screens/desktop/Loyalty.png",
+      "size": [
+        1440,
+        1400
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/LoyaltyMobile.dc.html",
+      "screenshot": "screens/mobile/LoyaltyMobile.png",
+      "size": [
+        390,
+        2000
+      ]
+    }
+  },
+  "Dashboard": {
+    "route": "/studio",
+    "title": "Creator dashboard",
+    "desktop": {
+      "source": "prototype/pages/Dashboard.dc.html",
+      "screenshot": "screens/desktop/Dashboard.png",
+      "size": [
+        1440,
+        1500
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/DashboardMobile.dc.html",
+      "screenshot": "screens/mobile/DashboardMobile.png",
+      "size": [
+        390,
+        1800
+      ]
+    }
+  },
+  "Admin": {
+    "route": "/admin",
+    "title": "Admin review queue",
+    "desktop": {
+      "source": "prototype/pages/Admin.dc.html",
+      "screenshot": "screens/desktop/Admin.png",
+      "size": [
+        1440,
+        1200
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/AdminMobile.dc.html",
+      "screenshot": "screens/mobile/AdminMobile.png",
+      "size": [
+        390,
+        1900
+      ]
+    }
+  },
+  "Notifications": {
+    "route": "/notifications",
+    "title": "Notifications",
+    "desktop": {
+      "source": "prototype/pages/Notifications.dc.html",
+      "screenshot": "screens/desktop/Notifications.png",
+      "size": [
+        1440,
+        1100
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/NotificationsMobile.dc.html",
+      "screenshot": "screens/mobile/NotificationsMobile.png",
+      "size": [
+        390,
+        1500
+      ]
+    }
+  },
+  "Settings": {
+    "route": "/settings",
+    "title": "Settings",
+    "desktop": {
+      "source": "prototype/pages/Settings.dc.html",
+      "screenshot": "screens/desktop/Settings.png",
+      "size": [
+        1440,
+        1610
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/SettingsMobile.dc.html",
+      "screenshot": "screens/mobile/SettingsMobile.png",
+      "size": [
+        390,
+        1900
+      ]
+    }
+  },
+  "Orders": {
+    "route": "/orders",
+    "title": "Your orders",
+    "desktop": {
+      "source": "prototype/pages/Orders.dc.html",
+      "screenshot": "screens/desktop/Orders.png",
+      "size": [
+        1440,
+        1200
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/OrdersMobile.dc.html",
+      "screenshot": "screens/mobile/OrdersMobile.png",
+      "size": [
+        390,
+        1700
+      ]
+    }
+  },
+  "CreatorSetup": {
+    "route": "/studio/setup",
+    "title": "Creator setup and verification",
+    "desktop": {
+      "source": "prototype/pages/CreatorSetup.dc.html",
+      "screenshot": "screens/desktop/CreatorSetup.png",
+      "size": [
+        1440,
+        1180
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/CreatorSetupMobile.dc.html",
+      "screenshot": "screens/mobile/CreatorSetupMobile.png",
+      "size": [
+        390,
+        1720
+      ]
+    }
+  },
+  "ProfileEdit": {
+    "route": "/studio/profile",
+    "title": "Edit creator profile",
+    "desktop": {
+      "source": "prototype/pages/ProfileEdit.dc.html",
+      "screenshot": "screens/desktop/ProfileEdit.png",
+      "size": [
+        1440,
+        2060
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/ProfileEditMobile.dc.html",
+      "screenshot": "screens/mobile/ProfileEditMobile.png",
+      "size": [
+        390,
+        2760
+      ]
+    }
+  },
+  "Publish": {
+    "route": "/studio/publish",
+    "title": "Publish post, event or merchandise",
+    "desktop": {
+      "source": "prototype/pages/Publish.dc.html",
+      "screenshot": "screens/desktop/Publish.png",
+      "size": [
+        1440,
+        2000
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/PublishMobile.dc.html",
+      "screenshot": "screens/mobile/PublishMobile.png",
+      "size": [
+        390,
+        3500
+      ]
+    }
+  },
+  "CreatorMenu": {
+    "route": "/studio/menu (mobile only)",
+    "title": "Creator menu",
+    "desktop": null,
+    "mobile": {
+      "source": "prototype/pages/CreatorMenuMobile.dc.html",
+      "screenshot": "screens/mobile/CreatorMenuMobile.png",
+      "size": [
+        390,
+        1520
+      ]
+    }
+  },
+  "Insights": {
+    "route": "/studio/insights",
+    "title": "Audience insights",
+    "desktop": {
+      "source": "prototype/pages/Insights.dc.html",
+      "screenshot": "screens/desktop/Insights.png",
+      "size": [
+        1440,
+        1400
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/InsightsMobile.dc.html",
+      "screenshot": "screens/mobile/InsightsMobile.png",
+      "size": [
+        390,
+        2440
+      ]
+    }
+  },
+  "CreatorOrders": {
+    "route": "/studio/orders",
+    "title": "Creator orders",
+    "desktop": {
+      "source": "prototype/pages/CreatorOrders.dc.html",
+      "screenshot": "screens/desktop/CreatorOrders.png",
+      "size": [
+        1440,
+        1240
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/CreatorOrdersMobile.dc.html",
+      "screenshot": "screens/mobile/CreatorOrdersMobile.png",
+      "size": [
+        390,
+        2400
+      ]
+    }
+  },
+  "CreatorLoyalty": {
+    "route": "/studio/loyalty",
+    "title": "Creator loyalty settings",
+    "desktop": {
+      "source": "prototype/pages/CreatorLoyalty.dc.html",
+      "screenshot": "screens/desktop/CreatorLoyalty.png",
+      "size": [
+        1440,
+        1960
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/CreatorLoyaltyMobile.dc.html",
+      "screenshot": "screens/mobile/CreatorLoyaltyMobile.png",
+      "size": [
+        390,
+        3500
+      ]
+    }
+  },
+  "Community": {
+    "route": "/studio/community",
+    "title": "Creator community",
+    "desktop": {
+      "source": "prototype/pages/Community.dc.html",
+      "screenshot": "screens/desktop/Community.png",
+      "size": [
+        1440,
+        2550
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/CommunityMobile.dc.html",
+      "screenshot": "screens/mobile/CommunityMobile.png",
+      "size": [
+        390,
+        3500
+      ]
+    }
+  },
+  "MyCollabs": {
+    "route": "/studio/collaborations",
+    "title": "My collaborations",
+    "desktop": {
+      "source": "prototype/pages/MyCollabs.dc.html",
+      "screenshot": "screens/desktop/MyCollabs.png",
+      "size": [
+        1440,
+        1480
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/MyCollabsMobile.dc.html",
+      "screenshot": "screens/mobile/MyCollabsMobile.png",
+      "size": [
+        390,
+        2350
+      ]
+    }
+  },
+  "Messages": {
+    "route": "/studio/messages",
+    "title": "Messages",
+    "desktop": {
+      "source": "prototype/pages/Messages.dc.html",
+      "screenshot": "screens/desktop/Messages.png",
+      "size": [
+        1440,
+        1040
+      ]
+    },
+    "mobile": {
+      "source": "prototype/pages/MessagesMobile.dc.html",
+      "screenshot": "screens/mobile/MessagesMobile.png",
+      "size": [
+        390,
+        1500
+      ]
+    }
+  }
+}

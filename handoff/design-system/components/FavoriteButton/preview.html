@@ -1,0 +1,16 @@
+<!-- @dsCard group="Content & identity" height=130 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>FavoriteButton — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-stack'},
+  S('Icon only · labelled', h(A.FavoriteButton,{name:'Mira Rao',interactive:true}), h(A.FavoriteButton,{name:'Mira Rao',active:true}), h(A.FavoriteButton,{name:'Mira Rao',withLabel:true,interactive:true}), h(A.FavoriteButton,{name:'Mira Rao',withLabel:true,active:true}))
+));
+</script>
+</body>
+</html>

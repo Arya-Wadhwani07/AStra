@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · My collaborations (mobile)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+.mc-tabs{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.mc-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.mc-head__text{display:flex;flex-direction:column;gap:4px;min-width:0}
+.mc-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.mc-dl{display:flex;flex-direction:column;margin:0}
+.mc-dl dt{font-size:13px;font-weight:600;color:var(--ink-muted);padding:10px 0 2px;border-top:1px solid var(--border)}
+.mc-dl dd{margin:0;font-size:15px;line-height:22px;padding:0 0 10px}
+.mc-dl dt:first-of-type{border-top:0}
+.mc-pay{color:var(--ink);font-weight:600}
+.mc-hist{list-style:none;margin:0;padding:0}
+.mc-other{display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:12px;background:var(--surface-sunken)}
+.mc-other__top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.mc-other__title{margin:0;font-weight:600;font-size:15px;line-height:20px}
+.mc-lock{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--private);font-weight:600}
+.mc-fact{display:flex;justify-content:space-between;gap:12px;font-size:14px;line-height:20px}
+.mc-fact span:first-child{color:var(--ink-muted)}
+.mc-alt{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:1px dashed var(--border);color:var(--ink-muted);font-size:14px}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--mobile" style="width: 390px; height: 2350px; font-family: var(--font-sans); color: var(--ink); background: var(--bg); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient as-ambient--drift" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.TopBar" mobile="{{ yes }}" role="creator"></x-import>
+<div class="as-shell__mtitle"><h1 class="as-page-title">My collaborations</h1></div>
+<main class="as-shell__main">
+<nav style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px" aria-label="Collaboration pages">
+<a href="MyCollabsMobile.dc.html" class="as-btn as-btn--primary as-btn--sm" aria-current="page" style="grid-column: 1 / -1">My collaborations</a>
+<a href="CollabFindMobile.dc.html" class="as-btn as-btn--secondary as-btn--sm">Find opportunities</a>
+<a href="CollabCreateMobile.dc.html" class="as-btn as-btn--secondary as-btn--sm">Create opportunity</a>
+</nav>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<span class="mc-lock"><x-import component-from-global-scope="AStra.Icon" name="lock-simple" size="{{ n16 }}"></x-import>Creators only</span>
+<x-import component-from-global-scope="AStra.StatusBadge" tone="{{ oppTone }}">{{ oppStatus }}</x-import>
+</div>
+<h2 class="as-section-title" style="font-size: 18px; line-height: 24px">Help turn my exhibition into a 30-second launch reel</h2>
+<span class="as-caption">Paid, $600 proposed. Step through the project below.</span>
+<div data-local>
+<x-import component-from-global-scope="AStra.SegmentedControl" aria-label="Project step" options="{{ stages }}" value="{{ stage }}" on-change="{{ setStage }}" size="sm" full-width="{{ yes }}"></x-import>
+</div>
+</section>
+
+<sc-if value="{{ isResp }}" hint-placeholder-val="{{ true }}">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="as-section-title" style="font-size: 18px">Responses</h2>
+<x-import component-from-global-scope="AStra.ResponseCounter" count="{{ n9 }}" limit="{{ n10 }}"></x-import>
+<x-import component-from-global-scope="AStra.ParticipantRow" name="Eli Chen" discipline="video" verified="{{ yes }}" match="Meets 2/2 required · 1/1 preferred" message="I cut launch reels for two gallery openings last year and love working from painted textures." status="{{ eliStatus }}"></x-import>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+<x-import component-from-global-scope="AStra.Button" variant="secondary" full-width="{{ yes }}">Open conversation</x-import>
+<x-import component-from-global-scope="AStra.Button" variant="primary" icon="star-four" full-width="{{ yes }}">Shortlist Eli</x-import>
+</div>
+<x-import component-from-global-scope="AStra.ParticipantRow" name="Rae Park" discipline="video" match="Meets 2/2 required" message="Motion designer, happy to work from your photos and a short studio clip." status="{{ raeStatus }}"></x-import>
+<x-import component-from-global-scope="AStra.Button" variant="quiet" size="sm">Decline Rae</x-import>
+<x-import component-from-global-scope="AStra.ParticipantRow" name="Sam Ortiz" discipline="photographer" match="Missing 1 required: video editing" message="I can shoot stills and a short clip at the opening." status="declined"></x-import>
+<p class="as-caption">Sam doesn’t meet a required skill, so the response was declined with a short, kind note.</p>
+<p class="as-spec" style="margin-top: 4px">Alternate frame · limit reached</p>
+<div class="mc-alt"><x-import component-from-global-scope="AStra.Icon" name="pause" size="{{ n16 }}"></x-import><span>At 10/10 new responses pause automatically.</span></div>
+<span class="as-sample" style="align-self: flex-start">Sample responses</span>
+</section>
+</sc-if>
+
+<sc-if value="{{ isShort }}" hint-placeholder-val="{{ false }}">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="as-section-title" style="font-size: 18px">Shortlist</h2>
+<span class="as-caption">Nothing is agreed until you both confirm a brief.</span>
+<x-import component-from-global-scope="AStra.ParticipantRow" name="Eli Chen" discipline="video" verified="{{ yes }}" match="Meets 2/2 required · 1/1 preferred" message="Oct 5 works for a rough cut." status="shortlisted"></x-import>
+<x-import component-from-global-scope="AStra.Button" variant="primary" size="lg" icon="file-text" full-width="{{ yes }}">Draft brief</x-import>
+<x-import component-from-global-scope="AStra.Button" variant="secondary" size="lg" icon="chat-circle-text" full-width="{{ yes }}">Open conversation</x-import>
+</section>
+</sc-if>
+
+<sc-if value="{{ isBrief }}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{ showChanged }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="warning" title="Brief changed to v2">Brief changed to v2. Eli needs to confirm the latest version.</x-import>
+</sc-if>
+<sc-if value="{{ allOk }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="success" title="{{ okTitle }}">Milestones and history are ready.</x-import>
+</sc-if>
+<sc-if value="{{ withdrawn }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="info" title="Eli withdrew from this project">The brief is back to draft. Your conversation with Eli stays open.</x-import>
+</sc-if>
+<x-import component-from-global-scope="AStra.BriefStatus" title="Launch reel brief" version="{{ ver }}" edited="Sep 27" participants="{{ parts }}" state="{{ briefState }}"></x-import>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 10px">
+<h2 class="as-section-title" style="font-size: 18px">What you’re agreeing to</h2>
+<span class="as-caption">{{ verLine }}</span>
+<dl class="mc-dl">
+<dt>Roles</dt><dd>Mira Rao, owner and painter. Eli Chen, video editor.</dd>
+<dt>Deliverables</dt><dd>{{ deliverables }}</dd>
+<dt>Dates</dt><dd>Rough cut Oct 5. Final cut Oct 8.</dd>
+<dt>Approvals</dt><dd>Mira approves the final cut.</dd>
+<dt>Credit</dt><dd>Reel: Eli Chen. Artwork: Mira Rao.</dd>
+<dt>Intended use</dt><dd>Launch posts for Color After Hours.</dd>
+<dt>Proposed payment</dt><dd><span class="mc-pay">$600</span> plus expenses up to $50</dd>
+</dl>
+<p class="as-caption">A shared plan, not a legal contract.</p>
+<x-import component-from-global-scope="AStra.Button" variant="primary" size="lg" icon="check" full-width="{{ yes }}" disabled="{{ miraOk }}">Confirm as Mira</x-import>
+<x-import component-from-global-scope="AStra.Button" variant="secondary" size="lg" full-width="{{ yes }}" disabled="{{ eliOk }}">Demo: confirm as Eli</x-import>
+<x-import component-from-global-scope="AStra.Button" variant="quiet" icon="pencil-simple" full-width="{{ yes }}">Edit brief</x-import>
+<sc-if value="{{ allOk }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Button" variant="primary" size="lg" icon-right="arrow-right" full-width="{{ yes }}">Go to active project</x-import>
+</sc-if>
+</section>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 10px">
+<span class="as-label">Demo: Eli’s view</span>
+<p class="as-helper" style="margin: 0">Anyone can withdraw before everyone confirms the latest version. Mira gets a notification.</p>
+<div class="mc-actions" style="justify-content: flex-start">
+<x-import component-from-global-scope="AStra.Button" variant="destructive" size="sm" icon="sign-out" disabled="{{ allOk }}">Withdraw from project</x-import>
+<sc-if value="{{ withdrawn }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Button" variant="quiet" size="sm" icon="arrow-counter-clockwise">Reset demo</x-import>
+</sc-if>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{ isActive }}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{ reported }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.Banner" tone="info" title="Problem reported">An admin will review this project and follow up by notification.</x-import>
+</sc-if>
+<section class="as-card" style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<span class="as-label">Active project</span>
+<x-import component-from-global-scope="AStra.StatusBadge" tone="success" icon="check-circle">Active</x-import>
+</div>
+<h2 class="as-section-title" style="font-size: 18px; line-height: 24px">Launch reel for Color After Hours</h2>
+<span class="as-caption">Based on brief v2, confirmed by both on Sep 27</span>
+<x-import component-from-global-scope="AStra.ParticipantRow" name="Mira Rao" discipline="painter" role="Owner" verified="{{ yes }}" status="confirmed" version="{{ n2 }}"></x-import>
+<x-import component-from-global-scope="AStra.ParticipantRow" name="Eli Chen" discipline="video" role="Video editor" verified="{{ yes }}" status="confirmed" version="{{ n2 }}"></x-import>
+<div style="display: flex; flex-direction: column; gap: 12px" data-local>
+<h3 class="as-section-title" style="font-size: 16px">Milestones</h3>
+<x-import component-from-global-scope="AStra.Checkbox" label="Share exhibition photos" description="Mira, 10-12 high-res shots" checked="{{ m1 }}" on-change="{{ toggleM1 }}"></x-import>
+<x-import component-from-global-scope="AStra.Checkbox" label="Rough cut" description="Eli, due Oct 5" checked="{{ m2 }}" on-change="{{ toggleM2 }}"></x-import>
+<x-import component-from-global-scope="AStra.Checkbox" label="Final cut" description="Eli, due Oct 8. Mira approves." checked="{{ m3 }}" on-change="{{ toggleM3 }}"></x-import>
+<span class="as-caption">{{ msLine }}</span>
+</div>
+<h3 class="as-section-title" style="font-size: 16px">History</h3>
+<ul class="mc-hist">
+<li class="as-audit"><span class="as-audit__dot"></span><p class="as-audit__line">Sep 27 · Brief v2 confirmed by both</p></li>
+<li class="as-audit"><span class="as-audit__dot"></span><p class="as-audit__line">Sep 27 · Mira edited the brief to v2</p></li>
+<li class="as-audit"><span class="as-audit__dot"></span><p class="as-audit__line">Sep 26 · Mira shortlisted Eli</p></li>
+<li class="as-audit"><span class="as-audit__dot"></span><p class="as-audit__line">Sep 25 · Eli responded</p></li>
+</ul>
+<x-import component-from-global-scope="AStra.Button" variant="primary" size="lg" icon="chat-circle-text" full-width="{{ yes }}">Open conversation</x-import>
+<x-import component-from-global-scope="AStra.Button" variant="quiet" icon="flag" full-width="{{ yes }}">Report a problem</x-import>
+</section>
+</sc-if>
+
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<h2 class="as-section-title" style="font-size: 18px">Other collaborations</h2>
+<div class="mc-other">
+<div class="mc-other__top"><p class="mc-other__title">Illustrations for an essay series</p><x-import component-from-global-scope="AStra.StatusBadge" tone="info" icon="paper-plane-tilt">Response sent</x-import></div>
+<span class="as-caption">Priya Nair, writer. You responded Sep 24.</span>
+<a href="CollabRespondMobile.dc.html" class="as-btn as-btn--secondary as-btn--sm" style="align-self: flex-start">View opportunity</a>
+</div>
+<div class="mc-other">
+<div class="mc-other__top"><p class="mc-other__title">Album cover for Jonah Lee</p><x-import component-from-global-scope="AStra.StatusBadge" tone="neutral" icon="check">Completed</x-import></div>
+<span class="as-caption">Closed Aug 30. Credit: cover painting by Mira Rao.</span>
+</div>
+<span class="as-sample" style="align-self: flex-start">Sample data</span>
+</section>
+<x-import component-from-global-scope="AStra.Banner" tone="private" title="Private">Responses, briefs and conversations are visible only to the people involved.</x-import>
+</main>
+<x-import component-from-global-scope="AStra.BottomNav" role="creator" active="collaborate"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2350}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ stage: 'responses', eli: 'new', rae: 'new', ver: 1, miraOk: false, eliOk: false, edited: false, withdrawn: false, reported: false, m1: true, m2: false, m3: false }, this.state || {});
+    const M = true;
+    /*ROUTES:creator*/
+    const P = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Onboarding:['Onboarding','OnboardingMobile'],Feed:['Feed','FeedMobile'],Discover:['Discover','DiscoverMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Orders:['Orders','OrdersMobile'],Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Dashboard:['Dashboard','DashboardMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Admin:['Admin','AdminMobile'],CreatorSetup:['CreatorSetup','CreatorSetupMobile'],ProfileEdit:['ProfileEdit','ProfileEditMobile'],Publish:['Publish','PublishMobile'],Insights:['Insights','InsightsMobile'],CreatorOrders:['CreatorOrders','CreatorOrdersMobile'],CreatorLoyalty:['CreatorLoyalty','CreatorLoyaltyMobile'],Community:['Community','CommunityMobile'],MyCollabs:['MyCollabs','MyCollabsMobile'],Messages:['Messages','MessagesMobile'],CreatorMenu:['Dashboard','CreatorMenuMobile']};
+    const L = {AStra:'Main','Sign out':'Main',Notifications:'Notifications',Settings:'Settings','Sign in':'SignIn','Join AStra':'SignIn',Overview:'Dashboard',Home:'Dashboard',Publish:'Publish',Community:'Community',Collaborate:'CollabFind',Collab:'CollabFind','Audience insights':'Insights',Insights:'Insights',Loyalty:'CreatorLoyalty',Orders:'CreatorOrders',More:'CreatorMenu',Audience:'Feed',Creator:'Dashboard',Messages:'Messages','My collaborations':'MyCollabs','Find opportunities':'CollabFind','Create opportunity':'CollabCreate','View opportunity':'CollabRespond','Review responses':'MyCollabs','Edit profile':'ProfileEdit','View public profile':'Profile',Verification:'CreatorSetup'};
+    const ACCOUNT = 'ProfileEdit';
+    /*END ROUTES*/
+    const X = {
+      'Shortlist Eli': () => this.setState({ eli: 'shortlisted', stage: 'shortlist' }),
+      'Decline Rae': () => this.setState({ rae: 'declined' }),
+      'Open conversation': () => nav('Messages'),
+      'Draft brief': () => this.setState({ stage: 'brief', eli: 'shortlisted' }),
+      'Confirm as Mira': () => this.setState({ miraOk: true, withdrawn: false }),
+      'Demo: confirm as Eli': () => this.setState({ eliOk: true, withdrawn: false }),
+      'Edit brief': () => this.setState({ ver: 2, eliOk: false, edited: true, withdrawn: false }),
+      'Go to active project': () => this.setState({ stage: 'active' }),
+      'Withdraw from project': () => this.setState({ withdrawn: true, eliOk: false, miraOk: false }),
+      'Reset demo': () => this.setState({ withdrawn: false, ver: 1, miraOk: false, eliOk: false, edited: false }),
+      'Report a problem': () => this.setState({ reported: true })
+    };
+    /*ROUTER*/
+    const nav = (k) => { const f = P[k]; if (!f || !this._root) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+    const go = nav;
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      this._root = e.currentTarget;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h && h.charAt(0) === '#') e.preventDefault();
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav(ACCOUNT); return; }
+      const local = !!(t.closest && t.closest('[data-local]'));
+      const c = [(t.getAttribute('aria-label') || '').split(',')[0]].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => v);
+      for (let i = 0; i < c.length; i++) { if (X[c[i]]) { e.preventDefault(); X[c[i]](); return; } }
+      if (local) return;
+      for (let i = 0; i < c.length; i++) { if (L[c[i]]) { e.preventDefault(); nav(L[c[i]]); return; } }
+    };
+    const routes = Object.keys(P).map((k) => ({ key: k, file: P[k][M ? 1 : 0] + '.dc.html' }));
+    /*END ROUTER*/
+    const allOk = s.miraOk && s.eliOk && !s.withdrawn;
+    const done = [s.m1, s.m2, s.m3].filter(Boolean).length;
+    return {
+      route, routes, yes: true, no: false, n2: 2, n3: 3, n9: 9, n10: 10, n16: 16,
+      crumbs: ['Collaborate', 'My collaborations'],
+      stages: M
+        ? [{ value: 'responses', label: 'Responses' }, { value: 'shortlist', label: 'Shortlist' }, { value: 'brief', label: 'Brief' }, { value: 'active', label: 'Active' }]
+        : [{ value: 'responses', label: 'Responses', icon: 'users-three' }, { value: 'shortlist', label: 'Shortlist', icon: 'star-four' }, { value: 'brief', label: 'Brief', icon: 'file-text' }, { value: 'active', label: 'Active', icon: 'check-circle' }],
+      stage: s.stage, setStage: (v) => this.setState({ stage: v }),
+      isResp: s.stage === 'responses', isShort: s.stage === 'shortlist', isBrief: s.stage === 'brief', isActive: s.stage === 'active',
+      oppStatus: s.stage === 'active' ? 'Project active' : 'Open for responses',
+      oppTone: s.stage === 'active' ? 'success' : 'info',
+      eliStatus: s.eli, raeStatus: s.rae,
+      ver: s.ver, miraOk: s.miraOk, eliOk: s.eliOk, allOk, withdrawn: s.withdrawn,
+      showChanged: s.edited && !s.eliOk && !s.withdrawn,
+      okTitle: 'Everyone confirmed v' + s.ver + '. Your project is active.',
+      briefState: allOk ? 'active' : undefined,
+      parts: [{ name: 'Mira Rao', role: 'Owner, painter', confirmed: s.miraOk }, { name: 'Eli Chen', role: 'Video editor', confirmed: s.eliOk }],
+      verLine: s.ver === 2 ? 'Version 2 adds a 16:9 cut for the gallery screen.' : 'Version 1, drafted from your opportunity.',
+      deliverables: s.ver === 2 ? '30-second reel in 9:16 and 16:9 cuts' : '30-second reel in a 9:16 cut',
+      reported: s.reported,
+      m1: s.m1, m2: s.m2, m3: s.m3,
+      toggleM1: () => this.setState({ m1: !s.m1 }), toggleM2: () => this.setState({ m2: !s.m2 }), toggleM3: () => this.setState({ m3: !s.m3 }),
+      msLine: done + ' of 3 milestones done'
+    };
+  }
+}
+</script>
+</body>
+</html>

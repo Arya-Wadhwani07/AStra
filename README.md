@@ -1,0 +1,112 @@
+# AStra
+
+A responsive working hackathon prototype built from the approved Glass/Cinema handoff. Next.js, React, TypeScript, Phosphor icons and **MongoDB**. All application writes and development output stay under this project directory.
+
+## Run on this Mac
+
+Latest creator/audience test cases, results, fixes and limitations: [QA report](docs/QA_REPORT.md). Browser journeys run with `node scripts/env.mjs npm run test:browser`; they use an isolated database and save their report under `.environment/test-results/browser-report/`.
+
+From `/Users/arya/Personal/Code/Projects/AStra`, start the persistent local database in one terminal:
+
+```sh
+node scripts/env.mjs npm run db:start
+```
+
+In another terminal:
+
+```sh
+node scripts/env.mjs npm run dev
+```
+
+Open **http://127.0.0.1:3000**. The numeric address matters if another application occupies IPv6 `localhost:3000`. For a production-mode local preview, run `npm run build` and then `npm run start`, both through `node scripts/env.mjs`.
+
+The sample demo does not require Atlas, Docker, payment details or external credentials. Optional Spotify connection requires local Spotify configuration described below. Read [ENVIRONMENT.md](ENVIRONMENT.md) for isolation details. Stop each terminal with Ctrl+C; MongoDB retains its data. Do not run `npm` or development tools outside the wrapper.
+
+## Try the demo
+
+At `/signin`, choose a clearly labeled sample account:
+
+- **Alex Morgan:** audience feed, favorites, cart, loyalty and orders. Starts with 600 approved points and 50 pending points.
+- **Mira Rao:** creator workspace, publishing, orders, discount settings and opportunity management. Can switch to audience view.
+- **Eli Chen:** creator responding to Mira's launch-reel opportunity; can review and confirm brief version 2.
+- **Sam Ortiz:** photographer profile, useful for checking an opportunity's required-skill mismatch.
+- **Jonah Lee:** musician and cross-discipline collaboration.
+
+Use `Join` to create a new fictional audience, creator or dual-role account. These start with zero points and unsubmitted verification. No real email, password or identity document is collected.
+
+Administrator access is separate. Run `node scripts/env.mjs npm run admin:key` in your terminal, then choose Review team at sign-in and enter the local key. The key lives only in `.environment/config/admin-key`. Do not commit or share it. Verification decisions are simulated and send an in-app notice, not email.
+
+### Suggested walkthrough
+
+1. Sign in as Alex. Open the feed, then Color After Hours. Add a $25 ticket to the cart.
+2. Choose 500 points for a $5 discount under Mira's 20% cap. Confirm a **sample** purchase. Check the order and the remaining 100-point balance.
+3. Sign out and sign in as Mira. Visit collaboration responses, shortlist a creator and edit a brief. Edits reset all confirmations.
+4. Sign in as Eli and confirm the latest brief. The project becomes active only after every participant confirms that version.
+5. Try an audience view of `/studio/collaborate`. Private opportunities and messages are excluded by the server, not merely hidden in navigation.
+
+## Implemented areas
+
+### Spotify connection and hackathon click simulation
+
+Spotify is now a real OAuth sign-in/connection option for private audience, creator or dual-role accounts. At `/signin`, use the private Spotify section; **Both** enables testing both views with one Spotify identity. Shared sample accounts are never upgraded or merged, and new private accounts start with zero points. Returning accounts retain their original roles. In Settings, use **Show recent tracks** or **Disconnect**. OAuth does not establish artist ownership or creator verification.
+
+The ignored `.env.local` contains `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET` and `SPOTIFY_REDIRECT_URI`. Register exactly `http://127.0.0.1:3000/api/integrations/spotify/callback` in Spotify. Run `node scripts/env.mjs npm run spotify:check` to validate application credentials and provision the local token encryption key. Do not share the environment file or `.environment/config/spotify-token-key`. OAuth itself uses PKCE; no client secret reaches the browser. Tokens are encrypted in MongoDB. Recent history is fetched on demand, not persisted or used for points. Full live user-consent testing requires the user's Spotify approval and allowed-test-user setup.
+
+For the click demonstration: a creator opens `/studio/loyalty`, supplies a Spotify album/track or YouTube video/Shorts link and 1–100 demo points, then explicitly checks **Publish as a hackathon click simulation**. Other accounts see it at `/loyalty`. A link-open request awards once per account/campaign; repeat requests return the same destination without credit. This records a request, not successful navigation, a view, a listen or album completion. These points apply only to existing **simulated checkout**; they are not real-world discounts, and the feature is disabled unless `ASTRA_DEMO=1`. This does not establish provider permission for a live reward scheme. No Replit deployment is currently requested.
+
+Details and privacy limitations: [platform integrations](docs/PLATFORM_INTEGRATIONS.md).
+
+For a feed-first Spotify post, open **Create something → Spotify**, paste a full Spotify track/album URL, add a post title/message and choose 1–100 demo points (default 1). Published Spotify demo campaigns also appear as Posts/Music in followers' feeds and on the creator profile, without duplicating the campaign record. The official Spotify iframe renders the release; the separate **Open in Spotify** button requests the one-time demo award and navigates to Spotify. Playing the iframe does not award points. Existing Spotify demo campaigns also appear; older records without a creation date sort after dated posts. No reward is granted merely by rendering a card. The embed contacts Spotify, may be unavailable due to provider/network restrictions, and retains its own controls/attribution. A link remains available if the preview cannot load.
+
+All 27 route groups are connected: landing, sign-in/join, onboarding; audience feed, discovery, creator profiles, events, cart, loyalty, orders, notifications and settings; creator overview, setup, profile, publishing, insights, orders, loyalty, community, messages and mobile menu; opportunity discovery, creation, responses and shared briefs; administrator review queue.
+
+The approved fonts, tokens, art treatments, God UI-style AuroraText/OrbitingCircles, Phosphor icons, cinematic videos and pixel mascot are local assets. The handoff remains unchanged. Components are React modules; the canvas prototype runtime is not shipped.
+
+The landing hero now uses an original WebGL particle sculpture inspired by the supplied recording: rotating prism/intertwined strands, perspective floor rings and a faint reflection. Geometry is generated locally, with no new dependency or asset download. It uses 10,500 particles on initial mobile load and 22,000 on desktop, capped pixel density, and two batched draw calls per frame. Pause/play is remembered for the tab. Offscreen and hidden-tab animation stops; reduced-motion, Save-Data and unavailable WebGL use the existing static poster. The other cinematic sections retain their supplied videos. Their controls remain usable if autoplay is blocked.
+
+## Data and guarantees
+
+MongoDB stores users, posts, opportunities, responses, briefs, conversations, messages, orders, ledger entries, notices, reviews, audits, community posts, campaign drafts, carts and sessions in separate collections. Session tokens are random, stored hashed, and sent in HttpOnly same-site cookies. Sessions have a TTL index. Creator/opportunity responses have a unique compound index.
+
+Multi-document transactions protect inventory, orders and point debits. Payment retries are idempotent. The current small-demo implementation serializes aggregate mutations with a metadata document, reads the relevant demo dataset and persists changed documents. This is deliberately correctness-first, **not a high-scale production query architecture**. Production would use targeted queries, pagination and finer-grained transactions.
+
+The initial SQLite experiment is no longer used by the app. Its original files are preserved in `.environment/data/`; `legacy-state.json` imports the saved sample state when the main MongoDB database is first initialized. Old session cookies are not migrated; sign in again. Test databases are separate `astra_test_*`/`astra_http_test` databases within the same project-local MongoDB storage.
+
+## Verification
+
+```sh
+node scripts/env.mjs npm run typecheck
+node scripts/env.mjs npm test
+node scripts/env.mjs npm run test:mongo
+node scripts/env.mjs npm run test:spotify
+node scripts/env.mjs npm run build
+```
+
+For HTTP checks, run `node scripts/env.mjs env ASTRA_DB_NAME=astra_http_test SPOTIFY_REDIRECT_URI=http://127.0.0.1:3001/api/integrations/spotify/callback GOOGLE_REDIRECT_URI=http://127.0.0.1:3001/api/integrations/youtube/callback npm run start -- --port 3001`, then `node scripts/env.mjs npm run test:http` in another terminal. These tests use separate data and do not alter the main demo accounts. Test-only callbacks test cancellation locally; do not register them or grant actual provider consent through the test server.
+
+### YouTube account connection and feed
+
+The server reads `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI` and `YOUTUBE_API_KEY` from ignored `.env.local`. Register the exact local callback `http://127.0.0.1:3000/api/integrations/youtube/callback` on a Google OAuth **Web application** client. Enable YouTube Data API v3 and add your Google account as a test user. Consent requests `openid profile` plus `https://www.googleapis.com/auth/youtube.readonly`. Restrict the server API key to YouTube Data API v3; browser referrer restrictions do not suit server-side requests.
+
+Open `/signin` → **Connect YouTube**, select Audience / Creator / Both for a new account, and approve Google consent. Success returns to `/settings` with **Connected**. **Check my YouTube channels** performs an on-demand read; a channel is not required to create a private Google-backed AStra account. No watch history or YouTube Music history is read. Google secrets/tokens never enter browser responses. The Google library verifies ID-token signatures and claims; nonce/PKCE/browser state bind the flow. The existing local token-encryption key is reused with a YouTube-specific encryption context.
+
+To use Spotify and Google on **one** AStra account, sign in with one, then connect the other in Settings. Already separately registered identities are not automatically merged. Shared demo accounts are never linked to private tokens. Disconnect deletes YouTube tokens locally and attempts Google revocation; the AStra account and hashed login identity remain. If revocation fails, use the Google permissions link. Production account deletion/retention remains separate work.
+
+Creators open `/studio/publish` → **YouTube**, enter a public video/Shorts link and demo point amount. Followers see it in All / Posts / Videos and the creator profile. **Load YouTube preview** first checks public metadata, embedding and made-for-kids status; unavailable/restricted/unknown-status videos keep an external-link fallback. No preview autoplay. Viewing never awards points; only the separately labeled hackathon link-open request can credit the one-time simulated award. Account connection cannot choose which Google account the external YouTube website is currently using.
+
+Run `node scripts/env.mjs npm run test:youtube` for mocked Google + isolated local MongoDB checks. A successful API-key check is not proof that OAuth client settings or user consent work; live consent must be completed by the user.
+
+The automated suite covers populated rendering of all routes, audience/private-data separation, role authorization, caps, pending points, failed checkout, idempotency, stock, response limits and filters, version confirmations, verification gates and audited decisions. MongoDB integration checks exercise rollback, real concurrent requests, persistence, sessions and indexes. HTTP checks cover sign-in, CSRF, role switching, route responses and local assets.
+
+**Visual browser QA remains outstanding:** browser automation was unavailable in this session. Responsive rules are implemented, but exact screenshot matching at 1440px/390px, keyboard walkthroughs and live video behavior have not been visually verified. Component rendering tests are not a substitute for those checks.
+
+## Explicit prototype limits
+
+- Spotify-backed private sign-in is implemented; shared sample login remains a separate demo. No email verification, real payments, email delivery, ticket fulfilment, identity checks, shipping integration, uploads or media storage service. Sample checkout never collects card information or charges money.
+- Spotify account connection and on-demand recent tracks do not verify listening completion or award points. No YouTube Music or Amazon Music account integration. Draft earning proposals remain non-earning unless explicitly published as demo click campaigns. Sample points are not evidence of actual listening or engagement.
+- Whole-point redemption and caps from 0 to 99% are labeled demo assumptions. Fees, taxes, shipping, expiry, discount funding, multi-seller settlement and refunds remain unresolved. Refund requests create reviews and never automatically restore points or money.
+- Direct outreach starts a conversation immediately in this local demo. Acceptance, blocking, rate limiting and full moderation workflows need production decisions and implementation.
+- The sample art is deliberately labeled. Analytics are calculated from demo orders; unconnected audience metrics are not invented.
+- All routes are implemented, but not every illustrative state and pixel-level detail in the 53 reference boards is a production-complete feature. Deployment and a security/accessibility audit remain separate work.
+
+Team: Saloni Belliappa Bolakaranda (Product), Arya Jay Wadhwani (Technical). AStra is the working name.

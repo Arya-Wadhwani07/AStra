@@ -1,0 +1,21 @@
+<!-- @dsCard group="Motion" height=560 width=1280 page -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>MotionCollabIntro — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+var NOTE = 'Background: procedurally rendered placeholder loop — not a final production render.';
+var M = {"hero": {"src": "/_blob/4320ee894668ee029ec9bfb9f2490e55", "webm": "/_blob/699cd985d5040ce672206b517344f658", "poster": "/_blob/f066f217d04f9a4832bf7bac34177543", "mobileSrc": "/_blob/59c3ba56a9d5f3fdc9d0ff4755fb1584", "mobileWebm": "/_blob/89b900ddc7437a2b2a93cef3860a7980", "mobilePoster": "/_blob/782597d64d46b1be5435d1a604a441ab", "focus": "66% 45%", "label": "Abstract animation: six streams of coloured light, one per creative discipline, flow together into a single braided sculpture."}, "herom": {"src": "/_blob/59c3ba56a9d5f3fdc9d0ff4755fb1584", "webm": "/_blob/89b900ddc7437a2b2a93cef3860a7980", "poster": "/_blob/782597d64d46b1be5435d1a604a441ab", "focus": "50% 30%", "label": "Abstract animation: streams of coloured light flow together into a single braided sculpture."}, "collab": {"src": "/_blob/b28590f9dfb22ba320f538a31d2a5a53", "webm": "/_blob/149f9dd4335f779ce30143cb3470e2dc", "poster": "/_blob/b1fe16f1c7e9afc57bc20d8967d52203", "focus": "64% 50%", "label": "Abstract animation: a coral sphere and a blue ring trade particles and braid into one shared form."}, "loyalty": {"src": "/_blob/b40b0dc678fef2f5e827d4b1a3f58b79", "webm": "/_blob/f99d03af9b25ce49c94ea609dd171506", "poster": "/_blob/8a2239a971cd4cf54a9f0ee7e575b055", "focus": "64% 55%", "label": "Abstract animation: five coloured streams pour into one pool of blue light."}};
+
+render(h(A.MotionStage, {id:'ci', compact:true, media:M.collab, eyebrow:'Collaborate',
+  title:'Two disciplines. One new work.',
+  subtitle:'Post an opportunity, review responses privately, and agree a shared plan with the creators you choose.',
+  actions:[h(A.Button,{key:1,icon:'plus'},'Create opportunity'), h(A.Button,{key:2,variant:'secondary',iconRight:'arrow-right'},'Find opportunities')],
+  footnote:'Abstract illustration of collaboration — conversations and plans stay private to the creators involved. ' + NOTE, style:{minHeight:560}}), {pad:0});
+</script>
+</body>
+</html>

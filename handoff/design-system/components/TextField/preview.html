@@ -1,0 +1,23 @@
+<!-- @dsCard group="Inputs" height=568 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>TextField — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var A = window.AStra, h = React.createElement;
+function S(t){ var c = [].concat.apply([], [].slice.call(arguments,1)); return h('div',{className:'as-stack'}, h('p',{className:'as-spec'}, t), h.apply(null, ['div',{className:'as-row'}].concat(c))); }
+function render(el, o){ o = o || {}; var st = o.pad === undefined ? null : {padding:o.pad}; ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'as-stage',style:st}, el)); }
+render(h('div',{className:'as-grid-2'},
+  h(A.TextField,{label:'Email',placeholder:'you@example.com',type:'email',helper:'We’ll send a verification link.',required:true}),
+  h(A.PasswordField,{label:'Password',placeholder:'At least 12 characters',required:true}),
+  h(A.TextField,{label:'Display name',value:'Mira Rao',success:'Looks good.'}),
+  h(A.TextField,{label:'Email',value:'mira@',error:'Enter a complete email address, like mira@example.com.'}),
+  h(A.TextField,{label:'Event date & time',type:'datetime-local',value:'2026-10-10T18:00',helper:'Pacific Time (Los Angeles)'}),
+  h(A.TextField,{label:'Ticket price',icon:'tag',value:'25.00',disabled:true,helper:'Locked while tickets are on sale.'}),
+  h(A.TextField,{label:'Project goal',multiline:true,rows:3,optional:true,placeholder:'What do you want to make together?'}),
+  h(A.TextField,{label:'Reason for decision',multiline:true,rows:3,required:true,helper:'Shown to the creator and saved in the audit history.'})
+));
+</script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AStra · Notifications</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/astra/tokens.css">
+<link rel="stylesheet" href="ds/astra/components/bundle.css">
+<script src="ds/astra/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Unbounded";src:url("/_blob/9e2d0308574e0dd739947215fe78be46") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("/_blob/52f7db2d17ed1151fb5edc419ca9f191") format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/e44578e499896e30b393535e412478a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("/_blob/74f0e95277624757400b58c375897663") format("woff2");font-weight:500;font-display:swap}
+body{margin:0;background:#0b1430}
+a{color:var(--link)}a:hover{color:var(--ink)}
+.nt-row{display:flex;gap:16px;align-items:flex-start;padding:18px 20px;border-radius:16px;text-decoration:none;color:var(--ink)}
+.nt-row:hover{background:var(--glass-highlight)}
+.nt-row:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.nt-ico{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:12px}
+</style>
+</helmet>
+<div onClick="{{ route }}" data-theme="glass" class="as-shell as-shell--rail" style="width: 1440px; height: 1100px; font-family: var(--font-sans); color: var(--ink); overflow: hidden">
+<nav aria-hidden="true" style="display: none"><sc-for list="{{ routes }}" as="r" hint-placeholder-count="12"><a href="{{ r.file }}" data-route="{{ r.key }}" tabindex="-1">{{ r.key }}</a></sc-for></nav>
+<div class="as-ambient as-ambient--drift" aria-hidden="true"><span class="as-ambient__blob as-ambient__blob--1"></span><span class="as-ambient__blob as-ambient__blob--2"></span><span class="as-ambient__blob as-ambient__blob--3"></span><span class="as-ambient__blob as-ambient__blob--4"></span><span class="as-ambient__grain"></span></div>
+<x-import component-from-global-scope="AStra.SideNav" role="audience" active="none" user="Alex Morgan" unread="{{ unread }}" dual="{{ no }}"></x-import>
+<div class="as-shell__body">
+<x-import component-from-global-scope="AStra.TopBar" title="Notifications" unread="{{ unread }}"></x-import>
+<div class="as-shell__cols">
+<main class="as-shell__main">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 16px">
+<x-import component-from-global-scope="AStra.Tabs" items="{{ tabs }}" value="{{ tab }}" on-change="{{ setTab }}" aria-label="Filter notifications"></x-import>
+<x-import component-from-global-scope="AStra.Button" variant="secondary" size="sm" icon="check">Mark all as read</x-import>
+</div>
+<section class="as-card" style="padding: 8px; display: flex; flex-direction: column; gap: 2px">
+<sc-for list="{{ items }}" as="n" hint-placeholder-count="5">
+<a href="{{ n.href }}" class="nt-row">
+<span class="nt-ico" style="background: {{ n.bg }}; color: {{ n.fg }}"><x-import component-from-global-scope="AStra.Icon" name="{{ n.icon }}" size="{{ n20 }}"></x-import></span>
+<span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0">
+<strong style="font-size: 15px; line-height: 22px; font-weight: {{ n.weight }}">{{ n.title }}</strong>
+<span style="font-size: 14px; line-height: 20px; color: var(--ink-muted)">{{ n.body }}</span>
+<span class="as-caption">{{ n.time }}</span>
+</span>
+<sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="AStra.StatusBadge" tone="accent" icon="{{ no }}">New</x-import></sc-if>
+</a>
+</sc-for>
+<sc-if value="{{ none }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="AStra.EmptyState" tone="empty" icon="bell" title="You’re all caught up" body="New activity from creators you follow, your orders and your points shows up here." compact="{{ yes }}"></x-import>
+</sc-if>
+</section>
+<span class="as-sample">Sample data · audience notifications never include creators-only collaboration activity</span>
+</main>
+<aside class="as-shell__rail">
+<section class="as-card" style="display: flex; flex-direction: column; gap: 12px">
+<h2 class="as-section-title" style="font-size: 16px">Notification settings</h2>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted)">Choose which updates you get by email and in the app. Order and security notices are always on.</p>
+<a href="Settings.dc.html" class="as-btn as-btn--secondary as-btn--sm" style="align-self: flex-start">Open settings</a>
+</section>
+</aside>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = Object.assign({ tab: 'all', read: false }, this.state || {});
+    const M = false;
+    const F = {Main:['Main','LandingMobile'],SignIn:['SignIn','SignInMobile'],Feed:['Feed','FeedMobile'],Profile:['Profile','ProfileMobile'],Event:['Event','EventMobile'],CollabFind:['CollabFind','CollabFindMobile'],CollabCreate:['CollabCreate','CollabCreateMobile'],CollabRespond:['CollabRespond','CollabRespondMobile'],Checkout:['Checkout','CheckoutMobile'],Loyalty:['Loyalty','LoyaltyMobile'],Dashboard:['Dashboard','DashboardMobile'],Admin:['Admin','AdminMobile']};
+    const L = {'AStra':'Main','Feed':'Feed','Discover':'Profile','Favorites':'Profile','Loyalty':'Loyalty','Cart':'Checkout','Overview':'Dashboard','Home':'Dashboard','Publish':'Dashboard','Community':'CollabFind','Collaborate':'CollabFind','Collab':'CollabFind','Audience insights':'Dashboard','Creator':'Dashboard','Audience':'Feed','Review queue':'Admin'};
+    const X = { 'Mark all as read': () => this.setState({ read: true }), 'All': () => {}, 'Unread': () => {} };
+    const go = (k) => { const a = this._root && this._root.querySelector('a[data-route="' + k + '"]'); if (a) a.click(); };
+    const route = (e) => {
+      const t = e.target && e.target.closest ? e.target.closest('a,button,.as-logo') : null; if (!t) return;
+      const h = t.getAttribute('href'); if (h && h.indexOf('.dc.html') > -1) return; if (h === '#') e.preventDefault();
+      this._root = e.currentTarget;
+      const NF = {Notifications:['Notifications','NotificationsMobile'],Settings:['Settings','SettingsMobile'],Orders:['Orders','OrdersMobile'],Discover:['Discover','DiscoverMobile'],Onboarding:['Onboarding','OnboardingMobile']};
+      const DX = {'Discover':'Discover','Discover more':'Discover','Favorites':'Discover','Favorite creators':'Discover','Find creators':'Discover'};
+      const dk = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent), [t.textContent]).map((v) => (v || '').trim()).filter((v) => DX[v])[0];
+      if (dk) { e.preventDefault(); const df = NF[DX[dk]]; const da = document.createElement('a'); da.setAttribute('href', df[M ? 1 : 0] + '.dc.html'); da.style.display = 'none'; this._root.appendChild(da); da.click(); da.remove(); return; }
+      const EX = {'Notifications':'Notifications','Settings':'Settings','More':'Settings','Orders':'Orders','Your orders':'Orders','Sign out':'Main','Mira Rao':'Profile','Color After Hours':'Event'};
+      const nav = (k) => { const f = F[k] || NF[k]; if (!f) return; const a = document.createElement('a'); a.setAttribute('href', f[M ? 1 : 0] + '.dc.html'); a.style.display = 'none'; this._root.appendChild(a); a.click(); a.remove(); };
+      if (t.classList && t.classList.contains('as-account')) { e.preventDefault(); nav('Settings'); return; }
+      const cx = [t.getAttribute('aria-label') || ''].concat([].map.call(t.querySelectorAll('span,strong'), (n) => n.textContent));
+      for (let i = 0; i < cx.length; i++) { const k = (cx[i] || '').trim().split(',')[0]; if (X[k]) { e.preventDefault(); X[k](); return; } if (EX[k] && EX[k] !== 'Notifications') { e.preventDefault(); nav(EX[k]); return; } }
+      const c = [t.textContent];
+      for (let i = 0; i < c.length; i++) { const k = (c[i] || '').trim(); if (L[k]) { e.preventDefault(); nav(L[k]); return; } }
+    };
+    const routes = Object.keys(F).map((k) => ({ key: k, file: F[k][M ? 1 : 0] + '.dc.html' }));
+    const sfx = M ? 'Mobile' : '';
+    const all = [
+      { title: 'Order AST-24817 is confirmed', body: 'Color After Hours · 1 ticket. Paid $20.00 after 500 points.', time: '12 min ago', icon: 'receipt', bg: 'var(--success-bg)', fg: 'var(--success)', href: 'Orders' + sfx + '.dc.html', unread: true },
+      { title: '500 points redeemed', body: 'Your balance is 100 available and 50 pending.', time: '12 min ago', icon: 'star-four', bg: 'var(--points-bg)', fg: 'var(--points)', href: 'Loyalty' + sfx + '.dc.html', unread: true },
+      { title: 'Mira Rao posted a new event', body: 'Color After Hours, Sat Oct 10 in Los Angeles.', time: '2 h ago', icon: 'ticket', bg: 'var(--surface-sunken)', fg: 'var(--ink)', href: (M ? 'EventMobile' : 'Event') + '.dc.html', unread: false },
+      { title: 'Priya Nair shared a post', body: 'Notes from a slow draft.', time: '5 h ago', icon: 'article', bg: 'var(--surface-sunken)', fg: 'var(--ink)', href: 'Feed' + sfx + '.dc.html', unread: false },
+      { title: '50 points are pending', body: 'From Jonah Lee (sample activity). Usable once approved.', time: 'Yesterday', icon: 'hourglass-medium', bg: 'var(--info-bg)', fg: 'var(--info)', href: 'Loyalty' + sfx + '.dc.html', unread: false }
+    ].map((n) => Object.assign({}, n, { unread: n.unread && !s.read, weight: n.unread && !s.read ? 700 : 600 }));
+    const items = s.tab === 'unread' ? all.filter((n) => n.unread) : all;
+    return {
+      route, routes, yes: true, no: false, n20: 20,
+      unread: all.filter((n) => n.unread).length,
+      tabs: [{ id: 'all', label: 'All' }, { id: 'unread', label: 'Unread', count: all.filter((n) => n.unread).length }],
+      tab: s.tab, setTab: (id) => this.setState({ tab: id }),
+      items, none: items.length === 0
+    };
+  }
+}
+</script>
+</body>
+</html>
