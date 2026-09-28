@@ -7,6 +7,8 @@
     "dev": "ASTRA_DEMO=1 next dev --hostname 127.0.0.1",
     "build": "next build",
     "start": "ASTRA_DEMO=1 next start --hostname 127.0.0.1",
+    "dev:replit": "ASTRA_HOSTED=1 ASTRA_DEMO=1 next dev --hostname 0.0.0.0 --port 3000",
+    "start:replit": "ASTRA_HOSTED=1 ASTRA_DEMO=1 next start --hostname 0.0.0.0 --port 3000",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
     "test:http": "tsx scripts/check-http.ts",

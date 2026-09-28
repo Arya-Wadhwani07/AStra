@@ -24,6 +24,8 @@
 
 ## Current development gate
 
+- Replit deployment is now authorized, using MongoDB Atlas through the server-only `MONGODB_URI` secret. This supersedes older local-only deployment wording below. Preserve all UI and business behavior; only hosting configuration changes are approved. Local runs retain the local MongoDB default. Do not migrate local accounts, tokens or other data without explicit approval. Never upload `.env.local` or `.environment/`. Local development commands must still use the project wrapper; Replit's Linux runtime uses the separate `dev:replit`/`start:replit` commands, not a bypass of the Mac wrapper.
+
 - Latest authentication decision: AStra requires its own email/password signup and sign-in. Spotify and YouTube are optional connections in Settings after AStra authentication, not sign-in providers. Shared sample login and passwordless registration are disabled on the normal website. Test-only sample access requires `ASTRA_TEST_ACCOUNTS=1` AND an explicitly isolated test database. Existing sample/provider-only sessions do not grant normal website access. Password hashes and email lookup hashes must never appear in snapshots.
 - Only the marketing landing and sign-in page are public. Every feature page and app-data API requires a server-validated session. Email verification/reset delivery is not configured; do not promise it. Preserve clear simulated-checkout/reward disclosures independently of real AStra authentication.
 

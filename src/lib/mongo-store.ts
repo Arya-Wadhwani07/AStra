@@ -9,6 +9,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { seed, type State, type Session, AppError } from "./model";
 import { testAccountsEnabled } from "./test-access";
+import { databaseConfig } from "./database-config";
 const collections = [
   "users",
   "posts",
@@ -28,16 +29,10 @@ const collections = [
 type Row = Document & { _id: string };
 type SessionRow = { _id: string; data: Session; expires: Date };
 let connection: Promise<{ client: MongoClient; database: Db }> | undefined;
-function databaseName() {
-  const name = process.env.ASTRA_DB_NAME || "astra";
-  if (!/^astra(?:_[a-zA-Z0-9_]+)?$/.test(name))
-    throw new Error("Use an astra-prefixed MongoDB database name.");
-  return name;
-}
 async function writeSeed(database: Db, session: ClientSession) {
   let initial = seed();
   const legacy = join(process.cwd(), ".environment/data/legacy-state.json");
-  if (database.databaseName === "astra" && existsSync(legacy))
+  if (databaseConfig().local && database.databaseName === "astra" && existsSync(legacy))
     initial = JSON.parse(readFileSync(legacy, "utf8")) as State;
   for (const key of collections)
     if (initial[key].length)
@@ -58,14 +53,14 @@ async function writeSeed(database: Db, session: ClientSession) {
 export async function db() {
   if (!connection)
     connection = (async () => {
-      // Local-only: moving project data to Atlas needs separate authorization.
+      const config = databaseConfig();
       const client = new MongoClient(
-        "mongodb://127.0.0.1:27018/?replicaSet=astra",
+        config.uri,
         { serverSelectionTimeoutMS: 5000, maxPoolSize: 10 },
       );
       try {
         await client.connect();
-        const database = client.db(databaseName());
+        const database = client.db(config.name);
         await database
           .collection<SessionRow>("sessions")
           .createIndex({ expires: 1 }, { expireAfterSeconds: 0 });
