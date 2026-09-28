@@ -69,23 +69,38 @@ export function createParticleGeometry(
 const vertex = `
 attribute vec3 a_prism;
 attribute vec3 a_knot;
+attribute vec3 a_collab;
+attribute vec3 a_loyalty;
 attribute float a_seed;
 attribute float a_kind;
 uniform vec2 u_resolution;
 uniform float u_time;
 uniform float u_dpr;
 uniform float u_reflection;
+uniform float u_story;
+uniform vec3 u_pointer;
 varying vec3 v_color;
 varying float v_alpha;
 void main() {
   float morph = smoothstep(-0.55, 0.55, sin(u_time * 0.22 - 1.57));
   vec3 p = mix(a_prism, a_knot, morph);
-  float angle = u_time * 0.18 + 0.52;
+  if (u_story >= 0.0) {
+    float chapter = clamp(u_story, 0.0, 1.0) * 4.0;
+    if (chapter < 1.0) p = mix(a_prism, a_knot, smoothstep(0.0, 1.0, chapter));
+    else if (chapter < 2.0) p = mix(a_knot, a_collab, smoothstep(0.0, 1.0, chapter - 1.0));
+    else if (chapter < 3.0) p = mix(a_collab, a_loyalty, smoothstep(0.0, 1.0, chapter - 2.0));
+    else p = mix(a_loyalty, a_knot, smoothstep(0.0, 1.0, chapter - 3.0));
+  }
+  float travel = max(u_story, 0.0);
+  float angle = u_time * 0.13 + 0.52 + travel * 3.0;
   float c = cos(angle), s = sin(angle);
   p.xz = mat2(c, -s, s, c) * p.xz;
   if (a_kind < 0.5) {
     p.y += sin(u_time * 0.65) * 0.06;
     p += sin(u_time * 0.9 + a_seed * 40.0) * 0.007;
+    // Coherent currents deform the entire surface, rather than random dot jitter.
+    p.x += sin(p.y * 2.4 + p.z * 1.5 + u_time * 0.65 + travel * 5.0) * 0.085;
+    p.y += sin(p.x * 2.0 - p.z * 1.3 + u_time * 0.5) * 0.06;
   }
   if (a_kind > 1.5) p.y += sin(u_time * 0.15 + a_seed * 30.0) * 0.16;
   float reflected = u_reflection;
@@ -98,11 +113,19 @@ void main() {
   bool mobile = css.x < 768.0;
   float scale = mobile ? min(css.x * 0.28, 155.0) : min(css.x * 0.155, css.y * 0.245);
   vec2 center = mobile ? vec2(css.x * 0.5, 238.0) : vec2(css.x * 0.74, css.y * 0.46);
+  if (u_story >= 0.0) {
+    center.x += sin(travel * 6.283) * css.x * (mobile ? 0.065 : 0.07);
+    center.y = mobile ? min(css.y * 0.3, 260.0) : css.y * (0.46 + sin(travel * 9.0) * 0.08);
+  }
   vec2 pixel = center + vec2(p.x, -py) * scale * depth;
+  vec2 delta = pixel - u_pointer.xy * css;
+  float influence = exp(-dot(delta, delta) / (scale * scale * 0.7)) * u_pointer.z;
+  if (a_kind < 0.5 && reflected < 0.5) pixel += normalize(delta + vec2(0.01)) * influence * 24.0;
   gl_Position = vec4(pixel / css * vec2(2.0, -2.0) + vec2(-1.0, 1.0), 0.0, 1.0);
   gl_PointSize = clamp((1.15 + a_seed * 1.25) * depth * u_dpr, 1.0, 6.0);
   v_color = mix(vec3(0.18, 0.35, 1.0), vec3(0.38, 0.82, 1.0), a_seed);
   if (a_seed > 0.965 && a_kind < 0.5) v_color = vec3(1.0, 0.35, 0.235);
+  v_color = mix(v_color, vec3(0.65, 0.88, 1.0), influence * 0.7);
   v_alpha = a_kind < 0.5 ? 0.70 : a_kind < 1.5 ? 0.40 : 0.24;
   v_alpha *= 0.82 + 0.18 * sin(u_time + a_seed * 20.0);
   if (reflected > 0.5) {
@@ -161,27 +184,39 @@ export function createParticleRenderer(
       throw new Error("Particle shader linking failed");
     gl.useProgram(program);
     const count = canvas.clientWidth < 768 ? 10500 : 22000;
+    const initial = createParticleGeometry(count, variant);
+    const collab = createParticleGeometry(count, "collab");
+    const loyalty = createParticleGeometry(count, "loyalty");
+    const geometry = new Float32Array(count * 14);
+    for (let i = 0; i < count; i++) {
+      geometry.set(initial.subarray(i * 8, i * 8 + 6), i * 14);
+      geometry.set(collab.subarray(i * 8, i * 8 + 3), i * 14 + 6);
+      geometry.set(loyalty.subarray(i * 8, i * 8 + 3), i * 14 + 9);
+      geometry.set(initial.subarray(i * 8 + 6, i * 8 + 8), i * 14 + 12);
+    }
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      createParticleGeometry(count, variant),
-      gl.STATIC_DRAW,
-    );
+    gl.bufferData(gl.ARRAY_BUFFER, geometry, gl.STATIC_DRAW);
     for (const [name, size, offset] of [
       ["a_prism", 3, 0],
       ["a_knot", 3, 12],
-      ["a_seed", 1, 24],
-      ["a_kind", 1, 28],
+      ["a_collab", 3, 24],
+      ["a_loyalty", 3, 36],
+      ["a_seed", 1, 48],
+      ["a_kind", 1, 52],
     ] as const) {
       const location = gl.getAttribLocation(program, name);
       gl.enableVertexAttribArray(location);
-      gl.vertexAttribPointer(location, size, gl.FLOAT, false, 32, offset);
+      gl.vertexAttribPointer(location, size, gl.FLOAT, false, 56, offset);
     }
     const uniforms = Object.fromEntries(
-      ["u_resolution", "u_time", "u_dpr", "u_reflection"].map((name) => [
-        name,
-        gl.getUniformLocation(program, name),
-      ]),
+      [
+        "u_resolution",
+        "u_time",
+        "u_dpr",
+        "u_reflection",
+        "u_story",
+        "u_pointer",
+      ].map((name) => [name, gl.getUniformLocation(program, name)]),
     );
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
@@ -198,11 +233,13 @@ export function createParticleRenderer(
         canvas.height = Math.max(1, Math.round(canvas.clientHeight * dpr));
         gl.viewport(0, 0, canvas.width, canvas.height);
       },
-      draw(time: number) {
+      draw(time: number, story = -1, pointer = [0.5, 0.5, 0]) {
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.uniform2f(uniforms.u_resolution, canvas.width, canvas.height);
         gl.uniform1f(uniforms.u_dpr, dpr);
         gl.uniform1f(uniforms.u_time, time);
+        gl.uniform1f(uniforms.u_story, story);
+        gl.uniform3f(uniforms.u_pointer, pointer[0], pointer[1], pointer[2]);
         for (const reflection of [1, 0]) {
           gl.uniform1f(uniforms.u_reflection, reflection);
           gl.drawArrays(gl.POINTS, 0, count);

@@ -6,8 +6,8 @@ Run date: September 27, 2026. Scope: current local hackathon website; Instagram 
 
 | Suite | Coverage | Result |
 | --- | --- | --- |
-| Unit / server render | Rules, permissions, password hashing, parsers, particle geometry, route rendering, commerce and collaboration | 131 passed |
-| Chromium browser | 26 scenarios at desktop 1440×900 and mobile 390×844, including live motion controls | 52 passed |
+| Unit / server render | Rules, permissions, password hashing, parsers, particle geometry, scroll easing, route rendering, commerce and collaboration | 133 passed |
+| Chromium browser | 27 scenarios at desktop 1440×900 and mobile 390×844, including continuous motion and album preview | 54 passed |
 | AStra authentication | Real password accounts, duplicate races, throttling, session invalidation and old-account rejection | 7 groups passed |
 | MongoDB | Transactions, simultaneous requests, persistence and session expiry | 10 groups passed |
 | Spotify | Mocked OAuth, linking to AStra password accounts, encryption, refresh, disconnect and reward concurrency | 11 groups passed |
@@ -61,6 +61,14 @@ Real MongoDB tests include concurrent checkout retries, multiple creators compet
 | Repeating shipping created duplicate notifications. | Same-order/same-tracking retry is a no-op; other changes to non-Preparing orders are rejected. |
 
 The subsequent approved design/authentication pass adds consistent hover/press/focus states, a continuous dark landing surface and three device-resolution particle sculptures. Mobile animation controls initially sat beneath the text layer; live-motion browser testing caught this, and stacking/positioning were corrected. The top mascot was deliberately omitted; the existing footer mascot remains.
+
+## Continuous landing sculpture follow-up
+
+The landing page now mounts one fixed, viewport-sized WebGL scene throughout its length. Scroll progress smoothly morphs the same particle geometry through prism, knot, connecting rings, shared orbits and back to a knot, with eased position changes and coherent surface motion. Pointer proximity gently displaces and illuminates particles without capturing scrolling or links. A persistent pause control stops motion, including scroll morphing; reduced-motion users receive a static scene, and unavailable WebGL falls back to SVG. Existing colours/fonts and feature flows are preserved.
+
+The large editorial placeholder is replaced by an attributed official Spotify embed for [Laufey — A Matter of Time](https://open.spotify.com/album/5rMOCuiWWbEBcHaKM69Hmv), following the [Spotify embed documentation](https://developer.spotify.com/documentation/embeds). This is an editorial example, not a partnership, and generates no rewards. The iframe is lazy-loaded, has no autoplay permission and includes a direct-link fallback. Spotify hosts the artwork; no album cover was copied into project assets. Other fictional content placeholders remain unchanged.
+
+Additional browser checks verify one canvas survives section changes, scroll progress advances to the footer, pointer response, pause persistence, no playback autoplay, proper attribution, usable links, reduced motion and WebGL failure. Initial test selectors confused the footer mascot's pause button with the sculpture's; selectors were scoped to the sculpture control and the full suite rerun. All existing authentication, commerce, creator/audience permissions, MongoDB, mocked providers and HTTP integration groups were rerun successfully. External players remain stubbed in browser tests; the album's real embed URL was separately opened via web research. No live account consent was exercised.
 
 ## Mandatory AStra authentication
 

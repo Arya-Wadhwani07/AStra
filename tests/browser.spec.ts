@@ -211,20 +211,20 @@ test("invalid password, duplicate signup, role escalation and cross-origin signu
   expect(csrf.status()).toBe(403);
 });
 
-test("landing has three crisp sculptures, continuous surfaces, accessible hover and reduced motion", async ({
+test("landing has one persistent sculpture, accessible hover and reduced motion", async ({
   page,
 }, testInfo) => {
   await page.goto("/");
-  await expect(page.locator("[data-sculpture]")).toHaveCount(3);
+  await expect(page.locator("[data-sculpture]")).toHaveCount(1);
   await expect(page.locator(".cinema-stage video")).toHaveCount(0);
   await expect(
-    page.locator(".cinema-stage .particle-hero__poster"),
-  ).toHaveCount(3);
+    page.locator(".landing-sculpture .particle-hero__poster"),
+  ).toHaveCount(1);
   const surfaces = await page
-    .locator(".landing, .cinema-stage")
+    .locator(".cinema-stage")
     .evaluateAll((els) => els.map((e) => getComputedStyle(e).backgroundColor));
-  expect(new Set(surfaces).size).toBe(1);
-  await expect(page.locator(".cinema-stage .as-motion__ctl")).toHaveCount(0);
+  expect(surfaces.every((s) => s === "rgba(0, 0, 0, 0)")).toBe(true);
+  await expect(page.locator(".landing-motion-control")).toHaveCount(0);
   const button = page.locator(".stage-copy .as-btn").first();
   await button.focus();
   expect(
@@ -245,19 +245,39 @@ test("landing has three crisp sculptures, continuous surfaces, accessible hover 
   });
 });
 
-test("all particle scenes animate, pause independently, and remain sharp at device size", async ({
+test("one sculpture flows across the entire page, responds to pointer and pauses without blocking links", async ({
   page,
 }, testInfo) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/");
+  const sculpture = page.locator('[data-sculpture="journey"]');
+  const originalCanvas = await sculpture.locator("canvas").elementHandle();
+  let lastProgress = -1;
   for (const variant of ["hero", "collab", "loyalty"]) {
-    const sculpture = page.locator(`[data-sculpture="${variant}"]`);
     const stage = page.locator(`.cinema-stage--${variant}`);
     await stage.scrollIntoViewIfNeeded();
-    const pause = sculpture.getByRole("button", {
+    const pause = page.getByRole("button", {
       name: "Pause background animation",
     });
     await expect(pause).toBeVisible();
+    await expect
+      .poll(async () => Number(await sculpture.getAttribute("data-progress")))
+      .toBeGreaterThan(lastProgress);
+    if (variant !== "hero")
+      await expect
+        .poll(async () => Number(await sculpture.getAttribute("data-progress")))
+        .toBeGreaterThan(lastProgress + 0.05);
+    lastProgress = Number(await sculpture.getAttribute("data-progress"));
+    expect(
+      await originalCanvas!.evaluate(
+        (c) => c === document.querySelector(".landing-sculpture canvas"),
+      ),
+    ).toBe(true);
+    const viewport = page.viewportSize()!;
+    await page.mouse.move(viewport.width * 0.76, viewport.height * 0.35);
+    await expect
+      .poll(async () => Number(await sculpture.getAttribute("data-pointer")))
+      .toBeGreaterThan(0.5);
     const dimensions = await sculpture
       .locator("canvas")
       .evaluate((c: HTMLCanvasElement) => ({
@@ -267,24 +287,64 @@ test("all particle scenes animate, pause independently, and remain sharp at devi
     expect(dimensions.width).toBeGreaterThanOrEqual(dimensions.css);
     await pause.click();
     await expect(
-      sculpture.getByRole("button", { name: "Play background animation" }),
+      page.getByRole("button", { name: "Play background animation" }),
     ).toBeVisible();
     expect(
       await page.evaluate(
         (key) => sessionStorage.getItem(key),
-        `astra-paused:particle-${variant}`,
+        "astra-paused:particle-journey",
       ),
     ).toBe("1");
     await page.screenshot({
       path: testInfo.outputPath(`${variant}-sculpture.png`),
     });
-    await sculpture
+    await page
       .getByRole("button", { name: "Play background animation" })
       .click();
     await expect(
-      sculpture.getByRole("button", { name: "Pause background animation" }),
+      page.getByRole("button", { name: "Pause background animation" }),
     ).toBeVisible();
   }
+  await page.locator(".public-footer").scrollIntoViewIfNeeded();
+  await expect
+    .poll(async () => Number(await sculpture.getAttribute("data-progress")))
+    .toBeGreaterThan(0.9);
+  await page
+    .locator('.landing-motion-control[aria-label="Pause background animation"]')
+    .click();
+  const frozen = await sculpture.getAttribute("data-progress");
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  expect(await sculpture.getAttribute("data-progress")).toBe(frozen);
+  await page.reload();
+  await expect(
+    page.locator(
+      '.landing-motion-control[aria-label="Play background animation"]',
+    ),
+  ).toBeVisible();
+});
+
+test("landing replaces placeholder artwork with an attributed official album embed without autoplay", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const album = page.locator(".landing-album");
+  await expect(album.locator("iframe")).toHaveAttribute(
+    "src",
+    "https://open.spotify.com/embed/album/5rMOCuiWWbEBcHaKM69Hmv?utm_source=generator&theme=0",
+  );
+  await expect(album.locator("iframe")).not.toHaveAttribute(
+    "allow",
+    /autoplay/,
+  );
+  await expect(album).toContainText("not an AStra partner");
+  await expect(album).toContainText("no points are earned");
+  await expect(album.getByRole("link")).toHaveAttribute(
+    "href",
+    "https://open.spotify.com/album/5rMOCuiWWbEBcHaKM69Hmv",
+  );
+  await expect(page.locator(".editorial-grid")).not.toContainText(
+    "Placeholder art",
+  );
 });
 
 test("WebGL unavailable falls back to vectors without blocking signup or navigation", async ({
@@ -303,7 +363,7 @@ test("WebGL unavailable falls back to vectors without blocking signup or navigat
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/");
   await expect(
-    page.locator(".cinema-stage--hero .particle-hero__still"),
+    page.locator(".landing-sculpture .particle-hero__still"),
   ).toBeVisible();
   await expect(page.locator(".particle-hero--ready")).toHaveCount(0);
   await page

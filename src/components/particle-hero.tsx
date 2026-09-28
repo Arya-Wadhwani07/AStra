@@ -6,14 +6,17 @@ import {
   type ParticleVariant,
 } from "../lib/particle-scene";
 import { Icon } from "./icons";
+import { scrollProgress, easeSculpture } from "../lib/scroll-sculpture";
 
 /** Motion is decorative; the page and its calls to action never depend on WebGL. */
 export function ParticleHero({
   variant = "hero",
+  continuous = false,
 }: {
   variant?: ParticleVariant;
+  continuous?: boolean;
 }) {
-  const pauseKey = `astra-paused:particle-${variant}`;
+  const pauseKey = `astra-paused:particle-${continuous ? "journey" : variant}`;
   const box = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const sync = useRef<() => void>(() => {});
@@ -24,6 +27,12 @@ export function ParticleHero({
   useEffect(() => {
     if (!canvas.current || !box.current) return;
     const surface = canvas.current;
+    const container = box.current;
+    const landing = container.closest(".landing");
+    let target = 0,
+      progress = 0;
+    const pointer = [0.5, 0.5, 0],
+      desiredPointer = [0.5, 0.5, 0];
     const motion = matchMedia("(prefers-reduced-motion: reduce)");
     const connection = (
       navigator as Navigator & {
@@ -46,10 +55,38 @@ export function ParticleHero({
       setPlaying(false);
     };
     const draw = (now: number) => {
-      if (previous) elapsed += Math.min((now - previous) / 1000, 0.05);
+      const dt = previous ? Math.min((now - previous) / 1000, 0.05) : 1 / 60;
+      elapsed += dt;
       previous = now;
-      renderer?.draw(elapsed);
+      progress = easeSculpture(progress, target, dt);
+      for (let i = 0; i < 3; i++)
+        pointer[i] = easeSculpture(pointer[i], desiredPointer[i], dt);
+      renderer?.draw(elapsed, continuous ? progress : -1, pointer);
+      container.dataset.progress = progress.toFixed(4);
+      container.dataset.pointer = pointer[2].toFixed(3);
       frame = requestAnimationFrame(draw);
+    };
+    const scroll = () => {
+      if (!continuous || !landing) return;
+      const bounds = landing.getBoundingClientRect();
+      target = scrollProgress(bounds.top, bounds.height, innerHeight);
+    };
+    const move = (event: PointerEvent) => {
+      if (event.pointerType === "touch" || motion.matches || paused.current)
+        return;
+      const bounds = surface.getBoundingClientRect();
+      desiredPointer[0] =
+        (event.clientX - bounds.left) / Math.max(bounds.width, 1);
+      desiredPointer[1] =
+        (event.clientY - bounds.top) / Math.max(bounds.height, 1);
+      desiredPointer[2] = (event.target as Element)?.closest?.(
+        "a, button, input, select, textarea",
+      )
+        ? 0
+        : 1;
+    };
+    const leave = () => {
+      desiredPointer[2] = 0;
     };
     const update = () => {
       const allowed = !connection?.saveData && !broken;
@@ -65,7 +102,7 @@ export function ParticleHero({
         try {
           renderer = createParticleRenderer(surface, variant);
           renderer.resize();
-          renderer.draw(elapsed);
+          renderer.draw(elapsed, continuous ? progress : -1, pointer);
           setReady(true);
         } catch {
           broken = true;
@@ -89,17 +126,25 @@ export function ParticleHero({
     sync.current = update;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        visible = entry.intersectionRatio >= 0.15;
+        visible = continuous
+          ? entry.isIntersecting
+          : entry.intersectionRatio >= 0.15;
         update();
       },
-      { threshold: [0, 0.15] },
+      { threshold: continuous ? [0] : [0, 0.15] },
     );
-    observer.observe(box.current);
+    observer.observe(continuous && landing ? landing : box.current);
     const resize = new ResizeObserver(() => {
       renderer?.resize();
-      renderer?.draw(elapsed);
+      scroll();
+      renderer?.draw(elapsed, continuous ? progress : -1, pointer);
     });
     resize.observe(box.current);
+    if (landing) resize.observe(landing);
+    scroll();
+    window.addEventListener("scroll", scroll, { passive: true });
+    window.addEventListener("pointermove", move, { passive: true });
+    document.documentElement.addEventListener("pointerleave", leave);
     const lost = (event: Event) => {
       event.preventDefault();
       broken = true;
@@ -119,6 +164,9 @@ export function ParticleHero({
       renderer?.dispose();
       observer.disconnect();
       resize.disconnect();
+      window.removeEventListener("scroll", scroll);
+      window.removeEventListener("pointermove", move);
+      document.documentElement.removeEventListener("pointerleave", leave);
       surface.removeEventListener("webglcontextlost", lost);
       surface.removeEventListener("webglcontextrestored", restored);
       motion.removeEventListener("change", update);
@@ -126,7 +174,7 @@ export function ParticleHero({
       document.removeEventListener("visibilitychange", update);
       sync.current = () => {};
     };
-  }, [variant, pauseKey]);
+  }, [variant, continuous, pauseKey]);
   function toggle() {
     paused.current = !paused.current;
     try {
@@ -134,59 +182,64 @@ export function ParticleHero({
     } catch {}
     sync.current();
   }
-  return (
-    <div
-      ref={box}
-      className={`as-motion stage-film particle-hero${ready ? " particle-hero--ready" : ""}`}
-      data-sculpture={variant}
+  const control = ready && motionAllowed && (
+    <button
+      className={`as-motion__ctl${continuous ? " landing-motion-control" : ""}`}
+      type="button"
+      onClick={toggle}
+      aria-label={
+        playing ? "Pause background animation" : "Play background animation"
+      }
+      aria-pressed={!playing}
     >
-      <svg
-        className="particle-hero__poster particle-hero__still"
-        viewBox="0 0 600 600"
-        aria-hidden="true"
+      <Icon name={playing ? "pause" : "play"} weight="fill" />
+    </button>
+  );
+  return (
+    <>
+      <div
+        ref={box}
+        className={`as-motion ${continuous ? "landing-sculpture" : "stage-film"} particle-hero${ready ? " particle-hero--ready" : ""}`}
+        data-sculpture={continuous ? "journey" : variant}
       >
-        {Array.from({ length: 480 }, (_, i) => {
-          const data = stills[variant];
-          const offset = i * 8;
-          const x = data[offset],
-            y = data[offset + 1],
-            z = data[offset + 2];
-          return (
-            <circle
-              key={i}
-              cx={300 + (x * 0.86 + z * 0.5) * 110}
-              cy={280 - (y * 0.94 - z * 0.34) * 110}
-              r={1.2 + data[offset + 6]}
-              fill={i % 31 === 0 ? "#ff795d" : "#71b7ff"}
-              opacity={0.7}
-            />
-          );
-        })}
-      </svg>
-      <div className="particle-hero__halo" aria-hidden="true" />
-      <canvas
-        ref={canvas}
-        className="particle-hero__canvas"
-        aria-hidden="true"
-      />
-      <span className="as-sr">
-        Decorative blue particle sculpture rotating between a prism and
-        intertwined strands above luminous floor rings.
-      </span>
-      {ready && motionAllowed && (
-        <button
-          className="as-motion__ctl"
-          type="button"
-          onClick={toggle}
-          aria-label={
-            playing ? "Pause background animation" : "Play background animation"
-          }
-          aria-pressed={!playing}
+        <svg
+          className="particle-hero__poster particle-hero__still"
+          viewBox="0 0 600 600"
+          aria-hidden="true"
         >
-          <Icon name={playing ? "pause" : "play"} weight="fill" />
-        </button>
-      )}
-    </div>
+          {Array.from({ length: 480 }, (_, i) => {
+            const data = stills[variant];
+            const offset = i * 8;
+            const x = data[offset],
+              y = data[offset + 1],
+              z = data[offset + 2];
+            return (
+              <circle
+                key={i}
+                cx={300 + (x * 0.86 + z * 0.5) * 110}
+                cy={280 - (y * 0.94 - z * 0.34) * 110}
+                r={1.2 + data[offset + 6]}
+                fill={i % 31 === 0 ? "#ff795d" : "#71b7ff"}
+                opacity={0.7}
+              />
+            );
+          })}
+        </svg>
+        <div className="particle-hero__halo" aria-hidden="true" />
+        <canvas
+          ref={canvas}
+          className="particle-hero__canvas"
+          aria-hidden="true"
+        />
+        <span className="as-sr">
+          Decorative blue sculpture flowing from a prism into intertwined
+          strands and shared orbits as you scroll. Pointer movement gently parts
+          the particles.
+        </span>
+        {!continuous && control}
+      </div>
+      {continuous && control}
+    </>
   );
 }
 

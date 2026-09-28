@@ -41,7 +41,6 @@ function Stage({
       className={`cinema-stage cinema-stage--${kind}`}
       data-theme="cinema"
     >
-      <ParticleHero variant={kind} />
       <div className="stage-scrim" />
       <div className="stage-copy">
         <p className="as-eyebrow">
@@ -69,6 +68,7 @@ export function Landing() {
   const { state } = useApp();
   return (
     <div className="landing as-app--glass" data-theme="glass">
+      <ParticleHero continuous />
       <header className="public-nav" data-theme="cinema">
         <Link href="/" aria-label="AStra home">
           <Logo />
@@ -107,7 +107,27 @@ export function Landing() {
         </h2>
         <div className="editorial-grid">
           <div className="stack">
-            <MediaFrame ratio="3:2" art="print" credit="Placeholder art" />
+            <figure className="landing-album">
+              <iframe
+                title="A Matter of Time by Laufey — official Spotify album preview"
+                src="https://open.spotify.com/embed/album/5rMOCuiWWbEBcHaKM69Hmv?utm_source=generator&theme=0"
+                loading="lazy"
+                allow="encrypted-media; fullscreen; picture-in-picture"
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+              <figcaption>
+                <a
+                  href="https://open.spotify.com/album/5rMOCuiWWbEBcHaKM69Hmv"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  A Matter of Time · Laufey · Open in Spotify
+                </a>
+                <br />
+                Editorial music pick, not an AStra partner. Spotify hosts this
+                preview; no points are earned.
+              </figcaption>
+            </figure>
             <h3>Follow creators, not algorithms</h3>
             <p className="muted">
               Posts, events and merchandise from the creators you favorite,
